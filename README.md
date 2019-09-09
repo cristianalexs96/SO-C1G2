@@ -1,11 +1,12 @@
 # SO-C1G2
 ## Partición de memoria
-1. Fija
+	1. Fija
 		Tamaño total
 		Tamaño ocupado para el SO
 		Cantidad de particiones
 		Tamaño de cada partición
-2. Variable
+
+	2. Variable
 		Tamaño total
 		Tamaño ocupado para el SO
 
