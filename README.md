@@ -1,5 +1,7 @@
 # SO-C1G2
-## Partición de memoria
+## Datos de entrada a considerar para el planificador:
+
+### Partición de memoria
 	1. Fija
 		Tamaño total
 		Tamaño ocupado para el SO
@@ -10,37 +12,37 @@
 		Tamaño total
 		Tamaño ocupado para el SO
 
-## Algoritmos
+### Algoritmos
 		First Fit
 		Best Fit
 		Works Fit
 
-## Algoritmos de asignación
+### Algoritmos de asignación
 		FCFS
 		SJF
 		SRTF
 		RR
 			Quantum
 
-## Procesos
+### Procesos
 		Cantidad de procesos
 		Tamaño de cada proceso
 		Tiempo de arribo
 		Tiempo 
 
-## Colas
+### Colas
 		Cola de Nuevos
 		Cola de Listos
 		Cola de CPU
 		Cola de Entrada
 		Cola de Salida
 
-## Cálculos
+### Cálculos
 		TRP
 		TE
 		TEP
 
-## PCB
+### PCB
 		Id Proceso
 		Estado
 		Registro CPU
