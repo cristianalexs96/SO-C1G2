@@ -24,39 +24,39 @@ Partición de memoria
 	* Tamaño ocupado para el SO
 
 Algoritmos de asignación
-	* FCFS
-	* SJF
-	* RR
-		* Quantum
-	* Cola Multinivel
+* FCFS
+* SJF
+* RR
+* Quantum
+* Cola Multinivel
 
 Procesos
-	* Cantidad de procesos
-	* Tamaño de cada proceso
-	* Tiempo de arribo
-	* Tiempo 
+* Cantidad de procesos
+* Tamaño de cada proceso
+* Tiempo de arribo
+* Tiempo 
 
 Colas
-	* Cola de Nuevos
-	* Cola de Listos
-	* Cola de CPU
-	* Cola de Entrada
-	* Cola de Salida
+* Cola de Nuevos
+* Cola de Listos
+* Cola de CPU
+* Cola de Entrada
+* Cola de Salida
 
 Cálculos
-	* TRP
-	* TE
-	* TEP
+* TRP
+* TE
+* TEP
 
 PCB
-	* Id Proceso
-	* Estado
-	* Registro CPU
-	* Memoria asignada
-	* RLI
-	* RLS
-	* Base
-	* Desplazamiento
+* Id Proceso
+* Estado
+* Registro CPU
+* Memoria asignada
+* RLI
+* RLS
+* Base
+* Desplazamiento
 
 ## Visualización Planificador<a name="id2"></a>
 
