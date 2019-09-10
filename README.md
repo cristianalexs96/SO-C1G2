@@ -20,8 +20,7 @@
 ### Algoritmos de asignación
 		FCFS
 		SJF
-		RR
-			Quantum
+		RR: Definir Quantum
 		Cola Multinivel
 
 ### Procesos
