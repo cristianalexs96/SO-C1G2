@@ -26,7 +26,7 @@ __Algoritmos de asignación__
 * FCFS
 * SJF
 * RR
-* Quantum
+	* Quantum
 * Cola Multinivel
 
 __Procesos__
