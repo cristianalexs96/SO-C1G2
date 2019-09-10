@@ -6,7 +6,7 @@
 
 ## Datos de Entrada y Salida<a name="id1"></a>
 
-Partición de memoria
+__Partición de memoria__
 1. Fija
 	* Algoritmo de intercambio:
 		* First Fit
@@ -23,32 +23,32 @@ Partición de memoria
 	* Tamaño total
 	* Tamaño ocupado para el SO
 
-Algoritmos de asignación
+__Algoritmos de asignación__
 * FCFS
 * SJF
 * RR
 * Quantum
 * Cola Multinivel
 
-Procesos
+__Procesos__
 * Cantidad de procesos
 * Tamaño de cada proceso
 * Tiempo de arribo
 * Tiempo 
 
-Colas
+__Colas__
 * Cola de Nuevos
 * Cola de Listos
 * Cola de CPU
 * Cola de Entrada
 * Cola de Salida
 
-Cálculos
+__Cálculos__
 * TRP
 * TE
 * TEP
 
-PCB
+__PCB__
 * Id Proceso
 * Estado
 * Registro CPU
