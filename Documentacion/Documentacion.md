@@ -6,24 +6,25 @@
 
 ## Datos de Entrada y Salida<a name="id1"></a>
 	Partición de memoria
-	1. Fija
+	⋅⋅*Fija
 		Algoritmo de intercambio:
-			First Fit
-			Best Fit
+			⋅⋅*First Fit
+			⋅⋅*Best Fit
 		Tamaño total
 		Tamaño ocupado para el SO
 		Cantidad de particiones
 		Tamaño de cada partición
-	2. Variable
+	⋅⋅*Variable
 		Algoritmo de intercambio:
-			Best Fit
-			Works Fit
+			⋅⋅*Best Fit
+			⋅⋅*Works Fit
 		Tamaño total
 		Tamaño ocupado para el SO
 	Algoritmos de asignación
 		FCFS
 		SJF
-		RR: Definir Quantum
+		RR
+			⋅⋅*Quantum
 		Cola Multinivel
 	Procesos
 		Cantidad de procesos
