@@ -1,7 +1,6 @@
 # Documentación
 ## __Índice__
 ##### [Datos de Entrada y Salida](#id1)
-
 ##### [Visualización Planificador](#id2)
 
 ### Datos de Entrada y Salida<a name="id1"></a>
