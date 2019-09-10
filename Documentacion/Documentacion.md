@@ -1,6 +1,8 @@
 # Documentación
-## **Índice**   
-# __[Datos de Entrada y Salida](#id1) [Visualización Planificador](#id2)__
+## __Índice__
+### [Datos de Entrada y Salida](#id1)
+
+### [Visualización Planificador](#id2)
 
 ## Datos de Entrada y Salida<a name="id1"></a>
 	Partición de memoria
@@ -50,4 +52,4 @@
 
 ## Visualización Planificador<a name="id2"></a>
 
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img1.jpeg "Pantalla entrada de Datos")
