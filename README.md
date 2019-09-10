@@ -20,9 +20,9 @@
 ### Algoritmos de asignación
 		FCFS
 		SJF
-		SRTF
 		RR
 			Quantum
+		Cola Multinivel
 
 ### Procesos
 		Cantidad de procesos
@@ -51,3 +51,4 @@
 		RLS
 		Base
 		Desplazamiento
+
