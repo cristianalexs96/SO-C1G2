@@ -8,13 +8,13 @@
 
 Partición de memoria
 1. Fija
-* Algoritmo de intercambio:
+	* Algoritmo de intercambio:
 		* First Fit
 		* Best Fit
-* Tamaño total
-* Tamaño ocupado para el SO
-* Cantidad de particiones
-* Tamaño de cada partición
+	* Tamaño total
+	* Tamaño ocupado para el SO
+	* Cantidad de particiones
+	* Tamaño de cada partición
 
 2. Variable
 
