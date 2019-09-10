@@ -8,6 +8,7 @@
 
 Partición de memoria
 1. Fija
+
 ..* Algoritmo de intercambio:
 		..* First Fit
 		..* Best Fit
@@ -15,19 +16,21 @@ Partición de memoria
 	..* Tamaño ocupado para el SO
 	..* Cantidad de particiones
 	..* Tamaño de cada partición
+
 2. Variable
-	..* Algoritmo de intercambio:
+
+..* Algoritmo de intercambio:
 		..* Best Fit
 		..* Works Fit
 	..* Tamaño total
 	..* Tamaño ocupado para el SO
 
 Algoritmos de asignación
-	..* FCFS
-	..* SJF
-	..* RR
-		..* Quantum
-	..* Cola Multinivel
+..* FCFS
+..* SJF
+..* RR
+..* Quantum
+..* Cola Multinivel
 
 Procesos
 	..* Cantidad de procesos
