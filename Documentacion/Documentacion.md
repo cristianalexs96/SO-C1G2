@@ -1,4 +1,5 @@
 # Documentación
+
 ## __Índice__
 ##### [Datos de Entrada y Salida](#id1)
 ##### [Visualización Planificador](#id2)
