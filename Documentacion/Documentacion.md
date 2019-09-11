@@ -9,7 +9,7 @@
 
 __Partición de memoria__
 1. Fija
-	* Algoritmo de intercambio:
+	* Algoritmos de intercambio:
 		* First Fit
 		* Best Fit
 	* Tamaño total
@@ -18,7 +18,7 @@ __Partición de memoria__
 	* Tamaño de cada partición
 
 2. Variable
-	* Algoritmo de intercambio:
+	* Algoritmos de intercambio:
 		* Best Fit
 		* Works Fit
 	* Tamaño total
