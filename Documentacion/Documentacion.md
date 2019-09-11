@@ -1,4 +1,4 @@
-# ---Documentación---
+<div class="text-justify">Documentación</div>
 
 ## __Índice__
 ##### [Datos de Entrada y Salida](#id1)
