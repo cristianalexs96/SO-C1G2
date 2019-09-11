@@ -6,7 +6,7 @@
 
 ### Datos de Entrada y Salida<a name="id1"></a>
 
-__Partición de memoria__
+<center> __Partición de memoria__ </center>
 1. Fija
 	* Algoritmo de intercambio:
 		* First Fit
