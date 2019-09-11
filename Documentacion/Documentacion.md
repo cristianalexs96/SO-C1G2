@@ -4,7 +4,7 @@
 ##### [Datos de Entrada y Salida](#id1)
 ##### [Visualización Planificador](#id2)
 
-### Datos de Entrada y Salida<a name="id1"></a>
+### <p align="center"> Datos de Entrada y Salida<a name="id1"></a></p>
 
 __Partición de memoria__
 1. Fija
@@ -58,7 +58,7 @@ __PCB__
 * Base
 * Desplazamiento
 
-### Visualización Planificador<a name="id2"></a>
+### <p align="center"> Visualización Planificador<a name="id2"></a></p>
 
 ![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img1.jpeg "Pantalla entrada de Datos")
 
