@@ -1,4 +1,4 @@
-<p style="text-align: center;"> Documentación </p>
+<p align="center"> Documentación</p>
 
 ## __Índice__
 ##### [Datos de Entrada y Salida](#id1)
