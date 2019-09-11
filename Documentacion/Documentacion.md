@@ -3,6 +3,7 @@
 ## __Índice__
 ##### [Datos de Entrada y Salida](#id1)
 ##### [Visualización Planificador](#id2)
+##### [Consideraciones](#id3)
 
 ### <p align="center"> Datos de Entrada y Salida<a name="id1"></a></p>
 
@@ -62,3 +63,6 @@ __PCB__
 
 ![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img1.jpeg "Pantalla entrada de Datos")
 
+### <p align="center"> Consideraciones<a name="id3"></a></p>
+
+> Colas multinivel: Se toma como referencia tres niveles de colas.
