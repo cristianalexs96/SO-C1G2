@@ -1,4 +1,4 @@
-<center> Documentación </center>
+# Documentación
 
 ## __Índice__
 ##### [Datos de Entrada y Salida](#id1)
@@ -6,7 +6,7 @@
 
 ### Datos de Entrada y Salida<a name="id1"></a>
 
-<center> __Partición de memoria__ </center>
+__Partición de memoria__
 1. Fija
 	* Algoritmo de intercambio:
 		* First Fit
