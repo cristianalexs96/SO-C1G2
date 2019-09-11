@@ -1,4 +1,4 @@
-<center>Documentación</center>
+<center> Documentación </center>
 
 ## __Índice__
 ##### [Datos de Entrada y Salida](#id1)
