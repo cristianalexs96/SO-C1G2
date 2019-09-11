@@ -5,7 +5,7 @@
 ##### [Visualización Planificador](#id2)
 ##### [Consideraciones](#id3)
 
-### <p align="center"> Datos de Entrada y Salida<a name="id1"></a></p>
+### Datos de Entrada y Salida<a name="id1"></a>
 
 __Partición de memoria__
 1. Fija
@@ -59,10 +59,10 @@ __PCB__
 * Base
 * Desplazamiento
 
-### <p align="center"> Visualización Planificador<a name="id2"></a></p>
+### Visualización Planificador<a name="id2"></a>
 
 ![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img1.jpeg "Pantalla entrada de Datos")
 
-### <p align="center"> Consideraciones<a name="id3"></a></p>
+### Consideraciones<a name="id3"></a>
 
-> Colas multinivel: Se toma como referencia tres niveles de colas.
+> __Colas multinivel__: Se toma como referencia tres niveles de colas.
