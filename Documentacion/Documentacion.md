@@ -1,4 +1,4 @@
-# Documentación
+<p style="text-align: center;"> Documentación </p>
 
 ## __Índice__
 ##### [Datos de Entrada y Salida](#id1)
@@ -61,3 +61,4 @@ __PCB__
 ### Visualización Planificador<a name="id2"></a>
 
 ![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img1.jpeg "Pantalla entrada de Datos")
+
