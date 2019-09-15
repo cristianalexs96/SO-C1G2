@@ -63,16 +63,13 @@ __PCB__
 
 ![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img1.jpeg "Pantalla entrada de Datos")
 
-Pantalla inicial:
-
+__Pantalla inicial:__
 ![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img2.jpeg "Pantalla entrada de Datos")
 
-Configuración de Arquitectura:
-
+__Configuración de Arquitectura:__
 ![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img3.jpeg "Pantalla entrada de Datos")
 
-Carga de procesos:
-
+__Carga de procesos:__
 ![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img4.jpeg "Pantalla entrada de Datos")
 
 ### Consideraciones<a name="id3"></a>
