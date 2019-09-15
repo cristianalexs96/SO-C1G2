@@ -26,7 +26,7 @@ __Partición de memoria__
 
 __Algoritmos de asignación__
 * FCFS
-* SJF
+* Por prioridades
 * RR
 	* Quantum
 * Cola Multinivel
