@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<title>Simulador Gestión de Procesos</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="Estilos/materialize.min.css">
+	<link rel="stylesheet" href="Estilos/estilos.css">
+</head>
+<body>
+	<div class="container">
+	<ul class="collapsible">
+		<li>
+			<div class="collapsible-header blue lighten-4">
+				<i class="material-icons">build</i>Configuracion de Arquitectura
+			</div>
+			<div class="collapsible-body">
+				<div class="row">
+					<div class="col m6 s12">
+						<h5>Memoria</h5>
+						<form action="#">
+							<div class="row">
+								<div class="col m3 s6">
+									<p><label><input checked name="part" onclick="mostrarInputMem()" type="radio"> <span>Partición Fija</span></label></p>
+								</div>
+								<div class="col m3 s6">
+									<p><label><input name="part" onclick="ocultarInputMem()" type="radio"> <span>Partición Variable</span></label></p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-field col m9 s9">
+									<input class="validate" id="tamanio_mem" type="text"> <label for="tamanio_mem">Tamaño de Memoria</label>
+								</div>
+								<div class="col m3 s3">
+									<label>Unidad</label> <select class="browser-default">
+										<option value="1">
+											B
+										</option>
+										<option value="2">
+											KB
+										</option>
+										<option value="3">
+											MB
+										</option>
+										<option value="3">
+											GB
+										</option>
+									</select>
+								</div>
+							</div>
+							<div class="row" id="particiones">
+								<div class="input-field col m9 s12">
+									<input class="validate" id="cant_part" placeholder="Ejemplo: 35-85-98" type="text"> <label for="first_name">Particiones</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col m9 s12">
+									<label>Algoritmo de Ajuste</label> <select class="browser-default">
+										<option value="1">
+											First-Fit
+										</option>
+										<option value="2">
+											Best-Fit
+										</option>
+										<option value="3">
+											Worst-Fit
+										</option>
+									</select>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="col m6 s12">
+						<h5>Procesador</h5>
+						<form action="#">
+							<div class="row">
+								<div class="col m9 s12">
+									<label>Algoritmo de Planificaión</label> <select class="browser-default" id="alg_planific" onchange="mostrarInputCuantum();">
+										<option value="1">
+											FCFS
+										</option>
+										<option value="2">
+											Prioridad
+										</option>
+										<option value="3">
+											Round Robin
+										</option>
+										<option value="4">
+											Colas Multinivel
+										</option>
+									</select>
+								</div>
+							</div>
+							<div class="row" id="cuantum" style="display: none;">
+								<div class="input-field col m6 s9">
+									<input class="validate" id="cuant"  type="text"> <label for="cuant">Cuantum</label>
+								</div>
+							</div>
+							<div class="row" id="cuantum_multi" style="display: none;">
+								<div class="input-field col m4 s12">
+									<input class="validate" id="cuant1"  type="text"> <label for="cuant1">Cuantum 1</label>
+								</div>
+								<div class="input-field col m4 s12">
+									<input class="validate" id="cuant2"  type="text"> <label for="cuant2">Cuantum 2</label>
+								</div>
+								<div class="input-field col m4 s12">
+									<input class="validate" id="cuant3"  type="text"> <label for="cuant3">Cuantum 3</label>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</li>
+		<li>
+			<div class="collapsible-header blue lighten-4">
+				<i class="material-icons">whatshot</i>Carga de Procesos
+			</div>
+			<div class="collapsible-body">
+				<form action="#">
+					<h5>Procesos</h5>
+					<div class="row">
+						<div class="input-field col m3 s12">
+							<input class="validate" id="nom_proceso" type="text"> <label for="nom_proceso">Nombre</label>
+						</div>
+						<div class="input-field col m3 s12">
+							<input class="validate" id="tiempo_arr" type="text"> <label for="tiempo_arr">Tiempo de Arribo</label>
+						</div>
+						<div class="input-field col m3 s12">
+							<input class="validate" id="tiempo_irr" type="text"> <label for="tiempo_irr">Tiempo de Irrupción</label>
+						</div>
+						<div class="input-field col m3 s12" id="div_prioridad" style="display: none;">
+							<input class="validate" id="prioridad" type="text"> <label for="prioridad">Prioridad</label>
+						</div>
+						<div class="input-field col m3 s12">
+							<input class="validate" id="rafaga" type="text"> <label for="rafaga">Rafaga</label>
+						</div>
+					</div>
+				</form>
+			</div>
+		</li>
+	</ul>
+	<a class="waves-effect waves-light btn-small right blue darken-1 separar">Ejecutar</a>
+	<a class="waves-effect waves-light btn-small right blue darken-1 separar">Cargar</a>
+
+</div>
+<script src="js/jquery.js"></script> 
+<script src="js/materialize.min.js"></script> 
+<script src="js/simulador.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+/*Cambia el color de los radio buttons*/
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:after {
+  background-color:#1976d2;
+}
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:before, 
+[type="radio"].with-gap:checked+span:after {
+  border: 2px solid #1976d2;
+}
+
+.separar{
+	margin-left: 20px;
+}

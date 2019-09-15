@@ -65,4 +65,4 @@ __PCB__
 
 ### Consideraciones<a name="id3"></a>
 
-> __Colas multinivel__: Se toma como referencia tres niveles de colas.
+> __Colas multinivel__: Se toma como referencia tres niveles de colas. Definir por cada cola qué tipo de algoritmo utilizará.
