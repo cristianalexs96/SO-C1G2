@@ -72,6 +72,8 @@ __Configuración de Arquitectura:__
 __Carga de procesos:__
 ![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img4.jpeg "Pantalla entrada de Datos")
 
-### Consideraciones<a name="id3"></a>
+__Tabla de Procesos y Diagrama de Gantt__
+![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img5.jpeg "Pantalla entrada de Datos")
 
+### Consideraciones<a name="id3"></a>
 > __Colas multinivel__: Se toma como referencia tres niveles de colas. Definir por cada cola qué tipo de algoritmo utilizará.
