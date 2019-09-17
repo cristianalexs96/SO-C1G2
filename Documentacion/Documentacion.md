@@ -41,6 +41,8 @@ Ing. Gramajo, Sergio
 |					   | Tamaño ocupado para el SO |
 
 
+| Partición de Memoria | Entrada |
+| :--------------------: | :-------: |
 
 __Algoritmos de asignación__
 * FCFS
