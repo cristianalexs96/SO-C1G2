@@ -32,14 +32,14 @@ Ing. Gramajo, Sergio
 | Partición de Memoria | Entrada |
 | -------------------- | ------- |
 | Fijas                | Algoritmos de intercambio: First Fit, Best Fit |
-					   	 Tamaño total |
-					     Tamaño ocupado para el SO |
-					     Cantidad de particiones |
-					     Tamaño de cada partición |
-| -------------------- | ------- |
+|					   | Tamaño total |
+|					   | Tamaño ocupado para el SO |
+|					   | Cantidad de particiones |
+|					   | Tamaño de cada partición |
+| -------------------- | ------------------------ |
 | Variable             | Algoritmos de intercambio: Best Fit, Works Fit |
-					   	 Tamaño total |
-					   	 Tamaño ocupado para el SO |
+|					   | Tamaño total |
+|					   | Tamaño ocupado para el SO |
 
 
 
