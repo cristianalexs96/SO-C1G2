@@ -41,11 +41,10 @@ Ing. Gramajo, Sergio
 |					   | Tamaño ocupado para el SO |
 
 
-|           |       Agrupación      ||  
- Cabecera A | Cabecera B | Cabecera C|  
-============|:----------:|----------:|  
-Contenido   |  *largo de la celda*  ||  
-Contenido   | **celda**  | celda     |
+Primer encabezado     | Segundo encabezado
+--------------------- | ---------------------
+Contenido de la celda | Contenido de la celda
+Contenido de la celda | Contenido de la celd
 
 
 __Algoritmos de asignación__
