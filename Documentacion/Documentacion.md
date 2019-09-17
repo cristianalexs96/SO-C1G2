@@ -41,8 +41,11 @@ Ing. Gramajo, Sergio
 |					   | Tamaño ocupado para el SO |
 
 
-| Partición de Memoria | Entrada |
-| -- | -- |
+| Primera columna | Segunda columna | Tercera columna |
+| -- | -- | -- |
+| Contenido 1-1 | Contenido 1-2 | Contenido 1-3 |
+| Contenido 2-1 | Contenido 2-2 | Contenido 2-3 |
+| Contenido 3-1 | Contenido 3-2 | Contenido 3-3 |
 
 __Algoritmos de asignación__
 * FCFS
