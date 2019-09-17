@@ -30,30 +30,15 @@ Ing. Gramajo, Sergio
 #### Datos de Entrada y Salida<a name="id2"></a>
 
 | Partición de Memoria | Entrada |
-| :--------------------: | :-------: |
-| Fijas                | Algoritmos de intercambio: First Fit, Best Fit |
+| :------------------: | :-----: |
+| 		               | Algoritmos de intercambio: First Fit, Best Fit |
 |					   | Tamaño total |
 |					   | Tamaño ocupado para el SO |
-|					   | Cantidad de particiones |
+|		FIJAS		   | Cantidad de particiones |
 |					   | Tamaño de cada partición |
-| Variable             | Algoritmos de intercambio: Best Fit, Works Fit |
-|					   | Tamaño total |
+| 			           | Algoritmos de intercambio: Best Fit, Works Fit |
+|	VARIABLES 		   | Tamaño total |
 |					   | Tamaño ocupado para el SO |
-
-
-Primer encabezado     | Segundo encabezado
---------------------- | ---------------------
-Contenido de la celda | Contenido de la celda
-Contenido de la celda | Contenido de la celd
-
-![Diagrama](http://g.gravizo.com/g?
-@startuml;
-Object <|-- ArrayList;
-Object : equals%48%49;
-ArrayList : Object[] elementData;
-ArrayList : size%48%49;
-@enduml
-)
 
 
 __Algoritmos de asignación__
