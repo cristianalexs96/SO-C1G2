@@ -41,11 +41,12 @@ Ing. Gramajo, Sergio
 |					   | Tamaño ocupado para el SO |
 
 
-| Primera columna | Segunda columna | Tercera columna |
-| -- | -- | -- |
-| Contenido 1-1 | Contenido 1-2 | Contenido 1-3 |
-| Contenido 2-1 | Contenido 2-2 | Contenido 2-3 |
-| Contenido 3-1 | Contenido 3-2 | Contenido 3-3 |
+|           |       Agrupación      ||  
+ Cabecera A | Cabecera B | Cabecera C|  
+============|:----------:|----------:|  
+Contenido   |  *largo de la celda*  ||  
+Contenido   | **celda**  | celda     |
+
 
 __Algoritmos de asignación__
 * FCFS
