@@ -46,6 +46,15 @@ Primer encabezado     | Segundo encabezado
 Contenido de la celda | Contenido de la celda
 Contenido de la celda | Contenido de la celd
 
+![Diagrama](http://g.gravizo.com/g?
+@startuml;
+Object <|-- ArrayList;
+Object : equals%48%49;
+ArrayList : Object[] elementData;
+ArrayList : size%48%49;
+@enduml
+)
+
 
 __Algoritmos de asignación__
 * FCFS
