@@ -55,16 +55,12 @@ Partición de Memoria | Entrada
             <td>Tamaño total</td>
             <td>Tamaño ocupado para el SO</td>
             <td>Cantidad de particiones</td>
-        </tr>
-        <tr>
             <td>Tamaño de cada partición</td>
         </tr>
         <tr>
             <td rowspan=3>VARIABLE</td>
             <td>Algoritmos de intercambio: Best Fit, Works Fit</td>
             <td>Tamaño total</td>
-        </tr>
-        <tr>
             <td>Tamaño ocupado para el SO</td>
         </tr>
     </tbody>
