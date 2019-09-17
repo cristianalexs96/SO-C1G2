@@ -66,15 +66,18 @@ Partición de Memoria | Entrada
     </tbody>
 </table>
 
-|             |          Grouping           ||
-First Header  | Second Header | Third Header |
- ------------ | :-----------: | -----------: |
-Content       |          *Long Cell*        ||
-Content       |   **Cell**    |         Cell |
-
-New section   |     More      |         Data |
-And more      | With an escaped '\|'         ||  
-[Prototype table]
+<table border="1">
+<tr>
+<td rowspan="2" bordercolor="#FF0000" width="100">A</td>
+<td>B</td>
+</tr>
+<tr>
+<td>C</td>
+</tr>
+<tr>
+<td>E</td>
+<td>D</td>
+</tr>
 
 
 __Algoritmos de asignación__
