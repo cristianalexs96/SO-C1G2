@@ -36,7 +36,6 @@ Ing. Gramajo, Sergio
 |					   | Tamaño ocupado para el SO |
 |					   | Cantidad de particiones |
 |					   | Tamaño de cada partición |
-| -------------------- | ------------------------ |
 | Variable             | Algoritmos de intercambio: Best Fit, Works Fit |
 |					   | Tamaño total |
 |					   | Tamaño ocupado para el SO |
