@@ -30,7 +30,7 @@ Ing. Gramajo, Sergio
 #### Datos de Entrada y Salida<a name="id2"></a>
 
 | Partición de Memoria | Entrada |
-| :------------------: | :-----: |
+| :------------------: | :----- |
 |FIJAS                 |Algoritmos de intercambio: First Fit, Best Fit |
 |					   |Tamaño total |
 |					   |Tamaño ocupado para el SO |
