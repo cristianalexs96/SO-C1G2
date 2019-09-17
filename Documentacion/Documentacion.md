@@ -1,15 +1,14 @@
 # <p align="center"> UNIVERSIDAD TECNOLOGICA NACIONAL</p>
 ## <p align="center"> FACULTAD REGIONAL RESISTENCIA</p>
 ### <p align="center"> SISTEMAS OPERATIVOS</p>
-__*<p align="center"> Proyecto: Simulador para la administración de memoria y Planificación de Procesos</p>*__
+####__<p align="center"> Proyecto: Simulador para la administración de memoria y Planificación de Procesos</p>__
 
 __*Integrantes del equipo:*__
-
-Arias, Leandro Exequiel
-Florentin, Cristian Alexis
-Imfeld, Facundo Nicolas
-Nasir, Khalil Abdul
-Matto, Pablo
+* Arias, Leandro Exequiel
+* Florentin, Cristian Alexis
+* Imfeld, Facundo Nicolas
+* Nasir, Khalil Abdul
+* Matto, Pablo
 
 __*Equipo docente:*__
 
@@ -30,22 +29,18 @@ Ing. Gramajo, Sergio
 
 #### Datos de Entrada y Salida<a name="id2"></a>
 
-__Partición de memoria__
-1. Fija
-	* Algoritmos de intercambio:
-		* First Fit
-		* Best Fit
-	* Tamaño total
-	* Tamaño ocupado para el SO
-	* Cantidad de particiones
-	* Tamaño de cada partición
+| Partición de Memoria | Entrada |
+| -------------------- | ------- |
+| Fijas                | Algoritmos de intercambio: First Fit, Best Fit |
+					   | Tamaño total |
+					   | Tamaño ocupado para el SO |
+					   | Cantidad de particiones |
+					   | Tamaño de cada partición |
+| Variable             | Algoritmos de intercambio: Best Fit, Works Fit |
+					   | Tamaño total |
+					   | Tamaño ocupado para el SO |
 
-2. Variable
-	* Algoritmos de intercambio:
-		* Best Fit
-		* Works Fit
-	* Tamaño total
-	* Tamaño ocupado para el SO
+
 
 __Algoritmos de asignación__
 * FCFS
