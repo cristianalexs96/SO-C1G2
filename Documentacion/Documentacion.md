@@ -44,26 +44,28 @@ Partición de Memoria | Entrada
 <table>
     <thead>
         <tr>
-            <th>Layer 1</th>
-            <th>Layer 2</th>
-            <th>Layer 3</th>
+            <th>Partición de Memoria</th> 
+            <th>Entrada</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td rowspan=4>L1 Name</td>
-            <td rowspan=2>L2 Name A</td>
-            <td>L3 Name A</td>
+            <td rowspan=5>FIJA</td>
+            <td>Algoritmos de intercambio: First Fit, Best Fit</td>
+            <td>Tamaño total</td>
+            <td>Tamaño ocupado para el SO</td>
+            <td>Cantidad de particiones</td>
         </tr>
         <tr>
-            <td>L3 Name B</td>
+            <td>Tamaño de cada partición</td>
         </tr>
         <tr>
-            <td rowspan=2>L2 Name B</td>
-            <td>L3 Name C</td>
+            <td rowspan=3>VARIABLE</td>
+            <td>Algoritmos de intercambio: Best Fit, Works Fit</td>
+            <td>Tamaño total</td>
         </tr>
         <tr>
-            <td>L3 Name D</td>
+            <td>Tamaño ocupado para el SO</td>
         </tr>
     </tbody>
 </table>
