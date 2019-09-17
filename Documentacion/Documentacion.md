@@ -29,30 +29,18 @@ Ing. Gramajo, Sergio
 
 #### Datos de Entrada y Salida<a name="id2"></a>
 
-Partición de Memoria | Entrada 
-----------------------------------
-		             |	Algoritmos de intercambio: First Fit, Best Fit
-					 |	Tamaño total
-					 |	Tamaño ocupado para el SO
-		FIJAS		 |	Cantidad de particiones
-					 |	Tamaño de cada partición
+| Partición de Memoria | Entrada |
+| :------------------: | :-----: |
 
- 			         |	Algoritmos de intercambio: Best Fit, Works Fit
-	VARIABLES 		 | 	Tamaño total
-					 | 	Tamaño ocupado para el SO
+		             |	Algoritmos de intercambio: First Fit, Best Fit |
+					 |	Tamaño total |
+					 |	Tamaño ocupado para el SO |
+		FIJAS		 |	Cantidad de particiones |
+					 |	Tamaño de cada partición |
 
-<HTML>
- <BODY>
-  <TABLE Border = "1" Cellpadding = "5" Cellspacing = "5">
-   <TR>
-    <TD RowSpan = "4">Hours</TH><TD>Row 1</TH>
-   </TR>
-   <TR>
-    <TD>Tow 2</TD>
-   </TR>
-  </TABLE>
- </BODY>
-</HTML>
+ 			         |	Algoritmos de intercambio: Best Fit, Works Fit |
+	VARIABLES 		 | 	Tamaño total |
+					 | 	Tamaño ocupado para el SO |
 
 __Algoritmos de asignación__
 * FCFS
