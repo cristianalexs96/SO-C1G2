@@ -45,8 +45,7 @@ Partición de Memoria | Entrada
  <BODY>
   <TABLE Border = "1" Cellpadding = "5" Cellspacing = "5">
    <TR>
-    <TD RowSpan = "2">Hours</TH><TD>Row 1</TH>
-   	<TD RowSpan = "2">Hours</TH><TD>Row 1</TH>
+    <TD RowSpan = "4">Hours</TH><TD>Row 1</TH>
    </TR>
    <TR>
     <TD>Tow 2</TD>
