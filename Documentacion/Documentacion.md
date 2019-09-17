@@ -27,10 +27,10 @@ Ing. Gramajo, Sergio
 
 #### Introducción<a name="id1"></a>
 __*Documentación del Simulador de Planificación de Procesos y Administración de Memoria*__
-#<div style="text-align: justify">
+<div style="text-align: justify">
 	El objetivo del desarrollo del siguiente simulador es permitir visualizar los aspectos de la planificación de procesos a corto plazo, empleando los algoritmos de planificación FCFS, Prioridades, Round Robin, Colas Multinivel. A demás se representará la gestión de la memoria con particiones Fijas y Variables para un esquema de un solo procesador, mostrando el ciclo de vida completo de un proceso desde su ingreso al sistema hasta su finalización.
 	El objetivo de este documento es brindar información acerca del funcionamiento del simulador, en el mismo se detallaran las consideraciones que se tienen que tener en cuenta a la hora de cargar los datos requeridos para la simulación. Se detallara y adjuntara el funcionamiento de los diferentes algoritmos de planificacion y algoritmos de intercambio.
-#<div/>
+</p>
 
 #### Datos de Entrada y Salida<a name="id2"></a>
 
