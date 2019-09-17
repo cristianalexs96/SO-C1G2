@@ -66,7 +66,8 @@ Partición de Memoria | Entrada
     </tbody>
 </table>
 
-<table border="1">
+<table>
+    <thead>
 <tr>
 <td rowspan="2" bordercolor="#FF0000" width="100">A</td>
 <td>B</td>
@@ -77,7 +78,8 @@ Partición de Memoria | Entrada
 <tr>
 <td>E</td>
 <td>D</td>
-</tr>
+   </tbody>
+</table>
 
 
 __Algoritmos de asignación__
