@@ -51,17 +51,17 @@ Partición de Memoria | Entrada
     <tbody>
         <tr>
             <td rowspan=5>FIJA</td>
-            <td>Algoritmos de intercambio: First Fit, Best Fit</td>
-            <td>Tamaño total</td>
-            <td>Tamaño ocupado para el SO</td>
-            <td>Cantidad de particiones</td>
-            <td>Tamaño de cada partición</td>
+            	<td>Algoritmos de intercambio: First Fit, Best Fit</td>
+            	<td>Tamaño total</td>
+            	<td>Tamaño ocupado para el SO</td>
+            	<td>Cantidad de particiones</td>
+            	<td>Tamaño de cada partición</td>
         </tr>
         <tr>
             <td rowspan=3>VARIABLE</td>
-            <td>Algoritmos de intercambio: Best Fit, Works Fit</td>
-            <td>Tamaño total</td>
-            <td>Tamaño ocupado para el SO</td>
+            	<td>Algoritmos de intercambio: Best Fit, Works Fit</td>
+            	<td>Tamaño total</td>
+            	<td>Tamaño ocupado para el SO</td>
         </tr>
     </tbody>
 </table>
