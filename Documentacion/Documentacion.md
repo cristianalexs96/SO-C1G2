@@ -42,7 +42,7 @@ Ing. Gramajo, Sergio
 
 
 | Partición de Memoria | Entrada |
-| :--------------------: | :-------: |
+| -- | -- |
 
 __Algoritmos de asignación__
 * FCFS
