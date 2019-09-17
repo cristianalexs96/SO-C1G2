@@ -1,7 +1,7 @@
 # <p align="center"> UNIVERSIDAD TECNOLOGICA NACIONAL</p>
 ## <p align="center"> FACULTAD REGIONAL RESISTENCIA</p>
 ### <p align="center"> SISTEMAS OPERATIVOS</p>
-####__<p align="center"> Proyecto: Simulador para la administración de memoria y Planificación de Procesos</p>__
+#### <p align="center"> Proyecto: Simulador para la administración de memoria y Planificación de Procesos</p>
 
 __*Integrantes del equipo:*__
 * Arias, Leandro Exequiel
