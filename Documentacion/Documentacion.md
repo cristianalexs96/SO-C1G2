@@ -31,16 +31,14 @@ Ing. Gramajo, Sergio
 
 | Partición de Memoria | Entrada |
 | :------------------: | :-----: |
-
-		             |	Algoritmos de intercambio: First Fit, Best Fit |
-					 |	Tamaño total |
-					 |	Tamaño ocupado para el SO |
-		FIJAS		 |	Cantidad de particiones |
-					 |	Tamaño de cada partición |
-
- 			         |	Algoritmos de intercambio: Best Fit, Works Fit |
-	VARIABLES 		 | 	Tamaño total |
-					 | 	Tamaño ocupado para el SO |
+|FIJAS                 |Algoritmos de intercambio: First Fit, Best Fit |
+|					   |Tamaño total |
+|					   |Tamaño ocupado para el SO |
+|				       |Cantidad de particiones |
+|					   |Tamaño de cada partición |
+|VARIABLES	           |Algoritmos de intercambio: Best Fit, Works Fit |
+|           		   |Tamaño total |
+|					   |Tamaño ocupado para el SO |
 
 __Algoritmos de asignación__
 * FCFS
