@@ -41,48 +41,6 @@ Partición de Memoria | Entrada
 	VARIABLES 		 | 	Tamaño total
 					 | 	Tamaño ocupado para el SO
 
-<table>
-    <thead>
-        <tr>
-            <th>Partición de Memoria</th> 
-            <th>Entrada</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td rowspan=5>FIJA</td>
-            	<td>Algoritmos de intercambio: First Fit, Best Fit</td>
-            	<td>Tamaño total</td>
-            	<td>Tamaño ocupado para el SO</td>
-            	<td>Cantidad de particiones</td>
-            	<td>Tamaño de cada partición</td>
-        </tr>
-        <tr>
-            <td rowspan=3>VARIABLE</td>
-            	<td>Algoritmos de intercambio: Best Fit, Works Fit</td>
-            	<td>Tamaño total</td>
-            	<td>Tamaño ocupado para el SO</td>
-        </tr>
-    </tbody>
-</table>
-
-
-<table>
-    <thead>
-<tr>
-<td rowspan="5" bordercolor="#FF0000" width="100">FIJA</td>
-<td>B</td>
-</tr>
-<tr>
-<td>C</td>
-</tr>
-<tr>
-<td>E</td>
-<td>D</td>
-   </tbody>
-</table>
-
-
 __Algoritmos de asignación__
 * FCFS
 * Por prioridades
