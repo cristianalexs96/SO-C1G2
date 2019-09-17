@@ -66,10 +66,11 @@ Partición de Memoria | Entrada
     </tbody>
 </table>
 
+
 <table>
     <thead>
 <tr>
-<td rowspan="2" bordercolor="#FF0000" width="100">A</td>
+<td rowspan="5" bordercolor="#FF0000" width="100">FIJA</td>
 <td>B</td>
 </tr>
 <tr>
