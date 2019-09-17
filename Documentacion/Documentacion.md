@@ -1,6 +1,3 @@
-theme:
-  name: 'material'
-
 # <p align="center"> UNIVERSIDAD TECNOLOGICA NACIONAL</p>
 ## <p align="center"> FACULTAD REGIONAL RESISTENCIA</p>
 ### <p align="center"> SISTEMAS OPERATIVOS</p>
