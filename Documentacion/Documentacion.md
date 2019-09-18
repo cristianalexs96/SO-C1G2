@@ -32,43 +32,18 @@ __Equipo docente:__
 
 #### Datos de Entrada y Salida<a name="id2"></a>
 
-| Partición de Memoria | Entrada |
-| :------------------: | :----- |
-|FIJAS                 |Algoritmos de intercambio: First Fit, Best Fit |
-|					   |Tamaño total |
-|					   |Tamaño ocupado para el SO |
-|				       |Cantidad de particiones |
-|					   |Tamaño de cada partición |
-|VARIABLES	           |Algoritmos de intercambio: Best Fit, Works Fit |
-|           		   |Tamaño total |
-|					   |Tamaño ocupado para el SO |
+Partición de Memoria:
+* FIJAS
+	* Algoritmos de intercambio: First Fit, Best Fit
+	* Tamaño total
+	* Tamaño ocupado para el SO
+	* Cantidad de particiones
+	* Tamaño de cada partición
+* VARIABLES
+	* Algoritmos de intercambio: Best Fit, Works Fit
+	* Tamaño total
+	* Tamaño ocupado para el SO
 
-
-library(xtable)
-print(xtable( df
-             , caption = "BBDD \\texttt{airquality} con
-                          \\texttt{xtable()}"
-             , align = 'clcrrcp{2cm}'
-             , digits = 2
-             , label = "tab:label"
-            )
-      , comment = FALSE
-      , table.placement = "h!"
-      , caption.placement = "top"
-      , NA.string = "NA"
-     )library(xtable)
-print(xtable( df
-             , caption = "BBDD \\texttt{airquality} con
-                          \\texttt{xtable()}"
-             , align = 'clcrrcp{2cm}'
-             , digits = 2
-             , label = "tab:label"
-            )
-      , comment = FALSE
-      , table.placement = "h!"
-      , caption.placement = "top"
-      , NA.string = "NA"
-     )
 
 __Algoritmos de asignación__
 * FCFS
