@@ -43,6 +43,33 @@ __Equipo docente:__
 |           		   |Tamaño total |
 |					   |Tamaño ocupado para el SO |
 
+
+library(xtable)
+print(xtable( df
+             , caption = "BBDD \\texttt{airquality} con
+                          \\texttt{xtable()}"
+             , align = 'clcrrcp{2cm}'
+             , digits = 2
+             , label = "tab:label"
+            )
+      , comment = FALSE
+      , table.placement = "h!"
+      , caption.placement = "top"
+      , NA.string = "NA"
+     )library(xtable)
+print(xtable( df
+             , caption = "BBDD \\texttt{airquality} con
+                          \\texttt{xtable()}"
+             , align = 'clcrrcp{2cm}'
+             , digits = 2
+             , label = "tab:label"
+            )
+      , comment = FALSE
+      , table.placement = "h!"
+      , caption.placement = "top"
+      , NA.string = "NA"
+     )
+
 __Algoritmos de asignación__
 * FCFS
 * Por prioridades
