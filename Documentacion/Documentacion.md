@@ -16,7 +16,7 @@ Ing. Cuenca Plestch, Liliana
 Ing. Ristoff, Alberto
 Ing. Roa, Jorge Alejandro
 Ing. Gramajo, Sergio
-
+-------------------------------------------------------
 ## <p align="center"> DOCUMENTACIÓN</p>
 ## __ÍNDICE__
 ##### [Introducción](#id1)
@@ -76,23 +76,23 @@ __PCB__
 * Desplazamiento
 
 #### Visualización del Simulador<a name="id3"></a>
-__*Pantalla Inicial*__
+__Pantalla Inicial__
 <p align="justify";>Dispondremos de un menu en el cual podremos optar por Configuración de Arquitectura o Carga de Procesos</p>
 
 ![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img2.jpeg "Pantalla entrada de Datos")
 
-__*Opción Configuración de Arquitectura*__
+__Opción Configuración de Arquitectura__
 <p align="justify";>En esta opción podremos seleccionar el tipo de algoritmo de planificación con el que queremos trabajar(FCFS,Por Prioridades,Round Robin, Colas multinivel); también cargaremos aquí los datos correspondientes a la Memoria, en el cual seleccionaremos el tipo de partición a utilizar, el tamaño de la memoria y su unidad (b, kb, mb, gb), y el algoritmo de ajuste deseado.</p>
 <p style='text-align: justify;'>El campo Particiones estará disponible sólo en el caso que se seleccione particiones fijas.</p>
 
 ![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img3.jpeg "Pantalla entrada de Datos")
 
-__*Opción Carga de Procesos*__
+__Opción Carga de Procesos__
 <p align="justify";>Esta opción nos permitirá realizar la carga de todos los datos de los procesos requeridos para la simulación, como su nombre, tiempo de arribo tiempo de irrupción y ráfaga.</p>
 
 ![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img4.jpeg "Pantalla entrada de Datos")
 
-__*Pantalla de Resultados*__
+__Pantalla de Resultados__
 <p align="justify";>Luego de cargar todos los datos necesarios, al ejecutar la simulación obtendremos en pantalla una tabla con toda la información de los procesos, y el Diagrama de Gantt.</p>
 
 ![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img5.jpeg "Pantalla entrada de Datos")
