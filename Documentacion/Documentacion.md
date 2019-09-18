@@ -11,11 +11,10 @@ __*Integrantes del equipo:*__
 * Matto, Pablo
 
 __*Equipo docente:*__
-
-Ing. Cuenca Plestch, Liliana
-Ing. Ristoff, Alberto
-Ing. Roa, Jorge Alejandro
-Ing. Gramajo, Sergio
+* Ing. Cuenca Plestch, Liliana
+* Ing. Ristoff, Alberto
+* Ing. Roa, Jorge Alejandro
+* Ing. Gramajo, Sergio
 
 -------------------------------------------------------
 ## <p align="center"> DOCUMENTACIÓN</p>
