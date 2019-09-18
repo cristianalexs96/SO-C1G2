@@ -3,14 +3,14 @@
 ### <p align="center"> SISTEMAS OPERATIVOS</p>
 #### <p align="center"> Proyecto: Simulador para la administración de memoria y Planificación de Procesos</p>
 
-__*Integrantes del equipo:*__
+__Integrantes del equipo:__
 * Arias, Leandro Exequiel
 * Florentin, Cristian Alexis
 * Imfeld, Facundo Nicolas
 * Nasir, Khalil Abdul
 * Matto, Pablo
 
-__*Equipo docente:*__
+__Equipo docente:__
 * Ing. Cuenca Plestch, Liliana
 * Ing. Ristoff, Alberto
 * Ing. Roa, Jorge Alejandro
