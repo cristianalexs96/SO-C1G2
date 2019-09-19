@@ -98,7 +98,7 @@ __Opción Carga de Procesos__
 ![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img4.jpeg "Pantalla entrada de Datos")
 
 __Pantalla de Resultados__
-<p align="justify";>Luego de cargar todos los datos necesarios, al ejecutar la simulación obtendremos en pantalla una tabla con toda la información de los procesos, y el Diagrama de Gantt.</p>
+<p align="justify";>Luego de cargar todos los datos necesarios, al ejecutar la simulación obtendremos en pantalla una tabla con toda la información de los procesos, el mapa de memoria y Diagrama de Gantt.</p>
 
 ![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img5.jpeg "Pantalla entrada de Datos")
 
