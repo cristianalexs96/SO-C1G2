@@ -4,7 +4,7 @@ theme:
 # <p align="center"> UNIVERSIDAD TECNOLOGICA NACIONAL</p>
 <p align="center">
 	
-![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img1.png "Pantalla entrada de Datos")
+<img src="https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img1.png">
 
 </p>
 
