@@ -3,7 +3,7 @@ theme:
 
 # <p align="center"> UNIVERSIDAD TECNOLOGICA NACIONAL</p>
 
-![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img2.jpeg "Pantalla entrada de Datos")
+![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img1.png "Pantalla entrada de Datos")
 
 ## <p align="center"> FACULTAD REGIONAL RESISTENCIA</p>
 ### <p align="center"> SISTEMAS OPERATIVOS</p>
