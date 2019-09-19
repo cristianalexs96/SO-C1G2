@@ -107,4 +107,6 @@ __Pantalla de Resultados__
 
 #### Consideraciones<a name="id4"></a>
 ><p align="justify";>Las imagenes presentadas anteriormente se presentan en modo de diseño preliminar, sujetas a modificaciones durante el desarrollo del proyecto hasta su entrega final.</p>
+><p align="justify">Al seleccionar el tipo de particion "fija" se deberá ingresar el tamaño de la partición separando por "-", cada tamaño separado por "-" nos indica una particion.  
 ><p align="justify";>Colas multinivel: Se toma como referencia tres niveles de colas. Definir por cada cola qué tipo de algoritmo utilizará y quantum.</p>
+
