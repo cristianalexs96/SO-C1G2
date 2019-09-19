@@ -2,12 +2,7 @@ theme:
   name: 'material'
 
 # <p align="center"> UNIVERSIDAD TECNOLOGICA NACIONAL</p>
-<p align="center">
-	
-<img src="https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img1.png">
-
-</p>
-
+<p align="center"><img src="https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img1.png"></p>
 ## <p align="center"> FACULTAD REGIONAL RESISTENCIA</p>
 ### <p align="center"> SISTEMAS OPERATIVOS</p>
 #### <p align="center"> Proyecto: Simulador para la administración de memoria y Planificación de Procesos</p>
