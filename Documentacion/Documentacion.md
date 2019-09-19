@@ -2,8 +2,11 @@ theme:
   name: 'material'
 
 # <p align="center"> UNIVERSIDAD TECNOLOGICA NACIONAL</p>
+<p align="center">
+	
+![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img1.png "Pantalla entrada de Datos")
 
-<p align="center"> ![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img1.png "Pantalla entrada de Datos")</p>
+</p>
 
 ## <p align="center"> FACULTAD REGIONAL RESISTENCIA</p>
 ### <p align="center"> SISTEMAS OPERATIVOS</p>
