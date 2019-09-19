@@ -7,7 +7,7 @@ theme:
 
 ## <p align="center"> FACULTAD REGIONAL RESISTENCIA</p>
 ### <p align="center"> SISTEMAS OPERATIVOS</p>
-#### <p align="center"> Proyecto: Simulador para la administración de memoria y Planificación de Procesos</p>
+#### <p align="center"> Proyecto: Simulador para la Administración de Memoria y Planificación de Procesos</p>
 
 __Integrantes del equipo:__
 * Arias, Leandro Exequiel
