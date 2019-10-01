@@ -48,7 +48,7 @@ Partición de Memoria:
 	* Tamaño ocupado para el SO:Se debe especificar el tamaño que el sistema operativo ocupará y que no podra ser modificado por los procesos.
 
 
-__Algoritmos de asignación__
+__Algoritmos de Planificación__
 * FCFS
 * Por prioridades
 * RR
