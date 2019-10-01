@@ -29,6 +29,7 @@ __Equipo docente:__
 ##### [Datos de Entrada y Salida](#id2)
 ##### [Visualización del Planificador](#id3)
 ##### [Consideraciones](#id4)
+##### [Algoritmos de Planificación de Procesos](#id5)
 
 #### Introducción<a name="id1"></a>
 <p align="justify";>El objetivo del desarrollo del siguiente simulador es permitir visualizar los aspectos de la planificación de procesos a corto plazo, empleando los algoritmos de planificación FCFS, Prioridades, Round Robin, Colas Multinivel. Además se representará la gestión de la memoria con particiones Fijas y Variables para un esquema de un solo procesador, mostrando el ciclo de vida completo de un proceso desde su ingreso al sistema hasta su finalización. El objetivo de este documento es brindar información acerca del funcionamiento del simulador, en el mismo se detallaran las consideraciones que se tienen que tener en cuenta a la hora de cargar los datos requeridos para la simulación. Se detallara y adjuntara el funcionamiento de los diferentes algoritmos de planificacion y algoritmos de intercambio.</p>
@@ -37,9 +38,9 @@ __Equipo docente:__
 
 Partición de Memoria:
 * FIJAS
-	* Algoritmos de intercambio: First Fit, Best Fit
+	* Algoritmos de intercambio: First Fit, Best Fit. Estos algoritmos se encargarán de administrar la asignacion de particiones a los procesos.
 	* Tamaño total: El tamaño maximo de memoria sera de 1024 kb, se podra definir tamaños menores a este segun se requiera.
-	* Tamaño ocupado para el SO: Se debe especificar el tamaño que el sistema operativo ocupará y que no podra ser modificado por los procesos.
+	* Tamaño ocupado para el SO: Se debe especificar el tamaño que el sistema operativo ocupará y que no podrá ser modificado por los procesos.
 	* Cantidad de particiones: Se establece un minimo de 2 particiones, y como maximo 10 particiones.
 	* <p align="justify"> Tamaño de cada partición: Se puede optar por crear particiones en las cuales todas tengan el mismo tamaño, o definir particiones con tamaños variados, en ambos casos la suma de todos los tamaños no deberá superar el tamaño total de memoria.</p>.
 * VARIABLES
@@ -49,6 +50,7 @@ Partición de Memoria:
 
 
 __Algoritmos de Planificación__
+<p align="justify"> Estos algoritmos se encargaran de administrar los procesos 
 * FCFS
 * Por prioridades
 * RR
@@ -111,4 +113,6 @@ __Pantalla de Resultados__
 ><p align="justify";>Las imagenes presentadas anteriormente se presentan en modo de diseño preliminar, sujetas a modificaciones durante el desarrollo del proyecto hasta su entrega final.</p>
 ><p align="justify">Al seleccionar el tipo de particion "fija" se deberá ingresar el tamaño de la partición separando por "-", cada tamaño separado por "-" nos indica una particion.  
 ><p align="justify";>Colas multinivel: Se toma como referencia tres niveles de colas. Definir por cada cola qué tipo de algoritmo utilizará y quantum.</p>
+
+#### Algoritmos de Planificacion de Procesos y Asignación de Memoria <a name="id5"></a>
 
