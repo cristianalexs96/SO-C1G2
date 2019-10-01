@@ -121,7 +121,7 @@ __Asignacion de Memoria__
 __Algoritmo First Fit__  
 <p align="justify">Este algoritmo consiste en recorrer la memoria hasta encontrar una partición que sea lo bastante grande para asignarse al proceso entrante. En el caso de particiones variables, se le asigna el primer espacio libre que este disponible ( en el caso de ser el primer proceso, en memoria tendremos todo el espacio disponible excepto el espacio asignado al sistema operativo) y lo divide en dos; una de esas partes sera todo el espacio requerido por el proceso y la otra quedara como espacio libre, disponible para otros procesos que puedan hacer uso del mismo. </p>
 
-![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/First Fit.png "Pantalla entrada de Datos")
+![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/First%20Fit.png "Pantalla entrada de Datos")
 
 
 
