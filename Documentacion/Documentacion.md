@@ -136,8 +136,10 @@ __Planificación de Procesos__
 __Algoritmo FCFS__
 <p align="justify"> Este algoritmo consiste en asignar la CPU al primer proceso que la solicite. La implementación de la política FCFS se puede gestionar mediante una cola FIFO, pues los procesos a medida que van ingresando a la cola de listos van quedando encolados en el orden en el cual fueron llegando. Es el algoritmo de planificacion de CPU mas simple, pero no así el mas efectivo puesto a que presenta inconvenientes tales como la situación en la que un proceso se este ejecutando, no podrá ingresarse ninguú otro proceso hasta haber finalizado en su totalidad el proceso que esté haciendo uso de la CPU, es un algoritmo no apropiativo, en el cual se produce un tiempo de espera en cola de listos muy extenso e ineficiente,  ya que los procesos en la mayoria de las veces no llegarán de forma ordenada y los que tengan tiempo de ejecución muy largos harán que el tiempo de respuesta de procesos cortos se vuelva muy prolongada.</p>  
 
+__Algoritmo Por Prioridades
 
-
-
+<p align="justify"> Este algoritmo basa su funcionamiento en asignarle prioridades a los procesos para compertir por el uso del procesador. Las prioridades pueden definirse interna o externamente. Las prioridades definidas internamente utilizan algún valor como puede ser el tiempo de CPU que demanda un proceso; las prioridades definidas externamente se establecen en funcion de criterios externos al sistema operativo, como ser la importancia del proceso.</p>
+<p align="justify"> La planificacion de procesos por prioridades puede ser apropiativa, en la cual si llega un nuevo proceso a la cola de listos y tiene una prioridad mayor a la del proceso que esta haciendo uso de  la CPU, se expulsa al proceso en ejecucion y se le asigna el recurso al nuevo proceso; tambien puede ser cooperativa, en este caso el algoritmo colocara al nuevo proceso al comienzo de la cola de listos, evitando la expulsion de un proceso en ejecución. Un problema importante de este algoritmo es que se puede producir un bloqueo indefinido o muerte por inanición, es decir, que se atiendan procesos con prioridades altas y nunca llegue a ejecutarse procesos con bajas prioridades. Una solución al problema del bloqueo indefinido de los proceso de baja prioridad consiste en aplicar mecanismos de envejecimiento, que consiste en luego de un tiempo ir aumentando la prioridad de los procesos que lleven mucho tiempo en espera por hacer uso de la CPU.</p>
+	
 	 
 
