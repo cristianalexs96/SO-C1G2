@@ -116,9 +116,9 @@ __Pantalla de Resultados__
 
 ### Algoritmos de Planificacion de Procesos y Asignación de Memoria <a name="id5"></a>  
 __Asignacion de Memoria__  
-En el presente simulador, la memoria se podra particionar de dos formas: particiones fijas o particiones variables. Las particiones fijas podrán ser con todas sus particiones del mismo tamaño, o bien ser de diferentes tamaños.   
+<p align="justify">En el presente simulador, la memoria se podra particionar de dos formas: particiones fijas o particiones variables. Las particiones fijas podrán ser con todas sus particiones del mismo tamaño, o bien ser de diferentes tamaños.</p>
 
 __Algoritmo First Fit__  
-Este algoritmo consiste en recorrer la memoria hasta encontrar una partición que sea lo bastante grande para asignarse al proceso entrante 
+<p align="justify">Este algoritmo consiste en recorrer la memoria hasta encontrar una partición que sea lo bastante grande para asignarse al proceso entrante. En el caso de particiones variables, se le asigna el primer espacio libre que este disponible ( en el caso de ser el primer proceso, en memoria tendremos todo el espacio disponible excepto el espacio asignado al sistema operativo) y lo divide en dos; una de esas partes sera todo el espacio requerido por el proceso y la otra quedara como espacio libre, disponible para otros procesos que puedan hacer uso del mismo. </p>
 
 
