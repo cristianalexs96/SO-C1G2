@@ -126,6 +126,6 @@ __Algoritmo First Fit__
 <P align="justify">En ambos casos, tanto para particiones fijas como particiones variables, se presentan inconvenientes; en particiones fijas puede ocurrir que el tamañano del proceso sea muy inferior al tamaño de la particion, produciendo fragmentacion interna (espacio que no se podra liberar ni usar hasta que finalice el proceso o bien termine la simulación. En el caso de las particiones variables puede ocurrir que entre dos procesos quede espacio sin asignar(fragmentación externa) puesto que ningun proceso que ingrese a memoria pueda ser asignado, esto podria optimizarse mediante un proceso de compactacion de memoria. </p> 
 
 __Algoritmo Best Fit__
-<p align="justify>Este algoritmo busca en toda la memoria, de principio a fin y toma la particion mas pequeña que se ajuste más al tamaño del proceso. El algoritmo Best Fit es más lento que el First Fit, ya que debe buscar en toda la memoria cada vez que se le llama y comparar cada particion con el tamaño del proceso solicitado.</p>  
+<p align="justify">Este algoritmo busca en toda la memoria, de principio a fin y toma la particion mas pequeña que se ajuste más al tamaño del proceso. El algoritmo Best Fit es más lento que el First Fit, ya que debe buscar en toda la memoria cada vez que se le llama y comparar cada particion con el tamaño del proceso solicitado.</p>  
 	 
 
