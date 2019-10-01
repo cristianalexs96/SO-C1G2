@@ -127,5 +127,14 @@ __Algoritmo First Fit__
 
 __Algoritmo Best Fit__
 <p align="justify">Este algoritmo busca en toda la memoria, de principio a fin y toma la particion mas pequeña que se ajuste más al tamaño del proceso. El algoritmo Best Fit es más lento que el First Fit, ya que debe buscar en toda la memoria cada vez que se le llama y comparar cada particion con el tamaño del proceso solicitado.</p>  
+
+__Algoritmo Worst Fit__
+<p align="justify"> Este algoritmo debe recorrer toda la memoria buscando el espacio libre mas grande disponible y se la asigna al actual proceso,con esto se busca que el espacio libre restante pueda ser utilizado por otro proceso.
+	
+__Planificación de Procesos__  
+
+__Algoritmo FCFS__
+
+
 	 
 
