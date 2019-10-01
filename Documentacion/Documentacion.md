@@ -41,7 +41,7 @@ Partición de Memoria:
 	* Tamaño total: El tamaño maximo de memoria sera de 1024 kb, se podra definir tamaños menores a este segun se requiera.
 	* Tamaño ocupado para el SO: Se debe especificar el tamaño que el sistema operativo ocupará y que no podra ser modificado por los procesos.
 	* Cantidad de particiones: Se establece un minimo de 2 particiones, y como maximo 10 particiones.
-	* Tamaño de cada partición: Se puede optar por crear particiones en las cuales todas tengan el mismo tamaño, o definir particiones con tamaños variados, en ambos casos la suma de todos los tamaños no deberá superar el tamaño total de memoria.
+	* <p align="justify"> Tamaño de cada partición: Se puede optar por crear particiones en las cuales todas tengan el mismo tamaño, o definir particiones con tamaños variados, en ambos casos la suma de todos los tamaños no deberá superar el tamaño total de memoria.</p>.
 * VARIABLES
 	* Algoritmos de intercambio: Best Fit, Worst Fit
 	* Tamaño total: El tamaño maximo de memoria sera de 1024 kb, .
