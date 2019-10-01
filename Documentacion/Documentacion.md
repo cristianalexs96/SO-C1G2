@@ -123,5 +123,6 @@ __Algoritmo First Fit__
 
 <p align="center"><img src="https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/First%20Fit.png"></p>
 
+<P align="justify">En ambos casos, tanto para particiones fijas como particiones variables, se presentan inconvenientes; en particiones fijas puede ocurrir que el tamañano del proceso sea muy inferior al tamaño de la particion, produciendo fragmentacion interna (espacio que no se podra liberar ni usar hasta que finalice el proceso o bien termine la simulación. En el caso de las particiones variables puede ocurrir que entre dos procesos quede espacio sin asignar puesto que ningun proceso que ingrese a memoria pueda ser asignado, esto podria optimizarse mediante un proceso de compactacion de memoria. </p> 
 
 
