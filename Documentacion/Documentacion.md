@@ -115,7 +115,7 @@ __Pantalla de Resultados__
 ><p align="justify";>Colas multinivel: Se toma como referencia tres niveles de colas. Definir por cada cola qué tipo de algoritmo utilizará y quantum.</p>
 
 ### Algoritmos de Planificacion de Procesos y Asignación de Memoria <a name="id5"></a>  
-__Asignacion de Memoria__
+__Asignacion de Memoria__  
 __Algoritmo Best Fit__
 
 
