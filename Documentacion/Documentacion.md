@@ -29,7 +29,7 @@ __Equipo docente:__
 ##### [Datos de Entrada y Salida](#id2)
 ##### [Visualización del Planificador](#id3)
 ##### [Consideraciones](#id4)
-##### [Algoritmos de Planificación de Procesos](#id5)
+##### [Algoritmos de Planificación de Procesos y Asignacion de Memoria](#id5)
 
 #### Introducción<a name="id1"></a>
 <p align="justify";>El objetivo del desarrollo del siguiente simulador es permitir visualizar los aspectos de la planificación de procesos a corto plazo, empleando los algoritmos de planificación FCFS, Prioridades, Round Robin, Colas Multinivel. Además se representará la gestión de la memoria con particiones Fijas y Variables para un esquema de un solo procesador, mostrando el ciclo de vida completo de un proceso desde su ingreso al sistema hasta su finalización. El objetivo de este documento es brindar información acerca del funcionamiento del simulador, en el mismo se detallaran las consideraciones que se tienen que tener en cuenta a la hora de cargar los datos requeridos para la simulación. Se detallara y adjuntara el funcionamiento de los diferentes algoritmos de planificacion y algoritmos de intercambio.</p>
@@ -114,5 +114,9 @@ __Pantalla de Resultados__
 ><p align="justify">Al seleccionar el tipo de particion "fija" se deberá ingresar el tamaño de la partición separando por "-", cada tamaño separado por "-" nos indica una particion.  
 ><p align="justify";>Colas multinivel: Se toma como referencia tres niveles de colas. Definir por cada cola qué tipo de algoritmo utilizará y quantum.</p>
 
-#### Algoritmos de Planificacion de Procesos y Asignación de Memoria <a name="id5"></a>
+### Algoritmos de Planificacion de Procesos y Asignación de Memoria <a name="id5"></a>  
+__Asignacion de Memoria__
+__Algoritmo Best Fit__
+
+
 
