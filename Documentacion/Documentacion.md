@@ -50,7 +50,7 @@ Partición de Memoria:
 
 
 __Algoritmos de Planificación__
-<p align="justify"> Estos algoritmos se encargaran de administrar los procesos 
+Estos algoritmos se encargaran de organizar los procesos de manera eficiente en cuanto al uso del procesador.
 * FCFS
 * Por prioridades
 * RR
@@ -134,6 +134,9 @@ __Algoritmo Worst Fit__
 __Planificación de Procesos__  
 
 __Algoritmo FCFS__
+<p align="justify"> Este algoritmo consiste en asignar la CPU al primer proceso que la solicite. La implementación de la política FCFS se puede gestionar mediante una cola FIFO, pues los procesos a medida que van ingresando a la cola de listos van quedando encolados en el orden en el cual fueron llegando. Es el algoritmo de planificacion de CPU mas simple, pero no así el mas efectivo puesto a que presenta inconvenientes tales como la situación en la que un proceso se este ejecutando, no podrá ingresarse ninguú otro proceso hasta haber finalizado en su totalidad el proceso que esté haciendo uso de la CPU, es un algoritmo no apropiativo, en el cual se produce un tiempo de espera en cola de listos muy extenso e ineficiente,  ya que los procesos en la mayoria de las veces no llegarán de forma ordenada y los que tengan tiempo de ejecución muy largos harán que el tiempo de respuesta de procesos cortos se vuelva muy prolongada.</p>  
+
+
 
 
 	 
