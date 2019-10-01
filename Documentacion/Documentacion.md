@@ -56,10 +56,12 @@ __Algoritmos de asignación__
 * Cola Multinivel
 
 __Procesos__
-* Cantidad de procesos
-* Tamaño de cada proceso
-* Tiempo de arribo
-* Tiempo 
+* Cantidad de procesos: Se podra cargar un maximo de 10 procesos
+* Tamaño de cada proceso: Se debe considerar que el tamaño de proceso no sea superior al tamaño de partición 
+* Tiempo de arribo: Instante en el cual el proceso ingresa a la cola de nuevos.
+* Tiempo de irrupción
+	* Rafaga de CPU
+	* Rafaga de E/S
 
 __Colas__
 * Cola de Nuevos
