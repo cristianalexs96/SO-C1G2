@@ -122,7 +122,9 @@ __Algoritmo First Fit__
 
 <P align="justify">En ambos casos, tanto para particiones fijas como particiones variables, se presentan inconvenientes; en particiones fijas puede ocurrir que el tamañano del proceso sea muy inferior al tamaño de la particion, produciendo fragmentacion interna (espacio que no se podra liberar ni usar hasta que finalice el proceso o bien termine la simulación. En el caso de las particiones variables puede ocurrir que entre dos procesos quede espacio sin asignar(fragmentación externa) puesto que ningun proceso que ingrese a memoria pueda ser asignado, esto podria optimizarse mediante un proceso de compactacion de memoria. </p> 
 Codigo a implementar en el simulador:
+
 ~~~javascript
+
 function FirstFit()
   {     var bloques = [100, 500, 200, 300, 600]; 
         var procesos = [212, 417, 200, 300,100]; 
@@ -177,6 +179,7 @@ __Algoritmo Best Fit__
 Codigo a implementar en el simulador:
 
 ~~~javascript
+
 function BestFit() 
     { 
          bloques = [100, 500, 200, 300, 600]; 
