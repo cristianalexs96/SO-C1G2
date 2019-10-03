@@ -330,7 +330,7 @@ __Algoritmo FCFS__
 
 Codigo a implementar en el simulador:
 
-´´´
+´´´   
 // Definicion del Nodo
 function Node () {
     var ID;
