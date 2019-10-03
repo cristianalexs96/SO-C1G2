@@ -398,9 +398,91 @@ __Algoritmo Por Prioridades__
 
 <p align="justify"> Este algoritmo basa su funcionamiento en asignarle prioridades a los procesos para compertir por el uso del procesador. Las prioridades pueden definirse interna o externamente. Las prioridades definidas internamente utilizan algún valor como puede ser el tiempo de CPU que demanda un proceso; las prioridades definidas externamente se establecen en funcion de criterios externos al sistema operativo, como ser la importancia del proceso.</p>
 <p align="justify"> La planificacion de procesos por prioridades puede ser apropiativa, en la cual si llega un nuevo proceso a la cola de listos y tiene una prioridad mayor a la del proceso que esta haciendo uso de  la CPU, se expulsa al proceso en ejecucion y se le asigna el recurso al nuevo proceso; tambien puede ser cooperativa, en este caso el algoritmo colocara al nuevo proceso al comienzo de la cola de listos, evitando la expulsion de un proceso en ejecución. Un problema importante de este algoritmo es que se puede producir un bloqueo indefinido o muerte por inanición, es decir, que se atiendan procesos con prioridades altas y nunca llegue a ejecutarse procesos con bajas prioridades. Una solución al problema del bloqueo indefinido de los proceso de baja prioridad consiste en aplicar mecanismos de envejecimiento, que consiste en luego de un tiempo ir aumentando la prioridad de los procesos que lleven mucho tiempo en espera por hacer uso de la CPU.</p>  
+Codigo a implemtentar en el simulador:  
+
+```
+function prioridad(){
+	//Claramente los arreglos rafaga y prioridad seran ilimitados
+	//En este caso los hice con 10 elementos para facilitar el entendimiento
+	//Pero a la hora de implementarse, tomaran los valores que se asignen en la interface
+	rafaga = [8, 6, 4, 2, 7, 8, 2, 45, 45, 25];
+	prioridad = [2, 1, 2, 0, 0, 3, 4, 4, 5, 1];
+	procesos = [];
+	tiempos_arribo = [];
+
+	//Cargo los procesos con sus rafagas a un arreglo
+	for (var i = 0; i < rafaga.length; i++) {
+		procesos[i] = {prioridad: prioridad[i], rafaga: rafaga[i], proceso: 'P'+ i};
+	}
+
+	//Ordena el arreglo por prioridad
+	procesos.sort(function(prev, next){
+		return prev.prioridad - next.prioridad;
+	})
+
+	acumulador = procesos[0].rafaga;
+	tiempos_arribo[0] = acumulador;
+	for (var i = 1; i < rafaga.length; i++) {
+		acumulador = acumulador + procesos[i].rafaga;
+		tiempos_arribo[i] = acumulador;
+	}
+
+	//Imprime los valores por consola para corroborar (claramente esta porcion de codigo no sera implementada)
+	for (var i = 0; i < rafaga.length; i++) {
+		console.log(procesos[i]);
+	}
+
+	acumulador = 0;
+	console.log(procesos[0].proceso + ' empieza en ' + acumulador + ' y termina en ' + tiempos_arribo[0]);
+	for (var i = 1; i < rafaga.length; i++) {
+
+		console.log(procesos[i].proceso + ' empieza en ' + tiempos_arribo[i-1] + ' y termina en ' + tiempos_arribo[i]);
+	}
+
+
+}
+```
 
 __Algoritmo Round Robin__
 
 <p align="justify"> Tambien conocido como planificación cíclica o turno rotatorio, este algoritmo basa su funcionamiento en interrupciones de reloj cada cierto intervalo de tiempo. Cuando sucede la interrupción el proceso actual en ejecución se situa en la cola de listos, y se selecciona el siguiente trabajo segun la politica FCFS. Este metodo permite seleccionar todos los elementos de la carga de trabajo de manera equitativa, mediante un recorrido de la cola de listos desde principio a fin y empezando nuevamente por el primer proceso de la cola.</p>
 <p align="justify">  Una desventaja de la planificación Round Robin es que trata de forma desigual a los procesos limitados por el procesador y a los procesos limitados por la E/S. Generalmente, un proceso limitado por la E/S tiene ráfagas de procesador más cortas (cantidad de tiempo de ejecución utilizada entre operaciones de E/S) que los procesos
-limitados por el procesador. Si hay una mezcla de los dos tipos de procesos, sucederá lo siguiente: un proceso limitado por la E/S utiliza el procesador durante un periodo corto y luego se bloquea; espera a que complete la operación de E/S y a continuación se une a la cola de listos. Por otra parte, un proceso limitado por el procesador generalmente utiliza su quantum de tiempo completo mientras ejecuta e inmediatamente vuelve a la cola de listos o finaliza. De esta forma, los procesos limitados por el procesador tienden a recibir un quantum no equitativo de tiempo de procesador, lo que conlleva un mal rendimiento de los procesos limitados por la E/S ,uso ineficiente de los recursos de E/S y un incremento en la variación del tiempo de respuesta.</p>
+limitados por el procesador. Si hay una mezcla de los dos tipos de procesos, sucederá lo siguiente: un proceso limitado por la E/S utiliza el procesador durante un periodo corto y luego se bloquea; espera a que complete la operación de E/S y a continuación se une a la cola de listos. Por otra parte, un proceso limitado por el procesador generalmente utiliza su quantum de tiempo completo mientras ejecuta e inmediatamente vuelve a la cola de listos o finaliza. De esta forma, los procesos limitados por el procesador tienden a recibir un quantum no equitativo de tiempo de procesador, lo que conlleva un mal rendimiento de los procesos limitados por la E/S ,uso ineficiente de los recursos de E/S y un incremento en la variación del tiempo de respuesta.</p>    
+
+```
+function rr(){
+	rafaga = [8, 6, 4, 2, 9, 1];
+	cuantum = 5; //El cuantum seria de 1, es decir, 1 cuantum de 5 milisegundos de rafaga
+	procesos = [];
+	tiempos_arribo = [];
+	procesos_final = [];
+	tiempos_arribo = [];
+
+	//Cargo los procesos con sus rafagas a un arreglo
+	for (var i = 0; i < rafaga.length; i++) {
+		procesos[i] = {rafaga: rafaga[i], proceso: 'P'+ i};
+	}
+
+	procesos_aux = procesos;
+	//Comentario solo para mi, js hace asignacion por referencia para valores que no sean primitivos
+	//Como objetos, arrays (que tambien son objetos), etc. Por eso al modificar 'procesos_aux', tambien
+	//se modifica 'procesos', porque previamente los asigné
+	for (var i = 0; i < procesos.length; i++) {
+		
+		if (procesos[i].rafaga <= cuantum) {
+			procesos_final.push(procesos_aux[i]);
+			tiempos_arribo.push(procesos_aux[i].rafaga);
+		}else{
+			procesos_aux[i].rafaga = procesos_aux[i].rafaga - cuantum;
+			tiempos_arribo.push(cuantum);
+			procesos_final.push(procesos_aux[i]);
+			procesos_aux.push(procesos_aux[i]);
+		}
+	}
+
+	acumulador = 0;
+	console.log(procesos_final[0].proceso + ' empieza en ' + acumulador + ' y termina en ' + tiempos_arribo[0]);
+	for (var i = 1; i < procesos_final.length; i++) {
+		acumulador = acumulador + tiempos_arribo[i-1];
+		console.log(procesos_final[i].proceso + ' empieza en ' +  acumulador + ' y termina en ' + (acumulador+tiempos_arribo[i]));
+```
