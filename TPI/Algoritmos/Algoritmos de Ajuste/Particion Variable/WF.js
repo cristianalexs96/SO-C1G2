@@ -14,15 +14,14 @@ function wf(bloques,m,procesos,n)
         var fragmentacion = 0;
         document.write("BLOQUE DE MEMORIA:" +"\t" + bloques);
         document.write("<br><br> PROCESOS:" + "\t" + procesos);
-        // Initially no block is assigned to any process 
+
         for (i = 0; i < asignacion.length; i++) 
             asignacion[i] = -1; 
        
-        // pick each process and find suitable blocks 
-        // according to its size ad assign to it 
+
         for (i=0; i<n; i++) 
         { 
-            // Find the best fit block for current process 
+
             var aux = -1; 
             for (j=0; j<m; j++) 
             {   
@@ -36,13 +35,13 @@ function wf(bloques,m,procesos,n)
                 } 
             } 
        
-            // If we could find a block for current process 
+
             if (aux != -1) 
             { 
-                // allocate block j to p[i] process 
+ 
                 asignacion[i] = aux; 
        
-                // Reduce available memory in this block. 
+ 
                 bloques[aux] -= procesos[i]; 
                 fragmentacion -= procesos[i]
                 document.write("<br> Porcentaje fragmentacion:" + fragmentacion);
