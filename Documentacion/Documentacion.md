@@ -112,7 +112,8 @@ __Pantalla de Resultados__
 ><p align="justify";>Colas multinivel: Se toma como referencia tres niveles de colas. Definir por cada cola qué tipo de algoritmo utilizará y quantum.</p>
 
 ### Algoritmos de Planificacion de Procesos y Asignación de Memoria <a name="id5"></a>  
-__Asignacion de Memoria__  
+
+####__Asignacion de Memoria__  
 <p align="justify">En el presente simulador, la memoria se podra particionar de dos formas: particiones fijas o particiones variables. Las particiones fijas podrán ser con todas sus particiones del mismo tamaño, o bien ser de diferentes tamaños.</p>
 
 __Algoritmo First Fit__  
@@ -247,6 +248,7 @@ __Variables utilizadas:__
 * fragmentacion: Diferencia entre el tamaño del bloque y el tamaño del proceso;
 * aux: variable utilizada para realizar la comparacion entre espacios de memoria;
 
+
 __Algoritmo Worst Fit__
 <p align="justify"> Este algoritmo debe recorrer toda la memoria buscando el espacio libre mas grande disponible y se la asigna al actual proceso,con esto se busca que el espacio libre restante pueda ser utilizado por otro proceso.  
 Codigo a implementar en el simulador:
@@ -318,8 +320,10 @@ __Variables utilizadas:__
 * asignacion: arreglo que contiene los bloques de memoria asignados a cada proceso;
 * fragmentacion: Diferencia entre el tamaño del bloque y el tamaño del proceso;
 * aux: variable utilizada para realizar la comparacion entre espacios de memoria;
-	
-__Planificación de Procesos__  
+
+
+
+#####__Planificación de Procesos__  
 
 __Algoritmo FCFS__
 <p align="justify"> Este algoritmo consiste en asignar la CPU al primer proceso que la solicite. La implementación de la política FCFS se puede gestionar mediante una cola FIFO, pues los procesos a medida que van ingresando a la cola de listos van quedando encolados en el orden en el cual fueron llegando. Es el algoritmo de planificacion de CPU mas simple, pero no así el mas efectivo puesto a que presenta inconvenientes tales como la situación en la que un proceso se este ejecutando, no podrá ingresarse ninguú otro proceso hasta haber finalizado en su totalidad el proceso que esté haciendo uso de la CPU, es un algoritmo no apropiativo, en el cual se produce un tiempo de espera en cola de listos muy extenso e ineficiente,  ya que los procesos en la mayoria de las veces no llegarán de forma ordenada y los que tengan tiempo de ejecución muy largos harán que el tiempo de respuesta de procesos cortos se vuelva muy prolongada.</p>  
@@ -334,6 +338,3 @@ __Algoritmo Round Robin__
 <p align="justify"> Tambien conocido como planificación cíclica o turno rotatorio, este algoritmo basa su funcionamiento en interrupciones de reloj cada cierto intervalo de tiempo. Cuando sucede la interrupción el proceso actual en ejecución se situa en la cola de listos, y se selecciona el siguiente trabajo segun la politica FCFS. Este metodo permite seleccionar todos los elementos de la carga de trabajo de manera equitativa, mediante un recorrido de la cola de listos desde principio a fin y empezando nuevamente por el primer proceso de la cola.</p>
 <p align="justify">  Una desventaja de la planificación Round Robin es que trata de forma desigual a los procesos limitados por el procesador y a los procesos limitados por la E/S. Generalmente, un proceso limitado por la E/S tiene ráfagas de procesador más cortas (cantidad de tiempo de ejecución utilizada entre operaciones de E/S) que los procesos
 limitados por el procesador. Si hay una mezcla de los dos tipos de procesos, sucederá lo siguiente: un proceso limitado por la E/S utiliza el procesador durante un periodo corto y luego se bloquea; espera a que complete la operación de E/S y a continuación se une a la cola de listos. Por otra parte, un proceso limitado por el procesador generalmente utiliza su quantum de tiempo completo mientras ejecuta e inmediatamente vuelve a la cola de listos o finaliza. De esta forma, los procesos limitados por el procesador tienden a recibir un quantum no equitativo de tiempo de procesador, lo que conlleva un mal rendimiento de los procesos limitados por la E/S ,uso ineficiente de los recursos de E/S y un incremento en la variación del tiempo de respuesta.</p>
-	
-	 
-
