@@ -172,6 +172,13 @@ function ff(bloques,m,procesos,n)
         } 
 } 
 ````
+>Variables utilizadas:
+>bloques: arreglo con el tamaño de cada bloque de memoria;
+>procesos: arreglo con el tamaño de cada proceso; 
+>m: cantidad de elementos en el arreglo bloque; 
+>n: cantidad de elementos en el arreglo procesos; 
+>asignacion: arreglo que contiene los bloques de memoria asignados a cada proceso
+>fragmentacion: Diferencia entre el tamaño del bloque y el tamaño del proceso.
 
 __Algoritmo Best Fit__
 <p align="justify">Este algoritmo busca en toda la memoria, de principio a fin y toma la particion mas pequeña que se ajuste más al tamaño del proceso. El algoritmo Best Fit es más lento que el First Fit, ya que debe buscar en toda la memoria cada vez que se le llama y comparar cada particion con el tamaño del proceso solicitado.</p>  
