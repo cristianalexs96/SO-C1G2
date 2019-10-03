@@ -121,7 +121,56 @@ __Algoritmo First Fit__
 <p align="center"><img src="https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/First%20Fit.png"></p>
 
 <P align="justify">En ambos casos, tanto para particiones fijas como particiones variables, se presentan inconvenientes; en particiones fijas puede ocurrir que el tamañano del proceso sea muy inferior al tamaño de la particion, produciendo fragmentacion interna (espacio que no se podra liberar ni usar hasta que finalice el proceso o bien termine la simulación. En el caso de las particiones variables puede ocurrir que entre dos procesos quede espacio sin asignar(fragmentación externa) puesto que ningun proceso que ingrese a memoria pueda ser asignado, esto podria optimizarse mediante un proceso de compactacion de memoria. </p> 
+Codigo a implementar en el simulador:
+~~~javascript
+function FirstFit()
+  {     var bloques = [100, 500, 200, 300, 600]; 
+        var procesos = [212, 417, 200, 300,100]; 
+        var m = bloques.length; 
+        var n = procesos.length; 
+          
+        ff(bloques, m, procesos, n); 
+    }
 
+function ff(bloques,m,procesos,n) 
+    {
+        var asignacion = new Array(n); 
+        var fragmentacion = 0;
+
+// Inicialmente no se asigna ningún bloque a ningún proceso 
+        document.write("BLOQUE DE MEMORIA:" +"\t" + bloques);
+        document.write("<br><br> PROCESOS:" + "\t" + procesos);
+        for (i = 0; i < asignacion.length; i++) 
+            asignacion[i] = -1; 
+      
+        for (i = 0; i < n; i++) 
+        
+        { 
+            for (j = 0; j < m; j++) 
+            {   
+
+                if (bloques[j] >= procesos[i]) 
+                { 
+                    // asigna el bloque j al proceso p [i] 
+                    asignacion[i] = j; 
+                    fragmentacion = bloques[j];
+                    // Reduce la memoria disponible en este bloque.
+                    bloques[j] -= procesos[i];
+                    fragmentacion -= procesos[i]; 
+                    document.write("<br><br> Fragmentación externa:" + fragmentacion);
+                    document.write("<br> N° Proceso \tTamaño del Proceso \tBloque Asignado");
+                    document.write("<br>" + (i+1) + "\t" + procesos[i] + "\t"); 
+                    if (asignacion[i] != -1) 
+                    document.write(asignacion[i] + 1); 
+                    else
+                        document.write("<br> No Asignado"); 
+                        document.write("<br>");
+                    break; 
+                } 
+            } 
+        } 
+} 
+~~~
 __Algoritmo Best Fit__
 <p align="justify">Este algoritmo busca en toda la memoria, de principio a fin y toma la particion mas pequeña que se ajuste más al tamaño del proceso. El algoritmo Best Fit es más lento que el First Fit, ya que debe buscar en toda la memoria cada vez que se le llama y comparar cada particion con el tamaño del proceso solicitado.</p>  
 
@@ -182,7 +231,68 @@ function bf(bloques,m,procesos,n)
     
  ~~~
 __Algoritmo Worst Fit__
-<p align="justify"> Este algoritmo debe recorrer toda la memoria buscando el espacio libre mas grande disponible y se la asigna al actual proceso,con esto se busca que el espacio libre restante pueda ser utilizado por otro proceso.
+<p align="justify"> Este algoritmo debe recorrer toda la memoria buscando el espacio libre mas grande disponible y se la asigna al actual proceso,con esto se busca que el espacio libre restante pueda ser utilizado por otro proceso.  
+Codigo a implementar en el simulador:
+	
+~~~javascript
+function WorstFit()
+    { 
+         var bloques = [100, 500, 200, 300, 600]; 
+         var procesos = [212, 417, 100, 300]; 
+         var m = bloques.length; 
+         var n = procesos.length; 
+           
+         wf(bloques, m, procesos, n); 
+    } 
+
+function wf(bloques,m,procesos,n) 
+    { 
+        var asignacion = new Array(n); 
+        var fragmentacion = 0;
+        document.write("BLOQUE DE MEMORIA:" +"\t" + bloques);
+        document.write("<br><br> PROCESOS:" + "\t" + procesos);
+
+        for (i = 0; i < asignacion.length; i++) 
+            asignacion[i] = -1; 
+       
+
+        for (i=0; i<n; i++) 
+        { 
+
+            var aux = -1; 
+            for (j=0; j<m; j++) 
+            {   
+                if (bloques[j] >= procesos[i]) 
+                {   
+                    fragmentacion = bloques[j]
+                    if (aux == -1) 
+                        aux = j; 
+                    else if (bloques[aux] < bloques[j]) 
+                        aux = j; 
+                } 
+            } 
+       
+
+            if (aux != -1) 
+            { 
+ 
+                asignacion[i] = aux; 
+       
+ 
+                bloques[aux] -= procesos[i]; 
+                fragmentacion -= procesos[i]
+                document.write("<br> Porcentaje fragmentacion:" + fragmentacion);
+                document.write("<br> N° Proceso \tTamaño del Proceso \tBloque Asignado");
+                document.write("<br>" + (i+1) + "\t" + procesos[i] + "\t"); 
+                if (asignacion[i] != -1) 
+                document.write(asignacion[i] + 1); 
+                else
+                document.write("<br> No Asignado"); 
+                document.write("<br>");
+            } 
+        } 
+} 
+~~~
 	
 __Planificación de Procesos__  
 
