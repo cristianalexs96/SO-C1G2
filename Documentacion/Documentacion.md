@@ -450,6 +450,9 @@ __Algoritmo Round Robin__
 <p align="justify"> Tambien conocido como planificación cíclica o turno rotatorio, este algoritmo basa su funcionamiento en interrupciones de reloj cada cierto intervalo de tiempo. Cuando sucede la interrupción el proceso actual en ejecución se situa en la cola de listos, y se selecciona el siguiente trabajo segun la politica FCFS. Este metodo permite seleccionar todos los elementos de la carga de trabajo de manera equitativa, mediante un recorrido de la cola de listos desde principio a fin y empezando nuevamente por el primer proceso de la cola.</p>
 <p align="justify">  Una desventaja de la planificación Round Robin es que trata de forma desigual a los procesos limitados por el procesador y a los procesos limitados por la E/S. Generalmente, un proceso limitado por la E/S tiene ráfagas de procesador más cortas (cantidad de tiempo de ejecución utilizada entre operaciones de E/S) que los procesos
 limitados por el procesador. Si hay una mezcla de los dos tipos de procesos, sucederá lo siguiente: un proceso limitado por la E/S utiliza el procesador durante un periodo corto y luego se bloquea; espera a que complete la operación de E/S y a continuación se une a la cola de listos. Por otra parte, un proceso limitado por el procesador generalmente utiliza su quantum de tiempo completo mientras ejecuta e inmediatamente vuelve a la cola de listos o finaliza. De esta forma, los procesos limitados por el procesador tienden a recibir un quantum no equitativo de tiempo de procesador, lo que conlleva un mal rendimiento de los procesos limitados por la E/S ,uso ineficiente de los recursos de E/S y un incremento en la variación del tiempo de respuesta.</p>  
+
+<p align="center"><img src="https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/FF-RR.jpg"></p>
+
 Codigo a implementar en el simulador: 
 
 ```
