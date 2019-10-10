@@ -400,6 +400,9 @@ __Algoritmo Por Prioridades__
 
 <p align="justify"> Este algoritmo basa su funcionamiento en asignarle prioridades a los procesos para compertir por el uso del procesador. Las prioridades pueden definirse interna o externamente. Las prioridades definidas internamente utilizan algún valor como puede ser el tiempo de CPU que demanda un proceso; las prioridades definidas externamente se establecen en funcion de criterios externos al sistema operativo, como ser la importancia del proceso.</p>
 <p align="justify"> La planificacion de procesos por prioridades puede ser apropiativa, en la cual si llega un nuevo proceso a la cola de listos y tiene una prioridad mayor a la del proceso que esta haciendo uso de  la CPU, se expulsa al proceso en ejecucion y se le asigna el recurso al nuevo proceso; tambien puede ser cooperativa, en este caso el algoritmo colocara al nuevo proceso al comienzo de la cola de listos, evitando la expulsion de un proceso en ejecución. Un problema importante de este algoritmo es que se puede producir un bloqueo indefinido o muerte por inanición, es decir, que se atiendan procesos con prioridades altas y nunca llegue a ejecutarse procesos con bajas prioridades. Una solución al problema del bloqueo indefinido de los proceso de baja prioridad consiste en aplicar mecanismos de envejecimiento, que consiste en luego de un tiempo ir aumentando la prioridad de los procesos que lleven mucho tiempo en espera por hacer uso de la CPU.</p>  
+
+<p align="center"><img src="https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/FF-Prio.jpg"></p>
+
 Codigo a implemtentar en el simulador:  
 
 ```
