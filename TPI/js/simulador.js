@@ -574,7 +574,7 @@ algoritmosMem = document.getElementById("algoritmosMem");
 radio2 = document.getElementById("radio2");
 function adminAlgoritmosProcesos(){
 	if (radio1.checked) {
-		memoriaPF();
+		crearmemoriaPF();
 	}
 //	if ((alg_planific.value == 1) && (algoritmosMem.value == 2) && (radio2.checked)) {
 //		if (controlArchivo) {
@@ -1052,7 +1052,7 @@ function diagramaGantArchivo(auxiliar){
 		span.innerHTML = auxiliar[i].nombre;
 		span.className = "white-text";
 		ancho = ((auxiliar[i].tiempoSalida-auxiliar[i].tiempoEntrada)/totalTiempo)*100;
-		console.log(ancho + '\n');
+		//console.log(ancho + '\n');
 
 		div1.style.width = ancho + "%";
 		div1.style.height = "50px !important";
@@ -1183,7 +1183,7 @@ function algColasMultinivel(){
 }
 
 //PART FIJA
-function memoriaPF() {
+function crearmemoriaPF() {
 	var memoria = new Object();
 	memoria.tamanio = tamanioMem.value;
 	memoria.particiones = [];
@@ -1197,21 +1197,34 @@ function memoriaPF() {
 		}
 		memoria.particiones.push(particion);
 	}
-	memoriaPFBF(memoria);
-	console.log(memoria);
+	memoriaPF(memoria);
 }
 
-function memoriaPFBF(memoria){
+function memoriaPF(memoria){
 	var fin = false;
 	var tiempo = 0;
 	while (!fin) {
 
-		console.log("-----------------");
-		console.log(" ");
+		console.log("___________________");
 		console.log("TIEMPO : " + tiempo);
-		console.log(memoria);
-		console.log(" ");
-		console.log("-----------------");
+		console.log("PROCESOS CARGADOS: ")
+		for (let i = 0; i < memoria.procesos.length; i++) {
+			console.log(".... nombre: " + memoria.procesos[i].nombre);
+			console.log(".... tamanio: " + memoria.procesos[i].tamanio);
+			console.log(".... ta: " + memoria.procesos[i].ta);
+			console.log(".... rafagacpu: " + memoria.procesos[i].rafagacpu);
+			console.log("-----------------")
+		}
+		console.log("PARTICIONES: ");
+		for (let i = 0; i < memoria.particiones.length; i++) {
+			console.log(".... nombre: " + memoria.particiones[i].nombre);
+			console.log(".... tamanio: " + memoria.particiones[i].tamanio);
+			console.log(".... Procesos corriendo: ")
+			for (let j = 0; j < memoria.particiones[i].procesos.length; j++) {
+				console.log("........ " + memoria.particiones[i].procesos[j].nombre);
+			}
+			console.log(".................");
+		}
 
 		var eliminar = [];
 		var parts = memoria.particiones;
@@ -1220,10 +1233,34 @@ function memoriaPFBF(memoria){
 			var assign = false;
 			if (proceso.ta == tiempo) {
 				//Cargo proceso en particion
-				for (let part = 0; part < parts.length; part++) {
-					if (parts[part].tamanio >= proceso.tamanio && !assign) {
-						parts[part].procesos.push(proceso);
-						memoria.particiones[part].tamanio = memoria.particiones[part].tamanio - proceso.tamanio;
+				//FF
+				if (algoritmosMem.value == 1) {
+					for (let part = 0; part < parts.length; part++) {
+						if (parts[part].tamanio >= proceso.tamanio && !assign) {
+							parts[part].procesos.push(proceso);
+							memoria.particiones[part].tamanio = memoria.particiones[part].tamanio - proceso.tamanio;
+							assign = true;
+						}
+					}	
+				}else{
+					//BF
+					var partelegida = -1;
+					var tamelegido = -1;
+					for (let part = 0; part < parts.length; part++) {
+
+						if (parts[part].tamanio >= proceso.tamanio && tamelegido > parts[part].tamanio) {
+							tamelegido = parts[part].tamanio;
+							partelegida = part;
+						}else{
+							if (parts[part].tamanio >= proceso.tamanio && tamelegido == -1) {
+								tamelegido = parts[part].tamanio;
+								partelegida = part;
+							}
+						}
+					}
+					if (partelegida != -1) {
+						parts[partelegida].procesos.push(proceso);
+						memoria.particiones[partelegida].tamanio = memoria.particiones[partelegida].tamanio - proceso.tamanio;
 						assign = true;
 					}
 				}
@@ -1234,7 +1271,6 @@ function memoriaPFBF(memoria){
 		}
 		//controlo tiempo de procesos corriendo
 		for (let part = 0; part < memoria.particiones.length; part++) {
-			console.log('------- t: ' + tiempo);
 			var posfinprocs = [];
 			//recorro procesos corriendo en particion
 			for (let p = 0; p < parts[part].procesos.length; p++) {
@@ -1264,7 +1300,7 @@ function memoriaPFBF(memoria){
 				memoria.procesos.splice(eliminar[proc], 1);
 		}
 
-		if (tiempo == 50) {
+		if (memoria.procesos.length == 0) {
 			fin = true;
 		}
 
