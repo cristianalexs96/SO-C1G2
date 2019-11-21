@@ -1,4 +1,4 @@
-ñ// Inicia el collapsible de la configuracion preliminar
+// Inicia el collapsible de la configuracion preliminar
 document.addEventListener('DOMContentLoaded', function() {
 	var elems = document.querySelectorAll('.collapsible');
 	var instances = M.Collapsible.init(elems);
@@ -1202,13 +1202,13 @@ function crearmemoriaPF() {
 
 function memoriaPF(memoria){
 	var cpu = {
-		colalistos = [],
-		colaespera = [],
-		procejecucion = null,
-		tiempoejecucionactual = 0,
-		procentradasalida = [],
-		proceliminar = [],
-		procesos = [],
+		colalistos: [],
+		colaespera: [],
+		procejecucion: null,
+		tiempoejecucionactual: 0,
+		procentradasalida: [],
+		proceliminar: [],
+		procesos: [],
 	};
 	var fin = false;
 	var tiempo = 0;
@@ -1338,8 +1338,8 @@ function CPU(cpu, tiempo) {
 				//el proceso tiene entrada salida y no lo ejecuto aun
 				if ((cpu.procejecucion.tiempoEntrada + cpu.procejecucion.tiempoSalida) != 0 && !ejecentsal) {
 					var procesoentradasalida = {
-						proceso = cpu.procejecucion,
-						entradasalida = cpu.procejecucion.tiempoEntrada + cpu.procejecucion.tiempoSalida,
+						proceso: cpu.procejecucion,
+						entradasalida: cpu.procejecucion.tiempoEntrada + cpu.procejecucion.tiempoSalida,
 					}
 					cpu.procentradasalida.push(procesoentradasalida);
 					cpu.procejecucion = null;
@@ -1380,7 +1380,6 @@ function CPU(cpu, tiempo) {
 		}
 		//Elimino de cola de listos
 		if (ejecband){
-			cpu.colalistos.splice(procejec, 1);
 			cpu.colalistos = [];
 		}
 
@@ -1392,8 +1391,8 @@ function CPU(cpu, tiempo) {
 
 function controlentradasalida(procentradasalida, proceso){
 	var returnvalue = false;
-	for (let i = 0; i < cpu.procentradasalida.length; i++) {
-		if (cpu.procentradasalida[i].proceso.nombre == proceso.nombre) {
+	for (let i = 0; i < procentradasalida.length; i++) {
+		if (procentradasalida[i].proceso.nombre == proceso.nombre) {
 				returnvalue = true;
 		}
 	}
