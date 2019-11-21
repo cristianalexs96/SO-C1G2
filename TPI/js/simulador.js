@@ -1201,6 +1201,15 @@ function crearmemoriaPF() {
 }
 
 function memoriaPF(memoria){
+	var cpu = {
+		colalistos = [],
+		colaespera = [],
+		procejecucion = null,
+		tiempoejecucionactual = 0,
+		procentradasalida = [],
+		proceliminar = null,
+		procesos = [],
+	};
 	var fin = false;
 	var tiempo = 0;
 	while (!fin) {
@@ -1239,6 +1248,7 @@ function memoriaPF(memoria){
 						if (parts[part].tamanio >= proceso.tamanio && !assign) {
 							parts[part].procesos.push(proceso);
 							memoria.particiones[part].tamanio = memoria.particiones[part].tamanio - proceso.tamanio;
+							cpu.colalistos.push(proceso);
 							assign = true;
 						}
 					}	
@@ -1247,7 +1257,6 @@ function memoriaPF(memoria){
 					var partelegida = -1;
 					var tamelegido = -1;
 					for (let part = 0; part < parts.length; part++) {
-
 						if (parts[part].tamanio >= proceso.tamanio && tamelegido > parts[part].tamanio) {
 							tamelegido = parts[part].tamanio;
 							partelegida = part;
@@ -1261,6 +1270,7 @@ function memoriaPF(memoria){
 					if (partelegida != -1) {
 						parts[partelegida].procesos.push(proceso);
 						memoria.particiones[partelegida].tamanio = memoria.particiones[partelegida].tamanio - proceso.tamanio;
+						cpu.colalistos.push(proceso);
 						assign = true;
 					}
 				}
@@ -1270,6 +1280,7 @@ function memoriaPF(memoria){
 			}
 		}
 		//controlo tiempo de procesos corriendo
+		cpu = CPU(cpu, tiempo);
 		for (let part = 0; part < memoria.particiones.length; part++) {
 			var posfinprocs = [];
 			//recorro procesos corriendo en particion
@@ -1306,4 +1317,79 @@ function memoriaPF(memoria){
 
 		tiempo++;
 	}
+}
+
+function CPU(cpu, tiempo) {
+	//FCFS
+	if (alg_planific.value == 1) {
+		var ejecband = false;
+		var ejecentsal = false;
+		//Controlo proceso en ejecucion
+		if (cpu.procejecucion != null) {
+			//el proceso termino su ejecucion
+			if (cpu.tiempoejecucionactual == 0){
+				if ((cpu.procejecucion.tiempoEntrada + cpu.procejecucion.tiempoSalida) != 0) {
+					ejecentsal = controlentradasalida(cpu.procentradasalida, cpu.procejecucion);
+				}
+				//el proceso no tiene entrada salida o ya lo ejecuto
+				if ((cpu.procejecucion.tiempoEntrada + cpu.procejecucion.tiempoSalida) == 0 || ejecentsal) {
+					cpu.proceliminar = cpu.procejecucion;
+					cpu.procejecucion = null;
+				}
+				//el proceso tiene entrada salida y no lo ejecuto aun
+				if ((cpu.procejecucion.tiempoEntrada + cpu.procejecucion.tiempoSalida) != 0 && !ejecentsal) {
+					var procesoentradasalida = {
+						proceso = cpu.procejecucion,
+						entradasalida = cpu.procejecucion.tiempoEntrada + cpu.procejecucion.tiempoSalida,
+					}
+					cpu.procentradasalida.push(procesoentradasalida);
+					cpu.procejecucion = null;
+				}
+			}else{
+				//el proceso no termino su ejecucion aun
+				cpu.tiempoejecucionactual -= 1;
+			}
+		}
+
+		//controlo entrada salida
+		for (let i = 0; i < cpu.procentradasalida.length; i++) {
+			if (cpu.procentradasalida[i].entradasalida != 0) {
+				if (cpu.procentradasalida[i].proceso.rafagacpu2 != 0) {
+					//continuar rafaga2 
+				}
+			}
+		}
+
+		//Ejecuto proceso
+		for (let procesp = 0; procesp < cpu.colalistos.length; procesp++) {
+			if (cpu.procejecucion == null){
+				cpu.procejecucion = cpu.colalistos[procesp];
+				if (controlentradasalida(cpu.procentradasalida, cpu.procejecucion)) {
+					cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu2;
+				}else{
+					cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu;
+				}
+				ejecband = true;
+			}else{
+				cpu.colaespera.push(cpu.colalistos[procesp]);
+			}
+		}
+		//Elimino de cola de listos
+		if (ejecband){
+			cpu.colalistos.splice(procejec, 1);
+			cpu.colalistos = [];
+		}
+		return cpu;
+	}
+	
+}
+
+function controlentradasalida(procentradasalida, proceso){
+	var returnvalue = false;
+	for (let i = 0; i < cpu.procentradasalida.length; i++) {
+		if (cpu.procentradasalida[i].proceso.nombre == proceso.nombre) {
+				returnvalue = true;
+		}
+	}
+	return returnvalue;
 }
