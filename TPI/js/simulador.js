@@ -1,4 +1,4 @@
-// Inicia el collapsible de la configuracion preliminar
+ñ// Inicia el collapsible de la configuracion preliminar
 document.addEventListener('DOMContentLoaded', function() {
 	var elems = document.querySelectorAll('.collapsible');
 	var instances = M.Collapsible.init(elems);
@@ -1207,7 +1207,7 @@ function memoriaPF(memoria){
 		procejecucion = null,
 		tiempoejecucionactual = 0,
 		procentradasalida = [],
-		proceliminar = null,
+		proceliminar = [],
 		procesos = [],
 	};
 	var fin = false;
@@ -1285,11 +1285,10 @@ function memoriaPF(memoria){
 			var posfinprocs = [];
 			//recorro procesos corriendo en particion
 			for (let p = 0; p < parts[part].procesos.length; p++) {
-				var findeproceso = parts[part].procesos[p].ta + parts[part].procesos[p].rafagacpu;
-				//si termina el proceso
-				if (findeproceso == tiempo) {
-					memoria.particiones[part].tamanio = memoria.particiones[part].tamanio + parts[part].procesos[p].tamanio;
-					posfinprocs.push(p);
+				//Recorro procesos a eliminar de memoria
+				for (let i = 0; i < cpu.proceliminar.length; i++) {
+					eliminar.push(p);
+					//recorro procesos para guardar ubicacion a eliminar
 					for (let proc = 0; proc < memoria.procesos.length; proc++) {
 						if (memoria.procesos[proc].nombre == parts[part].procesos[p].nombre) {
 							eliminar.push(proc);
@@ -1333,7 +1332,7 @@ function CPU(cpu, tiempo) {
 				}
 				//el proceso no tiene entrada salida o ya lo ejecuto
 				if ((cpu.procejecucion.tiempoEntrada + cpu.procejecucion.tiempoSalida) == 0 || ejecentsal) {
-					cpu.proceliminar = cpu.procejecucion;
+					cpu.proceliminar.push(cpu.procejecucion);
 					cpu.procejecucion = null;
 				}
 				//el proceso tiene entrada salida y no lo ejecuto aun
@@ -1354,8 +1353,13 @@ function CPU(cpu, tiempo) {
 		//controlo entrada salida
 		for (let i = 0; i < cpu.procentradasalida.length; i++) {
 			if (cpu.procentradasalida[i].entradasalida != 0) {
-				if (cpu.procentradasalida[i].proceso.rafagacpu2 != 0) {
-					//continuar rafaga2 
+				cpu.procentradasalida[i].entradasalida -= 1;
+			}else{
+				if (cpu.procesoentradasalida[i].proceso.rafagacpu2 == 0) {
+					cpu.proceliminar.push(cpu.procesoentradasalida[i].proceso);
+				}
+				else{
+					cpu.colaespera.push(cpu.procesoentradasalida[i].proceso);
 				}
 			}
 		}
@@ -1379,6 +1383,8 @@ function CPU(cpu, tiempo) {
 			cpu.colalistos.splice(procejec, 1);
 			cpu.colalistos = [];
 		}
+
+		cpu.colaespera = eliminardecolaespera(cpu.colaespera, cpu.proceliminar);
 		return cpu;
 	}
 	
@@ -1392,4 +1398,19 @@ function controlentradasalida(procentradasalida, proceso){
 		}
 	}
 	return returnvalue;
+}
+
+function eliminardecolaespera(colaespera, proceliminar){
+	for (let i = 0; i < proceliminar.length; i++) {
+		var pos = null;
+		for (let j = 0; j < colaespera.length; j++) {
+			if (colaespera[j].proceso.nombre == proceliminar[i].proceso.nombre) {
+				pos = j;
+			}
+		}
+		if (pos != null) {
+			colaespera.splice(pos, 1);
+		}
+	}
+	return colaespera;
 }
