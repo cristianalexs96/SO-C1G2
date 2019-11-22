@@ -97,7 +97,7 @@ __Opción Configuración de Arquitectura__
 ![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img3.png "Pantalla entrada de Datos")
 
 __Opción Carga de Procesos__
-<p align="justify";>Esta opción nos permitirá realizar la carga de todos los datos de los procesos requeridos para la simulación, como su nombre, tiempo de arribo tiempo de irrupción y ráfaga.</p>
+<p align="justify";>Esta opción nos permitirá realizar la carga de todos los datos de los procesos requeridos para la simulación, como su tamaño, tiempo de arribo, ráfaga de CPU, y Ráfaga de E/S. Se debe especificar una ráfaga de CPU luego de indicar una ráfaga de E/S, en caso de que el proceso no incluya ráfaga de E/S no es necesario añadir la ultima ráfaga de CPU</p>
 
 ![alt text](https://github.com/cristianalexs96/SO-C1G2/blob/master/Documentacion/img4.png "Pantalla entrada de Datos")
 
