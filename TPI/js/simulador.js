@@ -123,7 +123,7 @@ function cargarUltimoTam(){
 function validarMem(){
 	if (tamanioMem.value == "") {
 		return false;
-	}else if(parseInt(tamanioMem.value) < 10){
+	}else if(parseInt(tamanioMem.value) < 30){
 		return false;
 	}
 	bandCargarProc = true;
@@ -144,6 +144,7 @@ function validarConfMemoria(){
 		}
 	}
 }
+
 //Esta funcion carga los procesos en la memoria y el planificador de procesos
 contadorProc = 0;
 contador = 0;
@@ -196,6 +197,7 @@ colores = ["1d2c3d","25415a","2d567a", "346c9b", "3b83bd", "6496c8", "86aad3",
 				"ffaf43", "ffbf6b", "ffcf90", "ffdfb5", "2e434d", "426475", "56889f",
 				"6badcc", "81d4fa", "9adbfb", "b0e2fc", "c5e9fd", "d9f1fd", "512b2e",
 				];
+
 function cargarProcesoMem(){
 	if(!validarInputsCargar()){
 		return false;
@@ -289,7 +291,7 @@ function cargarProcesosPlanificador(){
 }
 
 function validarInputsCargar(){
-	if ((parseInt(tamanio.value) > restante) || (tamanio.value == "") || (parseInt(tamanio.value) < 0)) {
+	if ((tamanio.value == "") || (parseInt(tamanio.value) <= 0)) {
 		tamanio.style.borderBottom = "1px solid #b71c1c";
 		return false;
 	}else if ((ta.value == "") || (parseInt(ta.value)) < 0) {
@@ -412,10 +414,10 @@ function validarParticiones(){
 
 function validarTamParticiones(){
 	acumulador = 0;
-	tamanioMem10 = parseInt(tamanioMem.value)-parseInt(tamanioMem.value)*0.1;
+	tamanioMem10 = parseInt(tamanioMem.value);
 	for (var i = 0; i < particiones.length; i++) {
 		acumulador += parseInt(particiones[i]);
-		if (parseInt(particiones[i]) < 19999) { //Cada particion no puede ser menor a 20000
+		if (parseInt(particiones[i]) < 5) { //Cada particion no puede ser menor a 5
 			return false;
 		}
 	}
@@ -473,11 +475,12 @@ function lecturaArchivo(e){
 procesosObjetos = [];
 
 c = 0;
+controlArchivo = false;
 function devolverProcesos(){
 	var result = reader.result;
 	var lineas = result.split("\n");
 	
-	for (var i = 0; i < lineas.length-1; i++) {
+	for (var i = 0; i < lineas.length; i++) {
 		
 		procesosObjetos[i] = {
 			nombre: "P" + i,
@@ -488,7 +491,12 @@ function devolverProcesos(){
 			rafagacpu2: parseInt(lineas[i].substring(17,20)),
 			prioridad: parseInt(lineas[i].substring(21,23)),
 			tiempoEntrada: 0,
-			tiempoSalida: 0
+			tiempoSalida: 0,
+			tiempoEntradaES: 0,
+			tiempoSalidaES: 0,
+			controlMemoria: 0, //Controla aquellos procesos que se intentaron cargar en memoria y no entraron
+			controlRafaga1: 0,	//Controla que la rafaga 1 haya terminado
+			controlRafaga2: 0	//Controla que la rafaga 2 haya terminado
 		}
 	}
 
@@ -575,35 +583,100 @@ radio2 = document.getElementById("radio2");
 function adminAlgoritmosProcesos(){
 	if (radio1.checked) {
 		crearmemoriaPF();
+	}else if(radio2.checked){
+
+		if ((alg_planific.value == 1) && (algoritmosMem.value == 2)) {
+			if (controlArchivo) {
+				FCFS(true, 1);
+				
+			}else{
+
+				FCFS(false, 1);
+			}
+			historialProcesosArchivo(auxiliar);
+			diagramaGantArchivo(auxiliar, 0);
+			diagramaGantArchivo(auxiliar, 3);
+		}else if ((alg_planific.value == 2) && (algoritmosMem.value == 2)) {
+			if (controlArchivo) {
+				Prioridades(true, 1);
+				
+			}else{
+				Prioridades(false, 1);
+			}
+			historialProcesosArchivo(auxiliar);
+			diagramaGantArchivo(auxiliar, 0);
+			diagramaGantArchivo(auxiliar, 3);
+		}else if ((alg_planific.value == 3) && (algoritmosMem.value == 2)){
+			if (controlArchivo) {
+				RoundRobin(true, 1);
+				
+			}else{
+				RoundRobin(false, 1);
+			}
+			historialProcesosArchivo(auxiliar);
+			diagramaGantArchivo(auxiliar, 0);
+			diagramaGantArchivo(auxiliar, 3);
+		}else if ((alg_planific.value == 4) && (algoritmosMem.value == 2)){
+			if (controlArchivo) {
+				multiNivel(true, 1);
+				
+			}else{
+				multiNivel(false, 1);
+			}
+			historialProcesosArchivo(auxiliar);
+			diagramaGantArchivo(auxiliar, 0);
+			diagramaGantArchivo(auxiliar, 1);
+			diagramaGantArchivo(auxiliar, 2);
+			diagramaGantArchivo(auxiliar, 3);
+			// diagramaGantArchivoES(auxiliarES);
+		}else if (alg_planific.value == 1 && algoritmosMem.value == 3) {
+			if (controlArchivo) {
+				FCFS(true, 3);
+				
+			}else{
+
+				FCFS(false, 3);
+			}
+			historialProcesosArchivo(auxiliar);
+			diagramaGantArchivo(auxiliar, 0);
+			diagramaGantArchivo(auxiliar, 3);
+		}else if (alg_planific.value == 2 && algoritmosMem.value == 3) {
+			if (controlArchivo) {
+				Prioridades(true, 3);
+				
+			}else{
+
+				Prioridades(false, 3);
+			}
+			historialProcesosArchivo(auxiliar);
+			diagramaGantArchivo(auxiliar, 0);
+			diagramaGantArchivo(auxiliar, 3);
+		}else if (alg_planific.value == 3 && algoritmosMem.value == 3) {
+			if (controlArchivo) {
+				RoundRobin(true, 3);
+				
+			}else{
+
+				RoundRobin(false, 3);
+			}
+			historialProcesosArchivo(auxiliar);
+			diagramaGantArchivo(auxiliar, 0);
+			diagramaGantArchivo(auxiliar, 3);
+		}else if (alg_planific.value == 4 && algoritmosMem.value == 3) {
+			if (controlArchivo) {
+				multiNivel(true, 3);
+				
+			}else{
+
+				multiNivel(false, 3);
+			}
+			historialProcesosArchivo(auxiliar);
+			diagramaGantArchivo(auxiliar, 0);
+			diagramaGantArchivo(auxiliar, 1);
+			diagramaGantArchivo(auxiliar, 2);
+			diagramaGantArchivo(auxiliar, 3);
+		}
 	}
-//	if ((alg_planific.value == 1) && (algoritmosMem.value == 2) && (radio2.checked)) {
-//		if (controlArchivo) {
-//			FCFS(true);
-//			historialProcesosArchivo(auxiliar);
-//			diagramaGantArchivo(auxiliar);
-//			
-//		}else{
-//
-//			algFCSS_Prioridad(1); //Se ejecuta como FCFS
-//
-//			historialProcesos();
-//			diagramaGantt();
-//		}
-//	}else if (alg_planific.value == 2) {
-//		algFCSS_Prioridad(2); // Se ejecuta como prioridad
-//
-//		historialProcesos();
-//
-//		diagramaGantt();
-//	}else if (alg_planific.value == 3){
-//		algRR();
-//		historialProcesosRR(procesosAux1,procesosAux2,procesosAux3);
-//		diagramaGanttRR();
-//	}else{
-//		algColasMultinivel();
-//		historialProcesosRR(procesosAux1,procesosAux2,procesosAux3);
-//		diagramaGanttRR();
-//	}
 
 	ejecutar.className += " disabled";
 	for (var i = 0; i < mostrar.length; i++) {
@@ -651,7 +724,7 @@ function montarEnMemoria(nombreP, tamP, alg){
 			control2 = true;
 
 		}else if ((i == memoriaP.length-1) && (memoriaP[i] == 0)){
-			posiciones[contEsp].final = i;
+			posiciones[contEsp].final = i+1; //SI TENGO PROBLEMAS CON LA MEMORIA, ELIMINAR EL + 1
 			control2 = true;
 		}
 
@@ -672,36 +745,45 @@ function montarEnMemoria(nombreP, tamP, alg){
 
 	//Aca esta la posta si es FF, BF o WF
 
-
-	//Calculo el menor desperdicio, para que funcione con BF
+	//Esto controla que exista al menos un espacio libre en la memoria
+	bandera = false;
 	for (var i = 0; i < desperdicio.length; i++) {
-		//Dependiendo de alg se comporta como BF o WF
-		if (alg == 1) {
-			valor = Math.min.apply(null, desperdicio);
-		}else{
-			valor = Math.max.apply(null, desperdicio);
-		}
-		
-		if (valor >= 0) {
+		if (desperdicio[i] >= 0) {
+			bandera = true;
 			break;
-		}		
-	}
-
-	//Busco la posicion del menor elemento 
-	//Y escribo el proceso en la memoria siempre y cuando haya espacio disponible
-	if (valor >= 0) {
-		pos = desperdicio.indexOf(valor, 0);
-		for (var i = 0; i < tamP; i++) {
-			memoriaP[posiciones[pos].inicio + i] = nombreP;
 		}
+	}
+	if (bandera) {
 
-	}else{
-		for (var i = 0; i < procesosOrd.length; i++) {
-			if(procesosOrd[i].nombre == nombreP){
-				procesosOrd[i].ta += 1;
+		if (alg == 1) {
+
+			min = 999999999999; //Representa un valor muy grande para hacer la busqueda
+			for (var i = 0; i < desperdicio.length; i++) {
+				if ((desperdicio[i] < min) && (desperdicio[i] >= 0)) {
+					min = desperdicio[i];
+				}
+			}
+			pos = desperdicio.indexOf(min, 0);
+			for (var i = 0; i < tamP; i++) {
+				memoriaP[posiciones[pos].inicio + i] = nombreP;
+			}
+		}else if (alg == 3) {
+			max = -1; //Representa un valor muy chico para hacer la busqueda
+			for (var i = 0; i < desperdicio.length; i++) {
+				if ((desperdicio[i] > max) && (desperdicio[i] >= 0)) {
+					max = desperdicio[i];
+				}
+			}
+
+			pos = desperdicio.indexOf(max, 0);
+			for (var i = 0; i < tamP; i++) {
+				memoriaP[posiciones[pos].inicio + i] = nombreP;
 			}
 		}
+
+		
 	}
+
 	
 }
 
@@ -713,10 +795,34 @@ function removerDeMemoria(nombre){
 	}
 }
 
-function FCFS(archivo){
+function controlTamanioProc(){
+	//Busco que un proceso sea mayor que la memoria
+	aux = procesosOrd;
+	for (var i = 0; i < aux.length; i++) {
+		if (aux[i].tamanio > parseInt(tamanioMem.value)) {
+			aux.push(aux[i]);
+			aux.splice(i, 1);
+		}
+	}
+	for (var i = 0; i < aux.length; i++) {
+		if (aux[i].tamanio > parseInt(tamanioMem.value)) {
+			aux.splice(i, aux.length-1);
+		}
+	}
+	procesosOrd = aux;
+}
+
+function FCFS(archivo, alg){
+	// console.log(devolverProcesos());
 	memoriaP = new Array(parseInt(tamanioMem.value));
 	listos = [];
 	auxiliar = [];
+	auxControlMem = [];
+	colaES = [];
+	procesosOrd = [];
+	colaEjec = [];
+	auxiliarES = [];
+
 	for (var i = 0; i < memoriaP.length; i++) {
 		memoriaP[i] = 0;
 	}
@@ -726,473 +832,1050 @@ function FCFS(archivo){
 	if (archivo) {
 		procesosOrd = devolverProcesos();
 	}else{
-		procesosOrd[i] = {	nombre: nombreProc[i], 
-						tamanio: tamanioProc[i], 
-						ta: taProc[i],
-						rafagacpu: rafagacpuProc[i],
-						rafagaES: rafagaESProc[i],
-						rafagacpu2: rafagacpuProc[i],
-						prioridad: prioridadProc[i],
-						tiempoEntrada: 0,
-						tiempoSalida: 0
-					};
+		for (var i = 0; i < nombreProc.length; i++) {
+			
+			procesosOrd[i] = {	nombre: nombreProc[i], 
+							tamanio: tamanioProc[i], 
+							ta: taProc[i],
+							rafagacpu: rafagacpuProc[i],
+							rafagaES: rafagaESProc[i],
+							rafagacpu2: rafagacpuProc2[i],
+							prioridad: prioridadProc[i],
+							tiempoEntrada: 0,
+							tiempoSalida: 0,
+							tiempoEntradaES: 0,
+							tiempoSalidaES: 0,
+							controlMemoria: 0, //Controla aquellos procesos que se intentaron cargar en memoria y no entraron
+							controlRafaga1: 0,	//Controla que la rafaga 1 haya terminado
+							controlRafaga2: 0	//Controla que la rafaga 2 haya terminado
+						};
+		}
 	}
 
+	//Ordeno el arreglo por ta
+	procesosOrd.sort(function(a, b){
+			return a.ta - b.ta;
+	});
 
+	controlTamanioProc();
 	acum = 0;
 	for (var i = 0; i < procesosOrd.length; i++) {
 		//Acumulo todos los tiempos, esto me dara el tiempo total de ejecucion
-		acum += procesosOrd[i].rafagacpu;
+		acum = acum + procesosOrd[i].rafagacpu + procesosOrd[i].rafagaES + procesosOrd[i].rafagacpu2 + procesosOrd[i].ta;
 	}
 
 	controlProc = 0;
+	controlES = 0;
 	rafagas = 0;
-	for (var i = 0; i <= acum; i++) {
+	iES = 0;
+	bandRes = true;
+	for (var i = 0; i <= (acum + 1); i++) { // Es acum + 1 porque la primera vez no entra al procesador
+		
+		if ((colaEjec == 0) && (listos.length > 0)) {
+			colaEjec = listos[0];
+			listos.splice(0,1);
+		}
+
+		if (colaEjec != 0) { 
+		 
+		 	if (colaEjec.controlRafaga1 == 0){
+		 		if (auxiliar.length > 0) {
+		 			
+		 			if((colaEjec.rafagacpu + rafagas) == i){
+		 				
+	 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+
+						if (colaEjec.rafagaES == 0) {
+							removerDeMemoria(colaEjec.nombre);
+						}else{
+							colaEjec.controlRafaga1 = 1;
+							if (colaES.length == 0) { //Si la cola de E/S esta ocupada, i no seria el tiempo de entrada
+								colaEjec.tiempoEntradaES = i;
+							}
+							colaES.push(colaEjec);
+						}
+						colaEjec = 0;
+						bandRes = true;
+						rafagas = i;
+		 			}
+
+		 		}else{
+		 			if(colaEjec.rafagacpu == i){
+		 				if (colaEjec.ta > 0) {
+			 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: colaEjec.ta, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+		 				}else{
+		 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: 0, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+		 				}
+
+		 				// rafagas = i; 
+						if (colaEjec.rafagaES == 0) {
+							removerDeMemoria(colaEjec.nombre);
+						}else{
+							colaEjec.controlRafaga1 = 1;
+							if (colaES.length == 0) { //Si la cola de E/S esta ocupada, i no seria el tiempo de entrada
+								colaEjec.tiempoEntradaES = i;
+							}
+							colaES.push(colaEjec);
+						}
+						colaEjec = 0;
+						rafagas = i;
+						
+		 			}
+		 		}
+		 		
+		 	}else if(colaEjec.controlRafaga2 == 0){
+		 		
+	 			if((colaEjec.rafagacpu2 + rafagas) == i){
+					
+	 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada:rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+	 				
+					removerDeMemoria(colaEjec.nombre);
+					
+
+					colaEjec.controlRafaga2 = 1;
+					colaEjec = 0;
+					bandRes = true;
+					rafagas = i;
+	 			}
+		 		
+
+		 	}
+		}
+
+
+		//Este for intenta meter en la memoria aquellos procesos que anteriormente no pudieron entrar
+		//claramente esos procesos deberian tenerse encuenta antes que los otros que aun no intentaron entrar
+		for (var j = 0; j < auxControlMem.length; j++) {
+			
+			montarEnMemoria(auxControlMem[j].nombre, auxControlMem[j].tamanio, alg);
+			if(bandera){
+				listos.push(auxControlMem[j]);
+				auxControlMem.splice(j,1);
+			}
+			
+		}
 		for (var j = 0; j < procesosOrd.length; j++) {
 			if(procesosOrd[j].ta == i){
-				montarEnMemoria(procesosOrd[j].nombre, procesosOrd[j].tamanio, 2);
-				if(valor >= 0){
+				montarEnMemoria(procesosOrd[j].nombre, procesosOrd[j].tamanio, alg);
+				if(bandera){
 					listos.push(procesosOrd[j]);
+				}else{
+					auxControlMem.push(procesosOrd[j]);
+
 				}
 			}
 		}
 
-		// console.log(listos);
 
-		if ((listos[controlProc].rafagacpu == i) && (auxiliar.length == 0)) {
-			auxiliar.push({nombre: listos[controlProc].nombre, tiempoEntrada: 0, tiempoSalida: listos[controlProc].rafagacpu});
-			rafagas += i; //i es la rafaga en este momento
-			if (listos[controlProc].rafagaES == 0) {
-				removerDeMemoria(listos[controlProc].nombre);
+		//Maneja la cola de entrada salida
+		if (colaES.length > 0) {
+			if (colaES[0].rafagaES == iES) {
+
+				//Esto es para que no se actualice el ultimo tiempo de salida si la cpu esta ejecutando un proceso
+				if (colaEjec == 0) {
+					rafagas = i;
+				}
+
+				auxiliar.push({nombre: colaES[0].nombre, tiempoEntrada: colaES[0].tiempoEntradaES, tiempoSalida: i, marca: 3, auxEntrada:0, auxSalida:0});
+				listos.push(colaES[0]);
+				if (colaES.length > 1) {
+					colaES[1].tiempoEntradaES = i;
+					iES = 1;
+				}else{
+
+					iES = 0;
+				}
+				colaES.splice(0,1);
+			}else{
+
+				iES++;
 			}
-			controlProc += 1;
-		}else if ((listos[controlProc].rafagacpu + rafagas) == i) {
-			auxiliar.push({nombre: listos[controlProc].nombre, tiempoEntrada: rafagas, tiempoSalida: rafagas + listos[controlProc].rafagacpu});
-			rafagas += listos[controlProc].rafagacpu;
-			if (listos[controlProc].rafagaES == 0) {
-				removerDeMemoria(listos[controlProc].nombre);
-			}
-			controlProc += 1;
 		}
-
 		
-
-
-
 	}
-	
-	// // console.log(memoriaP);
-	// console.log(auxiliar);
 
 }
 
-function algFCSS_Prioridad(elegir){
-	// procesosOrd = [];
-	// procesosAux = [];
-	//Cargo los procesos con todas sus caracteristicas para posteriormente ordenarlo
-	// for (var i = 0; i < nombreProc.length; i++) {
-	// 	procesosOrd[i] = {	nombre: nombreProc[i], 
-	// 					tamanio: tamanioProc[i], 
-	// 					ta: taProc[i],
-	// 					rafagacpu: rafagacpuProc[i],
-	// 					rafagaES: rafagaESProc[i],
-	// 					rafagacpu2: rafagacpuProc[i],
-	// 					prioridad: prioridadProc[i]
-	// 				};
-	// }
-	procesosOrd = devolverProcesos();
+function Prioridades(archivo, alg){
+	memoriaP = new Array(parseInt(tamanioMem.value));
+	listos = [];
+	auxiliar = [];
+	auxControlMem = [];
+	colaES = [];
+	colaEjec = 0;
+	procesosOrd = [];
+
+	for (var i = 0; i < memoriaP.length; i++) {
+		memoriaP[i] = 0;
+	}
 	
-	//Ordena el arreglo por prioridad o por TA
-	if (elegir == 1) {
-		procesosOrd.sort(function(a, b){
-			return a.ta - b.ta;
-		});
+	//Con esto funciona para archivos y manual
+	if (archivo) {
+		procesosOrd = devolverProcesos();
 	}else{
-		procesosOrd.sort(function(a, b){
+		for (var i = 0; i < nombreProc.length; i++) {
+			
+			procesosOrd[i] = {	nombre: nombreProc[i], 
+							tamanio: tamanioProc[i], 
+							ta: taProc[i],
+							rafagacpu: rafagacpuProc[i],
+							rafagaES: rafagaESProc[i],
+							rafagacpu2: rafagacpuProc2[i],
+							prioridad: prioridadProc[i],
+							tiempoEntrada: 0,
+							tiempoSalida: 0,
+							tiempoEntradaES: 0,
+							tiempoSalidaES: 0,
+							controlMemoria: 0, //Controla aquellos procesos que se intentaron cargar en memoria y no entraron
+							controlRafaga1: 0,	//Controla que la rafaga 1 haya terminado
+							controlRafaga2: 0	//Controla que la rafaga 2 haya terminado
+						};
+		}
+
+	}
+
+
+	controlTamanioProc();
+	acum = 0;
+	for (var i = 0; i < procesosOrd.length; i++) {
+		//Acumulo todos los tiempos, esto me dara el tiempo total de ejecucion
+		acum = acum + procesosOrd[i].rafagacpu + procesosOrd[i].rafagaES + procesosOrd[i].rafagacpu2 + procesosOrd[i].ta;
+	}
+
+	controlProc = 0;
+
+	controlES = 0;
+	rafagas = 0;
+	iES = 0;
+
+	for (var i = 0; i <= (acum + 1); i++) { // Es acum + 1 porque la primera vez no entra al procesador
+		
+		if ((colaEjec == 0) && (listos.length > 0)) {
+			colaEjec = listos[0];
+			listos.splice(0,1);
+		}
+
+		//Ordeno por prioridad
+		listos.sort(function(a, b){
 			return a.prioridad - b.prioridad;
 		});
-	}
-	for (var i = 0; i < nombreProc.length; i++) {
-		if (procesosOrd[i].rafagaES > 0) {
-			procesosOrd.push(procesosOrd[i]);
-		}
-	}
-	
-}
 
-cuant = document.getElementById("cuant");
-function algRR(){
+		if (colaEjec != 0) { 
+		 
+		 	if (colaEjec.controlRafaga1 == 0){
+		 		if (auxiliar.length > 0) {
+		 			
+		 			if((colaEjec.rafagacpu + rafagas) == i){
+		 				
+	 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+
+						if (colaEjec.rafagaES == 0) {
+							removerDeMemoria(colaEjec.nombre);
+						}else{
+							colaEjec.controlRafaga1 = 1;
+							if (colaES.length == 0) { //Si la cola de E/S esta ocupada, i no seria el tiempo de entrada
+								colaEjec.tiempoEntradaES = i;
+							}
+							colaES.push(colaEjec);
+						}
+						colaEjec = 0;
+						bandRes = true;
+						rafagas = i;
+		 			}
+
+		 		}else{
+		 			if(colaEjec.rafagacpu == i){
+		 				if (colaEjec.ta > 0) {
+			 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: colaEjec.ta, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+		 				}else{
+		 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: 0, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+		 				}
+
+		 				// rafagas = i; 
+						if (colaEjec.rafagaES == 0) {
+							removerDeMemoria(colaEjec.nombre);
+						}else{
+							colaEjec.controlRafaga1 = 1;
+							if (colaES.length == 0) { //Si la cola de E/S esta ocupada, i no seria el tiempo de entrada
+								colaEjec.tiempoEntradaES = i;
+							}
+							colaES.push(colaEjec);
+						}
+						colaEjec = 0;
+						rafagas = i;
+						
+		 			}
+		 		}
+		 		
+		 	}else if(colaEjec.controlRafaga2 == 0){
+		 		
+	 			if((colaEjec.rafagacpu2 + rafagas) == i){
+					
+	 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada:rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+	 				
+					removerDeMemoria(colaEjec.nombre);
+					
+
+					colaEjec.controlRafaga2 = 1;
+					colaEjec = 0;
+					bandRes = true;
+					rafagas = i;
+	 			}
+		 		
+
+		 	}
+		}
+
+
+		//Este for intenta meter en la memoria aquellos procesos que anteriormente no pudieron entrar
+		//claramente esos procesos deberian tenerse encuenta antes que los otros que aun no intentaron entrar
+		for (var j = 0; j < auxControlMem.length; j++) {
+			
+			montarEnMemoria(auxControlMem[j].nombre, auxControlMem[j].tamanio, alg);
+			if(bandera){
+				listos.push(auxControlMem[j]);
+				auxControlMem.splice(j,1);
+			}
+			
+		}
+		for (var j = 0; j < procesosOrd.length; j++) {
+			if(procesosOrd[j].ta == i){
+				montarEnMemoria(procesosOrd[j].nombre, procesosOrd[j].tamanio, alg);
+				if(bandera){
+					listos.push(procesosOrd[j]);
+				}else{
+					auxControlMem.push(procesosOrd[j]);
+
+				}
+			}
+		}
+
+
+		//Maneja la cola de entrada salida
+		if (colaES.length > 0) {
+			if (colaES[0].rafagaES == iES) {
+
+				//Esto es para que no se actualice el ultimo tiempo de salida si la cpu esta ejecutando un proceso
+				if (colaEjec == 0) {
+					rafagas = i;
+				}
+
+				auxiliar.push({nombre: colaES[0].nombre, tiempoEntrada: colaES[0].tiempoEntradaES, tiempoSalida: i, marca: 3, auxEntrada:0, auxSalida:0});
+				listos.push(colaES[0]);
+				if (colaES.length > 1) {
+					colaES[1].tiempoEntradaES = i;
+					iES = 1;
+				}else{
+
+					iES = 0;
+				}
+				colaES.splice(0,1);
+			}else{
+
+				iES++;
+			}
+		}
+		
+	}
+
+}
+quantumInput = document.getElementById("cuant");
+function RoundRobin(archivo, alg){
+	memoriaP = new Array(parseInt(tamanioMem.value));
+	listos = [];
+	auxiliar = [];
+	auxControlMem = [];
+	colaES = [];
+	colaEjec = 0;
 	procesosOrd = [];
-	procesosAux1 = [];
-	procesosAux2 = [];
-	procesosAux3 = [];
-	if(!validarCuant()){
-		return false;
+	quantum = parseInt(quantumInput.value);
+
+	for (var i = 0; i < memoriaP.length; i++) {
+		memoriaP[i] = 0;
 	}
-	cuant = parseInt(cuant.value);
-	for (var i = 0; i < nombreProc.length; i++) {
-		procesosOrd[i] = {	nombre: nombreProc[i], 
-						tamanio: tamanioProc[i], 
-						ta: taProc[i],
-						rafagacpu: rafagacpuProc[i],
-						rafagaES: rafagaESProc[i],
-						rafagacpu2: rafagacpuProc2[i],
-						prioridad: prioridadProc[i],
-						tiempoEntrada: 0, //Auxiliar
-						tiempoSalida: 0 //Auxiliar
-					};
-	}
-	respaldoProcesosOrd = procesosOrd;
 	
-	acumTiempoRR = 0;
-	band = true;
+	//Con esto funciona para archivos y manual
+	if (archivo) {
+		procesosOrd = devolverProcesos();
+	}else{
+		for (var i = 0; i < nombreProc.length; i++) {
+			
+			procesosOrd[i] = {	nombre: nombreProc[i], 
+							tamanio: tamanioProc[i], 
+							ta: taProc[i],
+							rafagacpu: rafagacpuProc[i],
+							rafagaES: rafagaESProc[i],
+							rafagacpu2: rafagacpuProc2[i],
+							prioridad: prioridadProc[i],
+							tiempoEntrada: 0,
+							tiempoSalida: 0,
+							tiempoEntradaES: 0,
+							tiempoSalidaES: 0,
+							controlMemoria: 0, //Controla aquellos procesos que se intentaron cargar en memoria y no entraron
+							controlRafaga1: 0,	//Controla que la rafaga 1 haya terminado
+							controlRafaga2: 0	//Controla que la rafaga 2 haya terminado
+						};
+		}
 
-	while (band){
-		control = 0;
-		for (var i = 0; i < procesosOrd.length; i++) {
-			if (procesosOrd[i].rafagacpu > cuant) {
-				control += 1;
-				procesosOrd[i].rafagacpu -= cuant;
-				procesosOrd[i].tiempoEntrada = acumTiempoRR;
-				procesosOrd[i].tiempoSalida = acumTiempoRR + cuant;
-				acumTiempoRR += cuant;
-				procesosAux1.push(procesosOrd[i].nombre);
-				procesosAux2.push(procesosOrd[i].tiempoEntrada);
-				procesosAux3.push(procesosOrd[i].tiempoSalida);
-				
-			}else if (procesosOrd[i].rafagacpu > 0){
-				
-				procesosOrd[i].tiempoEntrada = acumTiempoRR;
-				procesosOrd[i].tiempoSalida = acumTiempoRR + procesosOrd[i].rafagacpu;
-				
-				acumTiempoRR += procesosOrd[i].rafagacpu;
-				procesosOrd[i].rafagacpu = 0;
-				procesosAux1.push(procesosOrd[i].nombre);
-				procesosAux2.push(procesosOrd[i].tiempoEntrada);
-				procesosAux3.push(procesosOrd[i].tiempoSalida);
+	}
 
-			}else{
-				continue;
+
+	//Ordeno el arreglo por ta
+	procesosOrd.sort(function(a, b){
+			return a.ta - b.ta;
+	});
+
+	controlTamanioProc();
+
+
+	//Acumulo todos los tiempos, esto me dara el tiempo total de ejecucion
+	acum = 0;
+	for (var i = 0; i < procesosOrd.length; i++) {
+		
+		acum = acum + procesosOrd[i].rafagacpu + procesosOrd[i].rafagaES + procesosOrd[i].rafagacpu2 + procesosOrd[i].ta;
+	}
+
+	controlES = 0;
+	rafagas = 0;
+	iES = 0;
+	contQ = 0;
+
+	for (var i = 0; i <= (acum + 1); i++) { // Es acum + 1 porque la primera vez no entra al procesador
+		
+		if ((colaEjec == 0) && (listos.length > 0)) {
+			colaEjec = listos[0];
+			listos.splice(0,1);
+		}
+
+		if (colaEjec != 0) { 
+		
+
+		 	if (colaEjec.controlRafaga1 == 0){
+		 	
+		 		if((colaEjec.rafagacpu - 1 == 0) || (contQ + 1 == quantum)){ //CONTROLAR ESTA LINEA, PUEDE QUE DEBA SER (contQ + 1 == quantum)
+		 			if (auxiliar.length > 0) {
+
+						auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca: 0});
+		 			}else{
+		 				if (colaEjec.ta > 0) {
+
+			 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: colaEjec.ta, tiempoSalida: i, marca: 0});
+		 				}else{
+		 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: 0, tiempoSalida: i, marca: 0});
+		 				}
+		 			}
+
+					if (colaEjec.rafagacpu - 1 == 0) {
+						colaEjec.rafagacpu -= 1;
+						if (colaEjec.rafagaES == 0) {
+							removerDeMemoria(colaEjec.nombre);
+						}else{
+							colaEjec.controlRafaga1 = 1;
+							if (colaES.length == 0) { //Si la cola de E/S esta ocupada, i no seria el tiempo de entrada
+								colaEjec.tiempoEntradaES = i;
+							}
+							colaES.push(colaEjec);
+						}
+					}else{
+						colaEjec.rafagacpu -= 1;
+						listos.push(colaEjec);
+					}
+					rafagas = i; 
+					colaEjec = 0;
+					
+					contQ = 0;
+
+				}else if (contQ < quantum){
+					contQ += 1;
+					colaEjec.rafagacpu -= 1;
+				}
+
+		 	}else if(colaEjec.controlRafaga2 == 0){
+		 		
+		 		if((colaEjec.rafagacpu2 - 1 == 0) || (contQ + 1 == quantum)){ //CONTROLAR ESTA LINEA, PUEDE QUE DEBA SER (contQ + 1 == quantum)
+					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca: 0});
+					
+					if (colaEjec.rafagacpu2 - 1 == 0) {
+						colaEjec.rafagacpu2 -= 1;
+						
+						colaEjec.controlRafaga2 = 1;
+						removerDeMemoria(colaEjec.nombre);
+					}else{
+						
+						colaEjec.rafagacpu2 -= 1;
+						listos.push(colaEjec);
+						
+					}
+					rafagas = i; 
+					
+
+					colaEjec = 0;
+					
+					contQ = 0;
+					
+				}else if (contQ < quantum){
+					contQ += 1;
+					colaEjec.rafagacpu2 -= 1;
+				}
+		 	}
+		}
+
+
+		//Este for intenta meter en la memoria aquellos procesos que anteriormente no pudieron entrar
+		//claramente esos procesos deberian tenerse encuenta antes que los otros que aun no intentaron entrar
+		for (var j = 0; j < auxControlMem.length; j++) {
+			
+			montarEnMemoria(auxControlMem[j].nombre, auxControlMem[j].tamanio, alg);
+			if(bandera){
+				listos.push(auxControlMem[j]);
+				auxControlMem.splice(j,1);
 			}
 			
 		}
-		
-		if (control == 0) {
-			band = false;
+		for (var j = 0; j < procesosOrd.length; j++) {
+			if(procesosOrd[j].ta == i){
+				montarEnMemoria(procesosOrd[j].nombre, procesosOrd[j].tamanio, alg);
+				if(bandera){
+					listos.push(procesosOrd[j]);
+				
+				}else{
+					auxControlMem.push(procesosOrd[j]);
+
+				}
+			}
 		}
+
+		//Maneja la cola de entrada salida
+		if (colaES.length > 0) {
+			if (colaES[0].rafagaES == iES) {
+
+				//Esto es para que no se actualice el ultimo tiempo de salida si la cpu esta ejecutando un proceso
+				if (colaEjec == 0) {
+					rafagas = i;
+				}
+
+				auxiliar.push({nombre: colaES[0].nombre, tiempoEntrada: colaES[0].tiempoEntradaES, tiempoSalida: i, marca: 3, auxEntrada:0, auxSalida:0});
+				listos.push(colaES[0]);
+				if (colaES.length > 1) {
+					colaES[1].tiempoEntradaES = i;
+					iES = 1;
+				}else{
+
+					iES = 0;
+				}
+				colaES.splice(0,1);
+			}else{
+
+				iES++;
+			}
+		}
+
+	} 
+}
+
+function multiNivel(archivo, alg){
+	memoriaP = new Array(parseInt(tamanioMem.value));
+	listos = [];
+	auxiliar = [];
+	auxControlMem = [];
+	colaES = [];
+	colaEjec = 0;
+	procesosOrd = [];
+	quantum1 = 3;
+	quantum2 = 6;
+
+	for (var i = 0; i < memoriaP.length; i++) {
+		memoriaP[i] = 0;
+	}
+	
+	//Con esto funciona para archivos y manual
+	if (archivo) {
+		procesosOrd = devolverProcesos();
+	}else{
+		for (var i = 0; i < nombreProc.length; i++) {
+			
+			procesosOrd[i] = {	nombre: nombreProc[i], 
+							tamanio: tamanioProc[i], 
+							ta: taProc[i],
+							rafagacpu: rafagacpuProc[i],
+							rafagaES: rafagaESProc[i],
+							rafagacpu2: rafagacpuProc2[i],
+							prioridad: prioridadProc[i],
+							tiempoEntrada: 0,
+							tiempoSalida: 0,
+							tiempoEntradaES: 0,
+							tiempoSalidaES: 0,
+							controlMemoria: 0, //Controla aquellos procesos que se intentaron cargar en memoria y no entraron
+							controlRafaga1: 0,	//Controla que la rafaga 1 haya terminado
+							controlRafaga2: 0	//Controla que la rafaga 2 haya terminado
+						};
+		}
+
 	}
 
-	band = true;
-	while (band){
-		control = 0;
-		for (var i = 0; i < procesosOrd.length; i++) {
-			if ((procesosOrd[i].rafagacpu2 > cuant) && (procesosOrd[i].rafagaES > 0)) {
-				control += 1;
-				procesosOrd[i].rafagacpu2 -= cuant;
-				procesosOrd[i].tiempoEntrada = acumTiempoRR;
-				procesosOrd[i].tiempoSalida = acumTiempoRR + cuant;
-				acumTiempoRR += cuant;
-				procesosAux1.push(procesosOrd[i].nombre);
-				procesosAux2.push(procesosOrd[i].tiempoEntrada);
-				procesosAux3.push(procesosOrd[i].tiempoSalida);
-				
-			}else if ((procesosOrd[i].rafagacpu2 > 0) && (procesosOrd[i].rafagaES > 0)){
-				
-				procesosOrd[i].tiempoEntrada = acumTiempoRR;
-				procesosOrd[i].tiempoSalida = acumTiempoRR + procesosOrd[i].rafagacpu2;
-				
-				acumTiempoRR += procesosOrd[i].rafagacpu2;
-				procesosOrd[i].rafagacpu2 = 0;
-				procesosAux1.push(procesosOrd[i].nombre);
-				procesosAux2.push(procesosOrd[i].tiempoEntrada);
-				procesosAux3.push(procesosOrd[i].tiempoSalida);
+	controlTamanioProc();
 
-			}else{
-				continue;
+	//Acumulo todos los tiempos, esto me dara el tiempo total de ejecucion
+	acum = 0;
+	for (var i = 0; i < procesosOrd.length; i++) {
+		
+		acum = acum + procesosOrd[i].rafagacpu + procesosOrd[i].rafagaES + procesosOrd[i].rafagacpu2 + procesosOrd[i].ta;
+	}
+	
+	controlES = 0;
+	rafagas = 0;
+	iES = 0;
+	contQ = 0;
+
+	for (var i = 0; i <= (acum + 1); i++) { // Es acum + 1 porque la primera vez no entra al procesador
+		
+		if ((colaEjec == 0) && (listos.length > 0)) {
+			colaEjec = listos[0];
+			listos.splice(0,1);
+		}
+
+		//Ordeno por prioridad
+		listos.sort(function(a, b){
+			return a.prioridad - b.prioridad;
+		});
+
+		if (colaEjec != 0) { 
+
+			if (colaEjec.prioridad >= 0 && colaEjec.prioridad <= 5) {
+				if (colaEjec.controlRafaga1 == 0){
+		 	
+			 		if((colaEjec.rafagacpu - 1 == 0) || (contQ + 1 == quantum1)){ 
+			 			if (auxiliar.length > 0) {
+			 				//Los dos ultimos atributos son para cooregir el gantt
+							auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+							
+			 			}else{
+			 				if (colaEjec.ta > 0) {
+				 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: colaEjec.ta, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+			 				}else{
+			 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: 0, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+			 				}
+			 			}
+
+						if (colaEjec.rafagacpu - 1 == 0) {
+							colaEjec.rafagacpu -= 1;
+							if (colaEjec.rafagaES == 0) {
+								removerDeMemoria(colaEjec.nombre);
+							}else{
+								colaEjec.controlRafaga1 = 1;
+								if (colaES.length == 0) { //Si la cola de E/S esta ocupada, i no seria el tiempo de entrada
+									colaEjec.tiempoEntradaES = i;
+								}
+								colaES.push(colaEjec);
+							}
+						}else{
+							colaEjec.rafagacpu -= 1;
+							listos.push(colaEjec);
+						}
+						rafagas = i; 
+						colaEjec = 0;
+						
+						contQ = 0;
+
+					}else if (contQ < quantum1){
+						contQ += 1;
+						colaEjec.rafagacpu -= 1;
+					}
+
+			 	}else if(colaEjec.controlRafaga2 == 0){
+			 		
+			 		if((colaEjec.rafagacpu2 - 1 == 0) || (contQ + 1 == quantum1)){ //CONTROLAR ESTA LINEA, PUEDE QUE DEBA SER (contQ + 1 == quantum1)
+						auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+												
+						if (colaEjec.rafagacpu2 - 1 == 0) {
+							colaEjec.rafagacpu2 -= 1;
+							
+							colaEjec.controlRafaga2 = 1;
+							removerDeMemoria(colaEjec.nombre);
+						}else{
+							
+							colaEjec.rafagacpu2 -= 1;
+							listos.push(colaEjec);
+							
+						}
+						rafagas = i; 
+						
+
+						colaEjec = 0;
+						
+						contQ = 0;
+						
+					}else if (contQ < quantum1){
+						contQ += 1;
+						colaEjec.rafagacpu2 -= 1;
+					}
+			 	}
+			}else if (colaEjec.prioridad >= 6 && colaEjec.prioridad <= 10){
+
+				if (colaEjec.controlRafaga1 == 0){
+		 	
+			 		if((colaEjec.rafagacpu - 1 == 0) || (contQ + 1 == quantum2)){ //CONTROLAR ESTA LINEA, PUEDE QUE DEBA SER (contQ + 1 == quantum)
+			 			if (auxiliar.length > 0) {
+
+							auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:1, auxEntrada:0, auxSalida:0});
+							
+			 			}else{
+			 				if (colaEjec.ta > 0) {
+				 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: colaEjec.ta, tiempoSalida: i, marca:1, auxEntrada:0, auxSalida:0});
+				 				
+			 				}else{
+			 					
+			 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: 0, tiempoSalida: i, marca:1, auxEntrada:0, auxSalida:0});
+			 					
+			 				}
+			 			}
+
+						if (colaEjec.rafagacpu - 1 == 0) {
+							colaEjec.rafagacpu -= 1;
+							if (colaEjec.rafagaES == 0) {
+								removerDeMemoria(colaEjec.nombre);
+							}else{
+								colaEjec.controlRafaga1 = 1;
+								if (colaES.length == 0) { //Si la cola de E/S esta ocupada, i no seria el tiempo de entrada
+									colaEjec.tiempoEntradaES = i;
+								}
+								colaES.push(colaEjec);
+							}
+						}else{
+							colaEjec.rafagacpu -= 1;
+							listos.push(colaEjec);
+						}
+						rafagas = i; 
+						colaEjec = 0;
+						
+						contQ = 0;
+
+					}else if (contQ < quantum2){
+						contQ += 1;
+						colaEjec.rafagacpu -= 1;
+					}
+
+			 	}else if(colaEjec.controlRafaga2 == 0){
+			 		
+			 		if((colaEjec.rafagacpu2 - 1 == 0) || (contQ + 1 == quantum2)){ //CONTROLAR ESTA LINEA, PUEDE QUE DEBA SER (contQ + 1 == quantum2)
+						
+						auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:1, auxEntrada:0, auxSalida:0});
+						
+						
+						if (colaEjec.rafagacpu2 - 1 == 0) {
+							colaEjec.rafagacpu2 -= 1;
+							
+							colaEjec.controlRafaga2 = 1;
+							removerDeMemoria(colaEjec.nombre);
+						}else{
+							
+							colaEjec.rafagacpu2 -= 1;
+							listos.push(colaEjec);
+							
+						}
+						rafagas = i; 
+						
+
+						colaEjec = 0;
+						
+						contQ = 0;
+						
+					}else if (contQ < quantum2){
+						contQ += 1;
+						colaEjec.rafagacpu2 -= 1;
+					}
+			 	}
+
+			}else if (colaEjec.prioridad > 10) {
+
+				if (colaEjec.controlRafaga1 == 0){
+			 		if(colaEjec.rafagacpu + rafagas == i){
+						if (auxiliar.length > 0) {
+
+							
+							auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:2, auxEntrada:0, auxSalida:0});
+							
+			 			}else{
+			 				if (colaEjec.ta > 0) {
+				 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: colaEjec.ta, tiempoSalida: i, marca:2, auxEntrada:0, auxSalida:0});
+				 				
+			 				}else{
+			 					
+			 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: 0, tiempoSalida: i, marca:2, auxEntrada:0, auxSalida:0});
+			 					
+			 				}
+			 			}
+						rafagas = i;
+						if (colaEjec.rafagaES == 0) {
+							removerDeMemoria(colaEjec.nombre);
+						}else{
+							colaEjec.controlRafaga1 = 1;
+							if (colaES.length == 0) { //Si la cola de E/S esta ocupada, i no seria el tiempo de entrada
+								colaEjec.tiempoEntradaES = i;
+							}
+							colaES.push(colaEjec);
+						}
+						colaEjec = 0;
+					
+					}
+			 	}else if(colaEjec.controlRafaga2 == 0){
+			 		if (colaEjec.rafagacpu2 + rafagas == i) {
+						
+						auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:2, auxEntrada:0, auxSalida:0});
+						
+						rafagas = i; // suma la rafaga en este momento
+					
+						
+
+						colaEjec.controlRafaga2 = 1;
+						removerDeMemoria(colaEjec.nombre);
+						colaEjec = 0;
+						
+					}
+			 	}
+
+			}
+
+		}
+
+
+		//Este for intenta meter en la memoria aquellos procesos que anteriormente no pudieron entrar
+		//claramente esos procesos deberian tenerse encuenta antes que los otros que aun no intentaron entrar
+		for (var j = 0; j < auxControlMem.length; j++) {
+			
+			montarEnMemoria(auxControlMem[j].nombre, auxControlMem[j].tamanio, alg);
+			if(bandera){
+				listos.push(auxControlMem[j]);
+				auxControlMem.splice(j,1);
 			}
 			
 		}
-		
-		if (control == 0) {
-			band = false;
-		}
-	}
+		for (var j = 0; j < procesosOrd.length; j++) {
+			if(procesosOrd[j].ta == i){
+				montarEnMemoria(procesosOrd[j].nombre, procesosOrd[j].tamanio, alg);
+				if(bandera){
+					listos.push(procesosOrd[j]);
+				
+				}else{
+					auxControlMem.push(procesosOrd[j]);
 
+				}
+			}
+		}
+
+		//Maneja la cola de entrada salida
+		if (colaES.length > 0) {
+			if (colaES[0].rafagaES == iES) {
+
+				//Esto es para que no se actualice el ultimo tiempo de salida si la cpu esta ejecutando un proceso
+				if (colaEjec == 0) {
+					rafagas = i;
+				}
+
+				auxiliar.push({nombre: colaES[0].nombre, tiempoEntrada: colaES[0].tiempoEntradaES, tiempoSalida: i, marca: 3, auxEntrada:0, auxSalida:0});
+				listos.push(colaES[0]);
+				if (colaES.length > 1) {
+					colaES[1].tiempoEntradaES = i;
+					iES = 1;
+				}else{
+
+					iES = 0;
+				}
+				colaES.splice(0,1);
+			}else{
+
+				iES++;
+			}
+		}
+
+	}
 }
 
 
 
-function historialProcesos(){
-	p = document.createElement("p");
-	p.innerHTML = "- El proceso " + procesosOrd[0].nombre + " entra en el tiempo 0 y sale en el tiempo " + procesosOrd[0].rafagacpu + "\n";
-	p.style.marginBottom = "10px";
-	historial.appendChild(p);
-
-	acumTiempo = procesosOrd[0].rafagacpu;
-	for (var i = 1; i < procesosOrd.length; i++) {
-		p = document.createElement("p");
-		p.style.marginBottom = "10px";
-		if (i > (nombreProc.length-1)) {
-			acumTiempo += procesosOrd[i].rafagacpu2;
-			p.innerHTML = "- El proceso " + procesosOrd[i].nombre + " entra en el tiempo " + (acumTiempo - procesosOrd[i].rafagacpu2) + " y sale en el tiempo " + acumTiempo + "\n";
-		}else{
-			acumTiempo += procesosOrd[i].rafagacpu;
-			p.innerHTML = "- El proceso " + procesosOrd[i].nombre + " entra en el tiempo " + (acumTiempo - procesosOrd[i].rafagacpu) + " y sale en el tiempo " + acumTiempo + "\n";
-		}
-		historial.appendChild(p);
-	}
-}	
-
-function historialProcesosRR(procesosAux1,procesosAux2,procesosAux3){
-	for (var i = 0; i < procesosAux1.length; i++) {
-		
-		if (procesosAux2[i] == procesosAux3[i]) {
-			break;
-		}
-		p = document.createElement("p");
-		p.style.marginBottom = "10px";
-
-		p.innerHTML = "- El proceso " + procesosAux1[i] + " entra en el tiempo " + procesosAux2[i] + " y sale en el tiempo " + procesosAux3[i] + "\n";
-
-		historial.appendChild(p);
-	}
-
-}
 
 function historialProcesosArchivo(auxiliar){
 	for (var i = 0; i < auxiliar.length; i++) {
+		
 		p = document.createElement("p");
 		p.style.marginBottom = "10px";
-		p.innerHTML = "- El proceso " + auxiliar[i].nombre + " entra en el tiempo " + auxiliar[i].tiempoEntrada + " y sale en el tiempo " + auxiliar[i].tiempoSalida + "\n";
+		if (auxiliar[i].marca == 3) {
+			p.innerHTML = "- El proceso " + auxiliar[i].nombre + " entra en el tiempo " + auxiliar[i].tiempoEntrada + " y sale en el tiempo " + auxiliar[i].tiempoSalida + " en E/S\n";
+		}else{
+			p.innerHTML = "- El proceso " + auxiliar[i].nombre + " entra en el tiempo " + auxiliar[i].tiempoEntrada + " y sale en el tiempo " + auxiliar[i].tiempoSalida + "\n";
+		}
 		historial.appendChild(p);	
+		
+	}
+}
+
+function historialProcesosArchivoaux(auxiliar){
+	for (var i = 0; i < auxiliar.length; i++) {
+		
+		p = document.createElement("p");
+		p.style.marginBottom = "10px";
+		
+		p.innerHTML = "- El proceso " + auxiliar[i].nombre + " entra en el tiempo " + auxiliar[i].tiempoEntrada + " y sale en el tiempo " + auxiliar[i].tiempoSalida + "\n";
+		
+		historial.appendChild(p);	
+		
 	}
 }
 
 ganttProc = document.getElementById("ganttProc");
 ganttTiempo = document.getElementById("ganttTiempo");
-function diagramaGantt(){
-	totalTiempo = 0;
-	for (var i = 0; i < procesosOrd.length; i++) {
-		totalTiempo += procesosOrd[i].rafagacpu;
-	}
-	acumTiempo = 0;
-	for (var i = 0; i < procesosOrd.length; i++) {
-		acumTiempo += procesosOrd[i].rafagacpu;
-		//Agrego los divs de procesos
-		div1 = document.createElement("div");
-		span = document.createElement("span");
-		span.innerHTML = procesosOrd[i].nombre;
-		span.className = "white-text";
-		ancho = (procesosOrd[i].rafagacpu/totalTiempo)*100;
-		div1.style.width = ancho + "%";
-		div1.style.height = "50px !important";
+ganttProc2 = document.getElementById("ganttProc2");
+ganttTiempo2 = document.getElementById("ganttTiempo2");
+ganttProc3 = document.getElementById("ganttProc3");
+ganttTiempo3 = document.getElementById("ganttTiempo3");
+ganttProcES = document.getElementById("ganttProcES");
+ganttTiempoES = document.getElementById("ganttTiempoES");
+colaMulti1 = document.getElementById("colaMulti1");
+colaMulti2 = document.getElementById("colaMulti2");
 
-		div1.className = "col center-align ganttProc";
-		div1.style.background = "#"+colores[i];
 
-		div1.appendChild(span);
-		ganttProc.appendChild(div1);
 
-		//Agrego los divs de tiempos
-		div1 = document.createElement("div");
-		span2 = document.createElement("span");
-		span2.innerHTML = acumTiempo;
-		span2.className = "right !important";
-		div1.style.width = ancho + "%";
-		div1.className = "col quitar";
-
-		div1.appendChild(span2);
-		ganttTiempo.appendChild(div1);
-	}
-
-}
-
-function diagramaGanttRR(){
-
-	totalTiempo = procesosAux3[procesosAux3.length-1];
-
-	for (var i = 0; i < procesosAux1.length; i++) {
-		//Agrego los divs de procesos
-		if (procesosAux2[i] == procesosAux3[i]) {
-			break;
+function diagramaGantArchivo(auxiliar, marca){
+	band = false;
+	band2 = false;
+	bandControl = true;
+	acum = 0;
+	controlacum = false;
+	if (auxiliar.length > 0) {
+		totalTiempo = auxiliar[auxiliar.length-1].tiempoSalida;
+		//Todo esto, es para corregir el gantt. Cuando acum sea mayor a 100, se le resta el excedente a los tiempos
+		//Y se lo hace valer 100, entonces de esa forma no se rompe el gantt
+		for (var i = 0; i < auxiliar.length; i++){
+			acum += ((auxiliar[i].tiempoSalida-auxiliar[i].tiempoEntrada)/totalTiempo)*100;
 		}
-		div1 = document.createElement("div");
-		span = document.createElement("span");
-		span.innerHTML = procesosAux1[i];
-		span.className = "white-text";
-		ancho = ((procesosAux3[i]-procesosAux2[i])/totalTiempo)*100;
-		div1.style.width = ancho + "%";
-		div1.style.height = "50px !important";
 
-		div1.className = "col center-align ganttProc";
-		div1.style.background = "#"+colores[i];
-
-		div1.appendChild(span);
-		ganttProc.appendChild(div1);
-
-		//Agrego los divs de tiempos
-		div1 = document.createElement("div");
-		span2 = document.createElement("span");
-		span2.innerHTML = procesosAux3[i];
-		span2.className = "right !important";
-		div1.style.width = ancho + "%";
-		div1.className = "col quitar";
-
-		div1.appendChild(span2);
-		ganttTiempo.appendChild(div1);
-	}
-
-}
-
-function diagramaGantArchivo(auxiliar){
-	totalTiempo = auxiliar[auxiliar.length-1].tiempoSalida;
-	for (var i = 0; i < auxiliar.length; i++) {
-		div1 = document.createElement("div");
-		span = document.createElement("span");
-		span.innerHTML = auxiliar[i].nombre;
-		span.className = "white-text";
-		ancho = ((auxiliar[i].tiempoSalida-auxiliar[i].tiempoEntrada)/totalTiempo)*100;
-		//console.log(ancho + '\n');
-
-		div1.style.width = ancho + "%";
-		div1.style.height = "50px !important";
-
-		div1.className = "col center-align ganttProc";
-		div1.style.background = "#"+colores[i];
-		div1.appendChild(span);
-		ganttProc.appendChild(div1);
-
-		//Agrego los divs de tiempos
-		div1 = document.createElement("div");
-		span2 = document.createElement("span");
-		span2.innerHTML = auxiliar[i].tiempoSalida;
-		span2.className = "right !important";
-		div1.style.width = ancho + "%";
-		div1.className = "col quitar";
-		div1.appendChild(span2);
-		ganttTiempo.appendChild(div1);
-	}
-}
-
-function algColasMultinivel(){
-	cuantum1 = 3;
-	cuantum2 = 6;
-	procesosOrd = [];
-	procesosAux1 = [];
-	procesosAux2 = [];
-	procesosAux3 = [];
-	for (var i = 0; i < nombreProc.length; i++) {
-		procesosOrd[i] = {	nombre: nombreProc[i], 
-						tamanio: tamanioProc[i], 
-						ta: taProc[i],
-						rafagacpu: rafagacpuProc[i],
-						rafagaES: rafagaESProc[i],
-						rafagacpu2: rafagacpuProc2[i],
-						prioridad: prioridadProc[i],
-						tiempoEntrada: 0, //Auxiliar
-						tiempoSalida: 0 //Auxiliar
-					};
-	}
-
-	//TRATAMIENTO PRIMERA COLA -- RR q=3
-
-	acumTiempoRR = 0;
-	const longitud = procesosOrd.length;
-	for (var i = 0; i < longitud; i++) {
-			if (procesosOrd[i].rafagacpu > cuantum1) {
-				procesosOrd[i].rafagacpu -= cuantum1;
-				procesosOrd[i].tiempoEntrada = acumTiempoRR;
-				procesosOrd[i].tiempoSalida = acumTiempoRR + cuantum1;
-				acumTiempoRR += cuantum1;
-			
-			}else if (procesosOrd[i].rafagacpu > 0){
-				
-				procesosOrd[i].tiempoEntrada = acumTiempoRR;
-				procesosOrd[i].tiempoSalida = acumTiempoRR + procesosOrd[i].rafagacpu;
-				
-				acumTiempoRR += procesosOrd[i].rafagacpu;
-				procesosOrd[i].rafagacpu = 0;
-				
-
+		if (acum > 100) {
+			controlacum = true;
+			excedente = (acum - 100)/100;
+			for (var i = 0; i < auxiliar.length; i++){
+				auxiliar[i].auxEntrada = auxiliar[i].tiempoEntrada - auxiliar[i].tiempoEntrada*excedente; //Le resto el procentaje de exceso
+				auxiliar[i].auxSalida = auxiliar[i].tiempoSalida - auxiliar[i].tiempoSalida*excedente; //Le resto el procentaje de exceso
 			}
-			procesosAux1.push(procesosOrd[i].nombre);
-			procesosAux2.push(procesosOrd[i].tiempoEntrada);
-			procesosAux3.push(procesosOrd[i].tiempoSalida);
-			procesosOrd.push(procesosOrd[i]);
-		
-	}
-
-	//TRATAMINETO SEGUNDA COLA -- RR q=6
-	const longitud2 = procesosOrd.length;
-	for (var i = 0; i < longitud2; i++) {
-		
-		if(procesosOrd[i].rafagacpu > 0){
-			procesosOrd[i].tiempoEntrada = acumTiempoRR;
-			procesosOrd[i].tiempoSalida = acumTiempoRR + procesosOrd[i].rafagacpu;
-			acumTiempoRR += procesosOrd[i].rafagacpu;
-			procesosOrd[i].rafagacpu = 0;
 			
-		}else if((procesosOrd[i].rafagacpu2 > cuantum2) && (procesosOrd[i].rafagaES > 0)){
-			procesosOrd[i].rafagacpu2 -= cuantum2;
-			procesosOrd[i].tiempoEntrada = acumTiempoRR;
-			procesosOrd[i].tiempoSalida = acumTiempoRR + cuantum2;
-			acumTiempoRR += cuantum2;
+			//EL PAPAAAA DE LOS PARCHES ES ESTE
+			//Hace que el diagrama de gantt siempre tenga el 100% del ancho, a la fuerza
+			totalTiempo = auxiliar[auxiliar.length-1].auxSalida;
+			while(bandControl){
+				acum = 0;
+				for (var i = 0; i < auxiliar.length; i++){
+					acum += ((auxiliar[i].auxSalida-auxiliar[i].auxEntrada)/totalTiempo)*100;
+				}
+				if (acum > 100) {
+					totalTiempo += 0.1; //Le aumenta 0.1 al divisor para que cada vez sea mas chico la suma de los anchos (acum = ancho total del gantt)
+				}else{
+					bandControl = false;
+				}
+			}
+			
+			
 		}else{
-			procesosOrd[i].tiempoEntrada = acumTiempoRR;
-			procesosOrd[i].tiempoSalida = acumTiempoRR + procesosOrd[i].rafagacpu2;
-			
-			acumTiempoRR += procesosOrd[i].rafagacpu2;
-			procesosOrd[i].rafagacpu2 = 0;
-
+			for (var i = 0; i < auxiliar.length; i++){
+				auxiliar[i].auxEntrada = auxiliar[i].tiempoEntrada;
+				auxiliar[i].auxSalida = auxiliar[i].tiempoSalida;
+			}
 		}
-		procesosAux1.push(procesosOrd[i].nombre);
-		procesosAux2.push(procesosOrd[i].tiempoEntrada);
-		procesosAux3.push(procesosOrd[i].tiempoSalida);
-		procesosOrd.push(procesosOrd[i]);	
+		
+		//Aca comienzo a crear los divs que representan a cada proceso. Y posteriorimente introducirlos en el diagrama
+		for (var i = 0; i < auxiliar.length; i++) {
+			div1 = document.createElement("div");
+			span = document.createElement("span");
+			
+			span.className = "white-text";
+			
+			div1.style.height = "50px !important";
+
+			div1.className = "col center-align ganttProc";
+
+			//Agrego los divs de tiempos
+			div2 = document.createElement("div");
+			span2 = document.createElement("span");
+
+			if (auxiliar[i].marca == marca) {
+				div1.style.background = "#"+colores[i];
+				span.innerHTML = auxiliar[i].nombre;
+				
+				span2.innerHTML = auxiliar[i].tiempoSalida;
+			}else{
+				div1.style.background = "#E0E0E0";
+				span.innerHTML = "";
+				
+				span2.innerHTML = "";
+			}
+			ancho = ((auxiliar[i].auxSalida-auxiliar[i].auxEntrada)/totalTiempo)*100;
+			div1.style.width = ancho + "%";
+			div1.appendChild(span);
+
+			span2.className = "right !important";
+			div2.style.width = ancho + "%";
+			div2.className = "col quitar";
+			div2.appendChild(span2);
+
+			if (marca == 0) {
+				ganttProc.appendChild(div1);
+				ganttTiempo.appendChild(div2);
+			}else if (marca == 1) {
+				ganttProc2.appendChild(div1);
+				ganttTiempo2.appendChild(div2);
+				band = true;
+			}else if (marca == 2){
+				ganttProc3.appendChild(div1);
+				ganttTiempo3.appendChild(div2);
+				band2 = true;
+			}else{
+				ganttProcES.appendChild(div1);
+				ganttTiempoES.appendChild(div2);
+			}
+			// console.log(auxiliar[i]);
+		}
+	}
 	
-			
+
+	if (band || band2) {
+
+		colaMulti1.style.display = "";
+		colaMulti2.style.display = "";
 	}
 
-	//TRATAMIENTO DE LA TERCER COLA -- FCFS
-
-	for (var i = 0; i < procesosOrd.length; i++) {
-		if (procesosOrd[i].rafagacpu > 0) {
-			procesosOrd[i].tiempoEntrada = acumTiempoRR;
-			procesosOrd[i].tiempoSalida = acumTiempoRR + procesosOrd[i].rafagacpu;
-			acumTiempoRR += procesosOrd[i].rafagacpu;
-			procesosOrd[i].rafagacpu = 0;
-			procesosAux1.push(procesosOrd[i].nombre);
-			procesosAux2.push(procesosOrd[i].tiempoEntrada);
-			procesosAux3.push(procesosOrd[i].tiempoSalida);
-			procesosOrd.push(procesosOrd[i]);
-			
-			
-		}else if ((procesosOrd[i].rafagacpu2 > 0) && (procesosOrd[i].rafagaES > 0)){
-			procesosOrd[i].tiempoEntrada = acumTiempoRR;
-			procesosOrd[i].tiempoSalida = acumTiempoRR + procesosOrd[i].rafagacpu2;
-			acumTiempoRR += procesosOrd[i].rafagacpu2;
-			procesosOrd[i].rafagacpu2 = 0;
-			procesosAux1.push(procesosOrd[i].nombre);
-			procesosAux2.push(procesosOrd[i].tiempoEntrada);
-			procesosAux3.push(procesosOrd[i].tiempoSalida);
-		
-
-		}
-		
-	}
 }
 
 //PART FIJA
 function crearmemoriaPF() {
+	procesosOrd = [];
+	if (controlArchivo) {
+		procesosOrd = devolverProcesos();
+	}else{
+		for (var i = 0; i < nombreProc.length; i++) {
+			
+			procesosOrd[i] = {	nombre: nombreProc[i], 
+							tamanio: tamanioProc[i], 
+							ta: taProc[i],
+							rafagacpu: rafagacpuProc[i],
+							rafagaES: rafagaESProc[i],
+							rafagacpu2: rafagacpuProc2[i],
+							prioridad: prioridadProc[i],
+							tiempoEntrada: 0,
+							tiempoSalida: 0,
+							controlMemoria: 0, //Controla aquellos procesos que se intentaron cargar en memoria y no entraron
+							controlRafaga1: 0,	//Controla que la rafaga 1 haya terminado
+							controlRafaga2: 0	//Controla que la rafaga 2 haya terminado
+						};
+		}
+
+	}
 	var memoria = new Object();
 	memoria.tamanio = tamanioMem.value;
 	memoria.particiones = [];
-	memoria.procesos = devolverProcesos();
+	memoria.procesos = procesosOrd;
 	cantparts = cant_part.value.split("-");
 	for (let part = 0; part < cantparts.length; part++) {
 		var particion = {
 			nombre: "PART" + part,
-			tamanio: parseInt(cantparts[part])/1000,
+			tamanio: parseInt(cantparts[part]),
 			procesos: []
 		}
 		memoria.particiones.push(particion);
@@ -1204,12 +1887,24 @@ function memoriaPF(memoria){
 	var cpu = {
 		colalistos: [],
 		colaespera: [],
+		colaespera2: [],
+		colaespera3: [],
 		procejecucion: null,
+		procejecucion2: null,
+		procejecucion3: null,
 		tiempoejecucionactual: 0,
+		tiempoejecucionactual2: 0,
+		tiempoejecucionactual3: 0,
 		procentradasalida: [],
+		ejecentradasalida: false,
 		proceliminar: [],
 		procesos: [],
+		historial: [],
+		historial2: [],
+		historial3: [],
+		historiales: [],
 	};
+	var colamemoria = [];
 	var fin = false;
 	var tiempo = 0;
 	while (!fin) {
@@ -1228,12 +1923,14 @@ function memoriaPF(memoria){
 		for (let i = 0; i < memoria.particiones.length; i++) {
 			console.log(".... nombre: " + memoria.particiones[i].nombre);
 			console.log(".... tamanio: " + memoria.particiones[i].tamanio);
-			console.log(".... Procesos corriendo: ")
+			console.log(".... Procesos en memoria: ")
 			for (let j = 0; j < memoria.particiones[i].procesos.length; j++) {
 				console.log("........ " + memoria.particiones[i].procesos[j].nombre);
 			}
 			console.log(".................");
 		}
+		console.log(".................");
+		console.log("CPU: ");
 
 		var eliminar = [];
 		var parts = memoria.particiones;
@@ -1245,62 +1942,101 @@ function memoriaPF(memoria){
 				//FF
 				if (algoritmosMem.value == 1) {
 					for (let part = 0; part < parts.length; part++) {
-						if (parts[part].tamanio >= proceso.tamanio && !assign) {
-							parts[part].procesos.push(proceso);
-							memoria.particiones[part].tamanio = memoria.particiones[part].tamanio - proceso.tamanio;
-							cpu.colalistos.push(proceso);
-							assign = true;
+						if (parts[part].procesos.length == 0) {
+							if(colamemoria == 0){
+								if (parts[part].tamanio >= proceso.tamanio && !assign) {
+									parts[part].procesos.push(proceso);
+									memoria.particiones[part].tamanio = memoria.particiones[part].tamanio - proceso.tamanio;
+									assign = true;
+								}	
+							}
 						}
 					}	
 				}else{
 					//BF
-					var partelegida = -1;
-					var tamelegido = -1;
-					for (let part = 0; part < parts.length; part++) {
-						if (parts[part].tamanio >= proceso.tamanio && tamelegido > parts[part].tamanio) {
-							tamelegido = parts[part].tamanio;
-							partelegida = part;
-						}else{
-							if (parts[part].tamanio >= proceso.tamanio && tamelegido == -1) {
+					if (colamemoria.length == 0) {
+						var partelegida = -1;
+						var tamelegido = -1;
+						for (let part = 0; part < parts.length; part++) {
+							if (parts[part].tamanio >= proceso.tamanio && tamelegido > parts[part].tamanio) {
 								tamelegido = parts[part].tamanio;
 								partelegida = part;
+							}else{
+								if (parts[part].tamanio >= proceso.tamanio && tamelegido == -1) {
+									tamelegido = parts[part].tamanio;
+									partelegida = part;
+								}
 							}
 						}
-					}
-					if (partelegida != -1) {
-						parts[partelegida].procesos.push(proceso);
-						memoria.particiones[partelegida].tamanio = memoria.particiones[partelegida].tamanio - proceso.tamanio;
-						cpu.colalistos.push(proceso);
-						assign = true;
+						if (partelegida != -1) {
+							parts[partelegida].procesos.push(proceso);
+							memoria.particiones[partelegida].tamanio = memoria.particiones[partelegida].tamanio - proceso.tamanio;
+							assign = true;
+						}
 					}
 				}
 				if (!assign){
-					eliminar.push(proc);
+
+					//CONTROLO SI EL PROCESO VA A COLAMEMORIA O NO
+					var procmemespera = false;
+					for (let part = 0; part < memoria.particiones.length; part++) {
+						var totalmemoria = memoria.particiones[part].tamanio;
+						for (let p = 0; p < memoria.particiones[part].procesos.length; p++) {
+							totalmemoria += memoria.particiones[part].procesos[p].tamanio;
+						}
+						if (proceso.tamanio <= totalmemoria) {
+							procmemespera = true;
+						}
+					}
+					if (procmemespera){
+						colamemoria.push(proceso);
+					}else{
+						eliminar.push(proc);
+					}
+				}else{
+					cpu.colalistos.push(proceso);
 				}
 			}
 		}
 		//controlo tiempo de procesos corriendo
+//		console.log("Cola listos:");
+//		var cl = ".... ";
+//		for (let i = 0; i < cpu.colalistos.length; i++) {
+//			cl = cl + cpu.colalistos[i].nombre + " | ";
+//		}
+//		console.log(cl);
+//		console.log("----------");
+
+
 		cpu = CPU(cpu, tiempo);
+
 		for (let part = 0; part < memoria.particiones.length; part++) {
 			var posfinprocs = [];
 			//recorro procesos corriendo en particion
 			for (let p = 0; p < parts[part].procesos.length; p++) {
 				//Recorro procesos a eliminar de memoria
 				for (let i = 0; i < cpu.proceliminar.length; i++) {
-					eliminar.push(p);
-					//recorro procesos para guardar ubicacion a eliminar
-					for (let proc = 0; proc < memoria.procesos.length; proc++) {
-						if (memoria.procesos[proc].nombre == parts[part].procesos[p].nombre) {
-							eliminar.push(proc);
+					if (cpu.proceliminar[i].nombre == parts[part].procesos[p].nombre) {
+						posfinprocs.push(p); //agrego a lista para eliminar de particion
+
+						//busco ubicacion de proceso en lista de procesos
+						for (let lp = 0; lp < memoria.procesos.length; lp++) {
+							if (cpu.proceliminar[i].nombre == memoria.procesos[lp].nombre) {
+								eliminar.push(lp);
+							}
 						}
 					}
 				}
 			}
+
 			//elimino procesos terminados de la particion
 			posfinprocs.sort();
 			posfinprocs.reverse();
 			for (let p = 0; p < posfinprocs.length; p++) {
-				 memoria.particiones[part].procesos.splice(posfinprocs[p], 1);
+				//restauro tamaño de memoria
+				memoria.particiones[part].tamanio += memoria.particiones[part].procesos[posfinprocs[p]].tamanio;
+				//elimino proceso
+				memoria.particiones[part].procesos.splice(posfinprocs[p], 1);
 			}
 		}
 
@@ -1310,38 +2046,200 @@ function memoriaPF(memoria){
 				memoria.procesos.splice(eliminar[proc], 1);
 		}
 
-		if (memoria.procesos.length == 0) {
-			fin = true;
+		//TRATO COLAMEMORIA
+		if (colamemoria.length != 0) {
+
+			var asignado = false;
+
+			//FF
+			if (algoritmosMem.value == 1) {
+				for (let part = 0; part < parts.length; part++) {
+					if (parts[part].procesos.length == 0) {
+						if (parts[part].tamanio >= colamemoria[0].tamanio && !asignado) {
+							parts[part].procesos.push(colamemoria[0]);
+							memoria.particiones[part].tamanio = memoria.particiones[part].tamanio - colamemoria[0].tamanio;
+							asignado = true;
+						}	
+					}
+				}
+			}else{
+
+				//BF
+				var partelegida = -1;
+				var tamelegido = -1;
+				for (let part = 0; part < parts.length; part++) {
+					if (parts[part].tamanio >= colamemoria[0].tamanio && tamelegido > parts[part].tamanio) {
+						tamelegido = parts[part].tamanio;
+						partelegida = part;
+					}else{
+						if (parts[part].tamanio >= colamemoria[0].tamanio && tamelegido == -1) {
+							tamelegido = parts[part].tamanio;
+							partelegida = part;
+						}
+					}
+				}
+				if (partelegida != -1) {
+					parts[partelegida].procesos.push(colamemoria[0]);
+					memoria.particiones[partelegida].tamanio = memoria.particiones[partelegida].tamanio - colamemoria[0].tamanio;
+					asignado = true;
+				}
+
+			}
+			//ASIGNO PROCESO DE COLAMEMORIA
+			if (asignado) {
+				cpu.colalistos.push(colamemoria[0]);
+				colamemoria.splice(0, 1);
+			}
 		}
 
 		tiempo++;
+
+		if (memoria.procesos.length == 0) {
+			fin = true;
+		}
 	}
+
+	//ORDENO GHANT PARA MULTINIVEL
+	if (alg_planific.value == 4) {
+		var max = 0;
+		var maxh = 0;
+		if (cpu.historial.length > 0) {
+			if (cpu.historial[cpu.historial.length - 1].sal > max) {
+				max = cpu.historial[cpu.historial.length - 1].sal;
+				maxh = 1;
+			}
+		}
+		if (cpu.historial2.length > 0) {
+			if (cpu.historial2[cpu.historial2.length - 1].sal > max) {
+				max = cpu.historial2[cpu.historial2.length - 1].sal;
+				maxh = 2;
+			}
+		}
+		if (cpu.historial3.length > 0) {
+			if (cpu.historial3[cpu.historial3.length - 1].sal > max) {
+				max = cpu.historial3[cpu.historial3.length - 1].sal;
+				maxh = 3;
+			}
+		}
+		
+		if (cpu.historial.length > 0 && maxh != 1) {
+			var hist = {
+				proceso: "  ",
+				ent: cpu.historial[cpu.historial.length - 1].sal,
+				sal: max,
+			};
+			cpu.historial.push(hist);
+		}
+	
+		if (cpu.historial2.length > 0 && maxh != 2) {
+			var hist = {
+				proceso: "  ",
+				ent: cpu.historial2[cpu.historial2.length - 1].sal,
+				sal: max,
+			};
+			cpu.historial2.push(hist);
+		}
+	
+		if (cpu.historial3.length > 0 && maxh != 3) {
+			var hist = {
+				proceso: "  ",
+				ent: cpu.historial3[cpu.historial3.length - 1].sal,
+				sal: max,
+			};
+			cpu.historial3.push(hist);
+		}
+	}
+
+	if (cpu.historial.length > 0) {
+		mostrarHistorial(cpu.historial);
+		mostrarGantt(cpu.historial);
+	}
+
+	if (cpu.historial2.length > 0) {
+		mostrarHistorial(cpu.historial2);
+		mostrarGantt2(cpu.historial2);
+	}
+
+	if (cpu.historial3.length > 0) {
+		mostrarHistorial(cpu.historial3);
+		mostrarGantt3(cpu.historial3);
+	}
+	if (cpu.historiales.length > 0) {
+		mostrarES(cpu.historiales);
+	}
+
 }
 
 function CPU(cpu, tiempo) {
+	if (cpu.procentradasalida.length == 0) {
+		cpu.ejecentradasalida = false;
+	}
 	//FCFS
 	if (alg_planific.value == 1) {
-		var ejecband = false;
 		var ejecentsal = false;
 		//Controlo proceso en ejecucion
 		if (cpu.procejecucion != null) {
 			//el proceso termino su ejecucion
 			if (cpu.tiempoejecucionactual == 0){
-				if ((cpu.procejecucion.tiempoEntrada + cpu.procejecucion.tiempoSalida) != 0) {
-					ejecentsal = controlentradasalida(cpu.procentradasalida, cpu.procejecucion);
+				var entsal = 0;
+				if (cpu.procejecucion.rafagaES != null) {
+					entsal += cpu.procejecucion.rafagaES;
 				}
+				//el proceso tiene entrada salida
+				if (entsal > 0) {
+					for (let es = 0; es < cpu.procentradasalida.length; es++) {
+						if (cpu.procentradasalida[es].proceso.nombre == cpu.procejecucion.nombre) {
+							ejecentsal = true;
+						}
+					}
+					//ejecentsal = controlentradasalida(cpu.procentradasalida, cpu.procejecucion);
+				}
+
 				//el proceso no tiene entrada salida o ya lo ejecuto
-				if ((cpu.procejecucion.tiempoEntrada + cpu.procejecucion.tiempoSalida) == 0 || ejecentsal) {
+				if (entsal <= 0 || ejecentsal) {
 					cpu.proceliminar.push(cpu.procejecucion);
+					cpu.historial[cpu.historial.length - 1].sal = tiempo;
 					cpu.procejecucion = null;
+					ejecentsal = true;
 				}
 				//el proceso tiene entrada salida y no lo ejecuto aun
-				if ((cpu.procejecucion.tiempoEntrada + cpu.procejecucion.tiempoSalida) != 0 && !ejecentsal) {
+				if (entsal >= 0 && !ejecentsal) {
 					var procesoentradasalida = {
 						proceso: cpu.procejecucion,
-						entradasalida: cpu.procejecucion.tiempoEntrada + cpu.procejecucion.tiempoSalida,
+						entradasalida: entsal,
+						ejec: false,
+						enejecucion: false,
+					}
+					if (!cpu.ejecentradasalida) {
+						procesoentradasalida.enejecucion = true;
+						cpu.ejecentradasalida = true;
+						if (cpu.historiales.length == 0) {
+							var proces = {
+								proceso: "  ",
+								inicio: 0,
+								fin: tiempo,
+							}
+							cpu.historiales.push(proces);
+						}else{
+							if (cpu.historiales.length != 0 && cpu.historiales[cpu.historiales.length-1].fin != tiempo) {
+								var proces = {
+									proceso: "  ",
+									inicio: cpu.historiales[cpu.historiales.length-1].fin,
+									fin: tiempo,
+								}
+								cpu.historiales.push(proces);
+							}
+						}
+						
+						var proces = {
+							proceso: cpu.procejecucion.nombre,
+							inicio: tiempo,
+							fin: null,
+						}
+						cpu.historiales.push(proces);
 					}
 					cpu.procentradasalida.push(procesoentradasalida);
+					cpu.historial[cpu.historial.length - 1].sal = tiempo;
 					cpu.procejecucion = null;
 				}
 			}else{
@@ -1352,36 +2250,969 @@ function CPU(cpu, tiempo) {
 
 		//controlo entrada salida
 		for (let i = 0; i < cpu.procentradasalida.length; i++) {
-			if (cpu.procentradasalida[i].entradasalida != 0) {
+//			console.log("PROCESO ENTRADA SALIDA: " + cpu.procentradasalida[i].nombre);
+			if (cpu.procentradasalida[i].entradasalida != 0 && cpu.procentradasalida[i].enejecucion) {
 				cpu.procentradasalida[i].entradasalida -= 1;
 			}else{
-				if (cpu.procesoentradasalida[i].proceso.rafagacpu2 == 0) {
-					cpu.proceliminar.push(cpu.procesoentradasalida[i].proceso);
-				}
-				else{
-					cpu.colaespera.push(cpu.procesoentradasalida[i].proceso);
+				if (cpu.procentradasalida[i].entradasalida == 0 && cpu.procentradasalida[i].enejecucion) {
+					if (cpu.procentradasalida[i].proceso.rafagacpu2 == null && !cpu.procentradasalida[i].ejec) {
+						cpu.proceliminar.push(cpu.procentradasalida[i].proceso);
+						cpu.historiales[cpu.historiales.length-1].fin = tiempo;
+						if ((cpu.procentradasalida.length - 1) >= i + 1) {
+							cpu.procentradasalida[i + 1].enejecucion = true;
+							var proces = {
+								proceso: cpu.procentradasalida[i + 1].proceso.nombre,
+								inicio: tiempo,
+								fin: null,
+							}
+							cpu.historiales.push(proces);
+						}else{
+							cpu.ejecentradasalida = false;
+						}
+					}
+					if (cpu.procentradasalida[i].proceso.rafagacpu2 != null && !cpu.procentradasalida[i].ejec) {
+						cpu.colalistos.push(cpu.procentradasalida[i].proceso);
+						cpu.historiales[cpu.historiales.length-1].fin = tiempo;
+						cpu.procentradasalida[i].ejec = true;
+						if ((cpu.procentradasalida.length - 1) >= i + 1) {
+							cpu.procentradasalida[i + 1].enejecucion = true;
+							var proces = {
+								proceso: cpu.procentradasalida[i + 1].proceso.nombre,
+								inicio: tiempo,
+								fin: null,
+							}
+							cpu.historiales.push(proces);
+						}else{
+							cpu.ejecentradasalida = false;
+						}
+					}
+					cpu.procentradasalida[i].enejecucion = false;	
 				}
 			}
 		}
 
-		//Ejecuto proceso
+		//Ejecuto proceso desde cola de espera
+		if (cpu.colaespera.length > 0 && cpu.procejecucion == null) {
+			cpu.procejecucion = cpu.colaespera[0];
+			cpu.historial = cargarahistorial(cpu.historial, tiempo, cpu.procejecucion);
+			if (controlentradasalida(cpu.procentradasalida, cpu.procejecucion)) {
+				cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu2 - 1;
+			}else{
+				cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu - 1;
+			}
+			cpu.colaespera.splice(0, 1);
+		}
+
+		//Trato desde cola de listos
 		for (let procesp = 0; procesp < cpu.colalistos.length; procesp++) {
 			if (cpu.procejecucion == null){
 				cpu.procejecucion = cpu.colalistos[procesp];
+				cpu.historial = cargarahistorial(cpu.historial, tiempo, cpu.procejecucion);
 				if (controlentradasalida(cpu.procentradasalida, cpu.procejecucion)) {
-					cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu2;
+					cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu2 - 1;
 				}else{
-					cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu;
+					cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu - 1;
 				}
-				ejecband = true;
 			}else{
 				cpu.colaespera.push(cpu.colalistos[procesp]);
 			}
 		}
+
+//		if (cpu.procejecucion != null) {
+//			console.log("PROCESO EJECUTANDOSE: " + cpu.procejecucion.nombre);
+//		}
+		
 		//Elimino de cola de listos
-		if (ejecband){
-			cpu.colalistos = [];
+		cpu.colalistos = [];
+	
+//		console.log("COLA ESPERA: ");
+//		var ce = ".... ";
+//		for (let index = 0; index < cpu.colaespera.length; index++) {
+//			ce = ce + cpu.colaespera[index].nombre + " | ";
+//		}
+//		console.log(ce);
+
+		cpu.colaespera = eliminardecolaespera(cpu.colaespera, cpu.proceliminar);
+		return cpu;
+	}
+
+	//PRIORIDAD
+	if (alg_planific.value == 2) {
+		var ejecentsal = false;
+		//Controlo proceso en ejecucion
+		if (cpu.procejecucion != null) {
+			//el proceso termino su ejecucion
+			if (cpu.tiempoejecucionactual == 0){
+				var entsal = 0;
+				if (cpu.procejecucion.rafagaES != null) {
+					entsal += cpu.procejecucion.rafagaES;
+				}
+				//el proceso tiene entrada salida
+				if (entsal > 0) {
+					for (let es = 0; es < cpu.procentradasalida.length; es++) {
+						if (cpu.procentradasalida[es].proceso.nombre == cpu.procejecucion.nombre) {
+							ejecentsal = true;
+						}
+					}
+					//ejecentsal = controlentradasalida(cpu.procentradasalida, cpu.procejecucion);
+				}
+
+				//el proceso no tiene entrada salida o ya lo ejecuto
+				if (entsal <= 0 || ejecentsal) {
+					cpu.proceliminar.push(cpu.procejecucion);
+					cpu.historial[cpu.historial.length - 1].sal = tiempo;
+					cpu.procejecucion = null;
+					ejecentsal = true;
+				}
+				//el proceso tiene entrada salida y no lo ejecuto aun
+				if (entsal >= 0 && !ejecentsal) {
+					var procesoentradasalida = {
+						proceso: cpu.procejecucion,
+						entradasalida: entsal,
+						ejec: false,
+						enejecucion: false,
+					}
+					if (!cpu.ejecentradasalida) {
+						procesoentradasalida.enejecucion = true;
+						cpu.ejecentradasalida = true;
+						if (cpu.historiales.length == 0) {
+							var proces = {
+								proceso: "  ",
+								inicio: 0,
+								fin: tiempo,
+							}
+							cpu.historiales.push(proces);
+						}else{
+							if (cpu.historiales.length != 0 && cpu.historiales[cpu.historiales.length-1].fin != tiempo) {
+								var proces = {
+									proceso: "  ",
+									inicio: cpu.historiales[cpu.historiales.length-1].fin,
+									fin: tiempo,
+								}
+								cpu.historiales.push(proces);
+							}
+						}
+						
+						var proces = {
+							proceso: cpu.procejecucion.nombre,
+							inicio: tiempo,
+							fin: null,
+						}
+						cpu.historiales.push(proces);
+					}
+					cpu.procentradasalida.push(procesoentradasalida);
+					cpu.historial[cpu.historial.length - 1].sal = tiempo;
+					cpu.procejecucion = null;
+				}
+			}else{
+				//el proceso no termino su ejecucion aun
+				cpu.tiempoejecucionactual -= 1;
+			}
 		}
+
+		//controlo entrada salida
+		for (let i = 0; i < cpu.procentradasalida.length; i++) {
+//			console.log("PROCESO ENTRADA SALIDA: " + cpu.procentradasalida[i].nombre);
+			if (cpu.procentradasalida[i].entradasalida != 0 && cpu.procentradasalida[i].enejecucion) {
+				cpu.procentradasalida[i].entradasalida -= 1;
+			}else{
+				if (cpu.procentradasalida[i].entradasalida == 0 && cpu.procentradasalida[i].enejecucion) {
+					if (cpu.procentradasalida[i].proceso.rafagacpu2 == null && !cpu.procentradasalida[i].ejec) {
+						cpu.proceliminar.push(cpu.procentradasalida[i].proceso);
+						cpu.historiales[cpu.historiales.length-1].fin = tiempo;
+						if ((cpu.procentradasalida.length - 1) >= i + 1) {
+							cpu.procentradasalida[i + 1].enejecucion = true;
+							var proces = {
+								proceso: cpu.procentradasalida[i + 1].proceso.nombre,
+								inicio: tiempo,
+								fin: null,
+							}
+							cpu.historiales.push(proces);
+						}else{
+							cpu.ejecentradasalida = false;
+						}
+					}
+					if (cpu.procentradasalida[i].proceso.rafagacpu2 != null && !cpu.procentradasalida[i].ejec) {
+						cpu.colalistos.push(cpu.procentradasalida[i].proceso);
+						cpu.historiales[cpu.historiales.length-1].fin = tiempo;
+						cpu.procentradasalida[i].ejec = true;
+						if ((cpu.procentradasalida.length - 1) >= i + 1) {
+							cpu.procentradasalida[i + 1].enejecucion = true;
+							var proces = {
+								proceso: cpu.procentradasalida[i + 1].proceso.nombre,
+								inicio: tiempo,
+								fin: null,
+							}
+							cpu.historiales.push(proces);
+						}else{
+							cpu.ejecentradasalida = false;
+						}
+					}
+					cpu.procentradasalida[i].enejecucion = false;	
+				}
+			}
+		}
+
+		//Controlo Prioridad con proceso en ejecucion
+		var bloq = null;
+		if (cpu.procejecucion != null) {
+			var prioridad = false;
+			for (let i = 0; i < cpu.colalistos.length; i++) {
+				if (cpu.colalistos[i].prioridad < cpu.procejecucion.prioridad) {
+					prioridad = true;
+				}
+			}
+			if (prioridad) {
+				var ejecutoprimerrafaga = false;
+				for (let es = 0; es < cpu.procentradasalida.length; es++) {
+					if (cpu.procentradasalida[es].proceso.nombre == cpu.procejecucion.nombre) {
+						ejecutoprimerrafaga = true;
+					}
+				}
+				if (ejecutoprimerrafaga) {
+					cpu.procejecucion.rafagacpu2 -= tiempo - cpu.historial[cpu.historial.length - 1].ent;
+				}else{
+					cpu.procejecucion.rafagacpu -= tiempo - cpu.historial[cpu.historial.length - 1].ent;
+				}
+				cpu.colalistos.push(cpu.procejecucion);
+				bloq = cpu.procejecucion.nombre;
+				cpu.procejecucion = null;
+				cpu.historial[cpu.historial.length - 1].sal = tiempo;
+			}
+		}
+
+		//Ejecuto proceso desde cola de espera
+		if (cpu.colaespera.length > 0 && cpu.procejecucion == null && cpu.colalistos.length == 0) {
+ 
+			//controlo prioridad
+			var max = 0;
+			var prio = 99999;
+			for (let i = 0; i < cpu.colaespera.length; i++) {
+				
+				var prioridadproceso = 0;
+				if (cpu.colaespera[i].prioridad != null) {
+					var prioridadproceso = cpu.colaespera[i].prioridad;
+				}
+				if (prio > prioridadproceso) {
+					max = i;
+					prio = prioridadproceso;
+				}
+			}
+
+			cpu.procejecucion = cpu.colaespera[max];
+			cpu.historial = cargarahistorial(cpu.historial, tiempo, cpu.procejecucion);
+			if (controlentradasalida(cpu.procentradasalida, cpu.procejecucion)) {
+				cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu2 - 1;
+			}else{
+				cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu - 1;
+			}
+			cpu.colaespera.splice(max, 1);
+		}
+
+		//Trato desde cola de listos
+
+		//controlo prioridad
+		var max = 0;
+		var prio = 999999;
+		for (let i = 0; i < cpu.colalistos.length; i++) {
+			var prioridadproceso = 0;
+			if (cpu.colalistos[i].prioridad != null) {
+				var prioridadproceso = cpu.colalistos[i].prioridad;
+			}
+			if (prio > prioridadproceso) {
+				max = i;
+				prio = prioridadproceso;
+			}
+		}
+		for (let procesp = 0; procesp < cpu.colalistos.length; procesp++) {
+			if (cpu.procejecucion == null && max == procesp){
+				cpu.procejecucion = cpu.colalistos[procesp];
+				cpu.historial = cargarahistorial(cpu.historial, tiempo, cpu.procejecucion);
+				if (controlentradasalida(cpu.procentradasalida, cpu.procejecucion)) {
+					cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu2 - 1;
+				}else{
+					cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu - 1;
+				}
+			}else{
+				if (cpu.colalistos[procesp].nombre == bloq) {
+					cpu.colaespera.unshift(cpu.colalistos[procesp]);
+				}else{
+					cpu.colaespera.push(cpu.colalistos[procesp]);
+				}
+			}
+		}
+
+//		if (cpu.procejecucion != null) {
+//			console.log("PROCESO EJECUTANDOSE: " + cpu.procejecucion.nombre);
+//		}
+		
+		//Elimino de cola de listos
+		cpu.colalistos = [];
+	
+//		console.log("COLA ESPERA: ");
+//		var ce = ".... ";
+//		for (let index = 0; index < cpu.colaespera.length; index++) {
+//			ce = ce + cpu.colaespera[index].nombre + " | ";
+//		}
+//		console.log(ce);
+
+		cpu.colaespera = eliminardecolaespera(cpu.colaespera, cpu.proceliminar);
+		return cpu;
+	}
+
+	//RR
+	if (alg_planific.value == 3) {
+		var quantum = parseInt(cuant.value);
+		var ejecentsal = false;
+		//Controlo proceso en ejecucion
+		if (cpu.procejecucion != null) {
+			//el proceso termino su ejecucion
+			if (cpu.tiempoejecucionactual == 0){
+				var entsal = 0;
+				if (cpu.procejecucion.rafagaES != null) {
+					entsal += cpu.procejecucion.rafagaES;
+				}
+				//el proceso tiene entrada salida
+				if (entsal > 0) {
+					for (let es = 0; es < cpu.procentradasalida.length; es++) {
+						if (cpu.procentradasalida[es].proceso.nombre == cpu.procejecucion.nombre) {
+							ejecentsal = true;
+						}
+					}
+					//ejecentsal = controlentradasalida(cpu.procentradasalida, cpu.procejecucion);
+				}
+
+				//el proceso no tiene entrada salida o ya lo ejecuto
+				if (entsal <= 0 || ejecentsal) {
+					cpu.proceliminar.push(cpu.procejecucion);
+					cpu.historial[cpu.historial.length - 1].sal = tiempo;
+					cpu.procejecucion = null;
+					ejecentsal = true;
+				}
+				//el proceso tiene entrada salida y no lo ejecuto aun
+				if (entsal >= 0 && !ejecentsal) {
+					var procesoentradasalida = {
+						proceso: cpu.procejecucion,
+						entradasalida: entsal,
+						ejec: false,
+						enejecucion: false,
+					}
+					if (!cpu.ejecentradasalida) {
+						procesoentradasalida.enejecucion = true;
+						cpu.ejecentradasalida = true;
+						if (cpu.historiales.length == 0) {
+							var proces = {
+								proceso: "  ",
+								inicio: 0,
+								fin: tiempo,
+							}
+							cpu.historiales.push(proces);
+						}else{
+							if (cpu.historiales.length != 0 && cpu.historiales[cpu.historiales.length-1].fin != tiempo) {
+								var proces = {
+									proceso: "  ",
+									inicio: cpu.historiales[cpu.historiales.length-1].fin,
+									fin: tiempo,
+								}
+								cpu.historiales.push(proces);
+							}
+						}
+						
+						var proces = {
+							proceso: cpu.procejecucion.nombre,
+							inicio: tiempo,
+							fin: null,
+						}
+						cpu.historiales.push(proces);
+					}
+					cpu.procentradasalida.push(procesoentradasalida);
+					cpu.historial[cpu.historial.length - 1].sal = tiempo;
+					cpu.procejecucion = null;
+				}
+			}else{
+				//el proceso no termino su ejecucion aun
+				cpu.tiempoejecucionactual -= 1;
+			}
+		}
+
+		//controlo entrada salida
+		for (let i = 0; i < cpu.procentradasalida.length; i++) {
+//			console.log("PROCESO ENTRADA SALIDA: " + cpu.procentradasalida[i].nombre);
+			if (cpu.procentradasalida[i].entradasalida != 0 && cpu.procentradasalida[i].enejecucion) {
+				cpu.procentradasalida[i].entradasalida -= 1;
+			}else{
+				if (cpu.procentradasalida[i].entradasalida == 0 && cpu.procentradasalida[i].enejecucion) {
+					if (cpu.procentradasalida[i].proceso.rafagacpu2 == null && !cpu.procentradasalida[i].ejec) {
+						cpu.proceliminar.push(cpu.procentradasalida[i].proceso);
+						cpu.historiales[cpu.historiales.length-1].fin = tiempo;
+						if ((cpu.procentradasalida.length - 1) >= i + 1) {
+							cpu.procentradasalida[i + 1].enejecucion = true;
+							var proces = {
+								proceso: cpu.procentradasalida[i + 1].proceso.nombre,
+								inicio: tiempo,
+								fin: null,
+							}
+							cpu.historiales.push(proces);
+						}else{
+							cpu.ejecentradasalida = false;
+						}
+					}
+					if (cpu.procentradasalida[i].proceso.rafagacpu2 != null && !cpu.procentradasalida[i].ejec) {
+						cpu.colalistos.push(cpu.procentradasalida[i].proceso);
+						cpu.historiales[cpu.historiales.length-1].fin = tiempo;
+						cpu.procentradasalida[i].ejec = true;
+						if ((cpu.procentradasalida.length - 1) >= i + 1) {
+							cpu.procentradasalida[i + 1].enejecucion = true;
+							var proces = {
+								proceso: cpu.procentradasalida[i + 1].proceso.nombre,
+								inicio: tiempo,
+								fin: null,
+							}
+							cpu.historiales.push(proces);
+						}else{
+							cpu.ejecentradasalida = false;
+						}
+					}
+					cpu.procentradasalida[i].enejecucion = false;	
+				}
+			}
+		}
+
+		//Controlo Quantum
+		if (cpu.procejecucion != null) {
+			var ejecutoprimerrafaga = false;
+			var ejecutoquantum = false;
+			for (let es = 0; es < cpu.procentradasalida.length; es++) {
+				if (cpu.procentradasalida[es].proceso.nombre == cpu.procejecucion.nombre) {
+					ejecutoprimerrafaga = true;
+				}
+			}
+			if (ejecutoprimerrafaga) {
+				if (cpu.procejecucion.rafagacpu2 - cpu.tiempoejecucionactual > quantum) {
+					cpu.procejecucion.rafagacpu2 -= tiempo - cpu.historial[cpu.historial.length - 1].ent;
+					ejecutoquantum = true;
+				}
+			}else{
+				if (cpu.procejecucion.rafagacpu - cpu.tiempoejecucionactual > quantum) {
+					cpu.procejecucion.rafagacpu -= tiempo - cpu.historial[cpu.historial.length - 1].ent;
+					ejecutoquantum = true;
+				}
+			}
+			if (ejecutoquantum) {
+				cpu.colalistos.push(cpu.procejecucion);
+				cpu.historial[cpu.historial.length - 1].sal = tiempo;
+				cpu.procejecucion = null;
+			}
+		}
+
+		//Ejecuto proceso desde cola de espera
+		if (cpu.colaespera.length > 0 && cpu.procejecucion == null) {
+			cpu.procejecucion = cpu.colaespera[0];
+			cpu.historial = cargarahistorial(cpu.historial, tiempo, cpu.procejecucion);
+			if (controlentradasalida(cpu.procentradasalida, cpu.procejecucion)) {
+				cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu2 - 1;
+			}else{
+				cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu - 1;
+			}
+			cpu.colaespera.splice(0, 1);
+		}
+
+		//Trato desde cola de listos
+		for (let procesp = 0; procesp < cpu.colalistos.length; procesp++) {
+			if (cpu.procejecucion == null){
+				cpu.procejecucion = cpu.colalistos[procesp];
+				cpu.historial = cargarahistorial(cpu.historial, tiempo, cpu.procejecucion);
+				if (controlentradasalida(cpu.procentradasalida, cpu.procejecucion)) {
+					cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu2 - 1;
+				}else{
+					cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu - 1;
+				}
+			}else{
+				cpu.colaespera.push(cpu.colalistos[procesp]);
+			}
+		}
+
+//		if (cpu.procejecucion != null) {
+//			console.log("PROCESO EJECUTANDOSE: " + cpu.procejecucion.nombre);
+//		}
+		
+		//Elimino de cola de listos
+		cpu.colalistos = [];
+	
+//		console.log("COLA ESPERA: ");
+//		var ce = ".... ";
+//		for (let index = 0; index < cpu.colaespera.length; index++) {
+//			ce = ce + cpu.colaespera[index].nombre + " | ";
+//		}
+//		console.log(ce);
+
+		cpu.colaespera = eliminardecolaespera(cpu.colaespera, cpu.proceliminar);
+		return cpu;
+	}
+
+	//MULTINIVEL
+	if (alg_planific.value == 4) {
+		var quantum = 2;
+		var quantum2 = 3;
+
+		//COLA1
+		var ejecentsal = false;
+		//Controlo proceso en ejecucion
+		if (cpu.procejecucion != null) {
+			//el proceso termino su ejecucion
+			if (cpu.tiempoejecucionactual == 0){
+				var entsal = 0;
+				if (cpu.procejecucion.rafagaES != null) {
+					entsal += cpu.procejecucion.rafagaES;
+				}
+				//el proceso tiene entrada salida
+				if (entsal > 0) {
+					for (let es = 0; es < cpu.procentradasalida.length; es++) {
+						if (cpu.procentradasalida[es].proceso.nombre == cpu.procejecucion.nombre) {
+							ejecentsal = true;
+						}
+					}
+					//ejecentsal = controlentradasalida(cpu.procentradasalida, cpu.procejecucion);
+				}
+
+				//el proceso no tiene entrada salida o ya lo ejecuto
+				if (entsal <= 0 || ejecentsal) {
+					cpu.proceliminar.push(cpu.procejecucion);
+					cpu.historial[cpu.historial.length - 1].sal = tiempo;
+					cpu.procejecucion = null;
+					ejecentsal = true;
+				}
+				//el proceso tiene entrada salida y no lo ejecuto aun
+				if (entsal >= 0 && !ejecentsal) {
+					var procesoentradasalida = {
+						proceso: cpu.procejecucion,
+						entradasalida: entsal,
+						ejec: false,
+						enejecucion: false,
+					}
+					if (!cpu.ejecentradasalida) {
+						procesoentradasalida.enejecucion = true;
+						cpu.ejecentradasalida = true;
+						if (cpu.historiales.length == 0) {
+							var proces = {
+								proceso: "  ",
+								inicio: 0,
+								fin: tiempo,
+							}
+							cpu.historiales.push(proces);
+						}else{
+							if (cpu.historiales.length != 0 && cpu.historiales[cpu.historiales.length-1].fin != tiempo) {
+								var proces = {
+									proceso: "  ",
+									inicio: cpu.historiales[cpu.historiales.length-1].fin,
+									fin: tiempo,
+								}
+								cpu.historiales.push(proces);
+							}
+						}
+						
+						var proces = {
+							proceso: cpu.procejecucion.nombre,
+							inicio: tiempo,
+							fin: null,
+						}
+						cpu.historiales.push(proces);
+					}
+					cpu.procentradasalida.push(procesoentradasalida);
+					cpu.historial[cpu.historial.length - 1].sal = tiempo;
+					cpu.procejecucion = null;
+				}
+			}else{
+				//el proceso no termino su ejecucion aun
+				cpu.tiempoejecucionactual -= 1;
+			}
+			
+		}
+
+		//COLA 2
+		var ejecentsal2 = false;
+		if (cpu.procejecucion2 != null) {
+			//el proceso termino su ejecucion
+			if (cpu.tiempoejecucionactual2 == 0){
+				var entsal2 = 0;
+				if (cpu.procejecucion2.rafagaES != null) {
+					entsal2 += cpu.procejecucion2.rafagaES;
+				}
+				//el proceso tiene entrada salida
+				if (entsal2 > 0) {
+					for (let es = 0; es < cpu.procentradasalida.length; es++) {
+						if (cpu.procentradasalida[es].proceso.nombre == cpu.procejecucion2.nombre) {
+							ejecentsal2 = true;
+						}
+					}
+					//ejecentsal = controlentradasalida(cpu.procentradasalida, cpu.procejecucion);
+				}
+
+				//el proceso no tiene entrada salida o ya lo ejecuto
+				if (entsal2 <= 0 || ejecentsal2) {
+					cpu.proceliminar.push(cpu.procejecucion2);
+					cpu.historial2[cpu.historial2.length - 1].sal = tiempo;
+					cpu.procejecucion2 = null;
+					ejecentsal2 = true;
+				}
+				//el proceso tiene entrada salida y no lo ejecuto aun
+				if (entsal2 >= 0 && !ejecentsal2) {
+					var procesoentradasalida = {
+						proceso: cpu.procejecucion2,
+						entradasalida: entsal2,
+						ejec: false,
+						enejecucion: false,
+					}
+					if (!cpu.ejecentradasalida) {
+						procesoentradasalida.enejecucion = true;
+						cpu.ejecentradasalida = true;
+						if (cpu.historiales.length == 0) {
+							var proces = {
+								proceso: "  ",
+								inicio: 0,
+								fin: tiempo,
+							}
+							cpu.historiales.push(proces);
+						}else{
+							if (cpu.historiales.length != 0 && cpu.historiales[cpu.historiales.length-1].fin != tiempo) {
+								var proces = {
+									proceso: "  ",
+									inicio: cpu.historiales[cpu.historiales.length-1].fin,
+									fin: tiempo,
+								}
+								cpu.historiales.push(proces);
+							}
+						}
+						
+						var proces = {
+							proceso: cpu.procejecucion2.nombre,
+							inicio: tiempo,
+							fin: null,
+						}
+						cpu.historiales.push(proces);
+					}
+					cpu.procentradasalida.push(procesoentradasalida);
+					cpu.historial2[cpu.historial2.length - 1].sal = tiempo;
+					cpu.procejecucion2 = null;
+				}
+			}else{
+				//el proceso no termino su ejecucion aun
+				cpu.tiempoejecucionactual2 -= 1;
+			}
+		}
+
+		//COLA 3
+		var ejecentsal3 = false;
+		if (cpu.procejecucion3 != null) {
+			//el proceso termino su ejecucion
+			if (cpu.tiempoejecucionactual3 == 0){
+				var entsal3 = 0;
+				if (cpu.procejecucion3.rafagaES != null) {
+					entsal3 += cpu.procejecucion3.rafagaES;
+				}
+				//el proceso tiene entrada salida
+				if (entsal3 > 0) {
+					for (let es = 0; es < cpu.procentradasalida.length; es++) {
+						if (cpu.procentradasalida[es].proceso.nombre == cpu.procejecucion3.nombre) {
+							ejecentsal3 = true;
+						}
+					}
+					//ejecentsal = controlentradasalida(cpu.procentradasalida, cpu.procejecucion);
+				}
+
+				//el proceso no tiene entrada salida o ya lo ejecuto
+				if (entsal3 <= 0 || ejecentsal3) {
+					cpu.proceliminar.push(cpu.procejecucion3);
+					cpu.historial3[cpu.historial3.length - 1].sal = tiempo;
+					cpu.procejecucion3 = null;
+					ejecentsal3 = true;
+				}
+				//el proceso tiene entrada salida y no lo ejecuto aun
+				if (entsal3 >= 0 && !ejecentsal3) {
+					var procesoentradasalida = {
+						proceso: cpu.procejecucion3,
+						entradasalida: entsal3,
+						ejec: false,
+						enejecucion: false,
+					}
+					if (!cpu.ejecentradasalida) {
+						procesoentradasalida.enejecucion = true;
+						cpu.ejecentradasalida = true;
+						if (cpu.historiales.length == 0) {
+							var proces = {
+								proceso: "  ",
+								inicio: 0,
+								fin: tiempo,
+							}
+							cpu.historiales.push(proces);
+						}else{
+							if (cpu.historiales.length != 0 && cpu.historiales[cpu.historiales.length-1].fin != tiempo) {
+								var proces = {
+									proceso: "  ",
+									inicio: cpu.historiales[cpu.historiales.length-1].fin,
+									fin: tiempo,
+								}
+								cpu.historiales.push(proces);
+							}
+						}
+						
+						var proces = {
+							proceso: cpu.procejecucion3.nombre,
+							inicio: tiempo,
+							fin: null,
+						}
+						cpu.historiales.push(proces);
+					}
+					cpu.procentradasalida.push(procesoentradasalida);
+					cpu.historial3[cpu.historial3.length - 1].sal = tiempo;
+					cpu.procejecucion3 = null;
+				}
+			}else{
+				//el proceso no termino su ejecucion aun
+				cpu.tiempoejecucionactual3 -= 1;
+			}
+		}
+
+		//controlo entrada salida
+		for (let i = 0; i < cpu.procentradasalida.length; i++) {
+//			console.log("PROCESO ENTRADA SALIDA: " + cpu.procentradasalida[i].nombre);
+			if (cpu.procentradasalida[i].entradasalida != 0 && cpu.procentradasalida[i].enejecucion) {
+				cpu.procentradasalida[i].entradasalida -= 1;
+			}else{
+				if (cpu.procentradasalida[i].entradasalida == 0 && cpu.procentradasalida[i].enejecucion) {
+					if (cpu.procentradasalida[i].proceso.rafagacpu2 == null && !cpu.procentradasalida[i].ejec) {
+						cpu.proceliminar.push(cpu.procentradasalida[i].proceso);
+						cpu.historiales[cpu.historiales.length-1].fin = tiempo;
+						if ((cpu.procentradasalida.length - 1) >= i + 1) {
+							cpu.procentradasalida[i + 1].enejecucion = true;
+							var proces = {
+								proceso: cpu.procentradasalida[i + 1].proceso.nombre,
+								inicio: tiempo,
+								fin: null,
+							}
+							cpu.historiales.push(proces);
+						}else{
+							cpu.ejecentradasalida = false;
+						}
+					}
+					if (cpu.procentradasalida[i].proceso.rafagacpu2 != null && !cpu.procentradasalida[i].ejec) {
+						cpu.colalistos.push(cpu.procentradasalida[i].proceso);
+						cpu.historiales[cpu.historiales.length-1].fin = tiempo;
+						cpu.procentradasalida[i].ejec = true;
+						if ((cpu.procentradasalida.length - 1) >= i + 1) {
+							cpu.procentradasalida[i + 1].enejecucion = true;
+							var proces = {
+								proceso: cpu.procentradasalida[i + 1].proceso.nombre,
+								inicio: tiempo,
+								fin: null,
+							}
+							cpu.historiales.push(proces);
+						}else{
+							cpu.ejecentradasalida = false;
+						}
+					}
+					cpu.procentradasalida[i].enejecucion = false;	
+				}
+			}
+		}
+
+		//Controlo Quantum
+		if (cpu.procejecucion != null) {
+			var ejecutoprimerrafaga = false;
+			var ejecutoquantum = false;
+			for (let es = 0; es < cpu.procentradasalida.length; es++) {
+				if (cpu.procentradasalida[es].proceso.nombre == cpu.procejecucion.nombre) {
+					ejecutoprimerrafaga = true;
+				}
+			}
+			if (ejecutoprimerrafaga) {
+				if (cpu.procejecucion.rafagacpu2 - cpu.tiempoejecucionactual > quantum) {
+					cpu.procejecucion.rafagacpu2 -= tiempo - cpu.historial[cpu.historial.length - 1].ent;
+					ejecutoquantum = true;
+				}
+			}else{
+				if (cpu.procejecucion.rafagacpu - cpu.tiempoejecucionactual > quantum) {
+					cpu.procejecucion.rafagacpu -= tiempo - cpu.historial[cpu.historial.length - 1].ent;
+					ejecutoquantum = true;
+				}
+			}
+			if (ejecutoquantum) {
+				cpu.colalistos.push(cpu.procejecucion);
+				cpu.historial[cpu.historial.length - 1].sal = tiempo;
+				cpu.procejecucion = null;
+			}
+		}
+
+		//Controlo Quantum2
+		if (cpu.procejecucion2 != null) {
+			var ejecutoprimerrafaga = false;
+			var ejecutoquantum = false;
+			for (let es = 0; es < cpu.procentradasalida.length; es++) {
+				if (cpu.procentradasalida[es].proceso.nombre == cpu.procejecucion2.nombre) {
+					ejecutoprimerrafaga = true;
+				}
+			}
+			if (ejecutoprimerrafaga) {
+				if (cpu.procejecucion2.rafagacpu2 - cpu.tiempoejecucionactual2 > quantum2) {
+					cpu.procejecucion2.rafagacpu2 -= tiempo - cpu.historial2[cpu.historial2.length - 1].ent;
+					ejecutoquantum = true;
+				}
+			}else{
+				if (cpu.procejecucion2.rafagacpu - cpu.tiempoejecucionactual2 > quantum2) {
+					cpu.procejecucion2.rafagacpu -= tiempo - cpu.historial2[cpu.historial2.length - 1].ent;
+					ejecutoquantum = true;
+				}
+			}
+			if (ejecutoquantum) {
+				cpu.colalistos.push(cpu.procejecucion2);
+				cpu.historial2[cpu.historial2.length - 1].sal = tiempo;
+				cpu.procejecucion2 = null;
+			}
+		}
+
+		//Ejecuto proceso desde cola de espera
+
+		//COLA 1
+		if (cpu.colaespera.length > 0 && cpu.procejecucion == null) {
+			cpu.procejecucion = cpu.colaespera[0];
+			cpu.historial = cargarahistorial(cpu.historial, tiempo, cpu.procejecucion);
+			if (controlentradasalida(cpu.procentradasalida, cpu.procejecucion)) {
+				cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu2 - 1;
+			}else{
+				cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu - 1;
+			}
+			cpu.colaespera.splice(0, 1);
+		}
+
+		//COLA 2
+		if (cpu.colaespera2.length > 0 && cpu.procejecucion2 == null) {
+			var ejecprio = true;
+			for (let procesp = 0; procesp < cpu.colalistos.length; procesp++) {
+				if (cpu.colalistos[procesp].prioridad < 6) {
+					ejecprio = false;
+				}
+			}
+			if (ejecutocolaanterior(cpu, 2) && ejecprio) {
+				cpu.procejecucion2 = cpu.colaespera2[0];
+				cpu.historial2 = cargarahistorial(cpu.historial2, tiempo, cpu.procejecucion2);
+				if (controlentradasalida(cpu.procentradasalida, cpu.procejecucion2)) {
+					cpu.tiempoejecucionactual2 = cpu.procejecucion2.rafagacpu2 - 1;
+				}else{
+					cpu.tiempoejecucionactual2 = cpu.procejecucion2.rafagacpu - 1;
+				}
+				cpu.colaespera2.splice(0, 1);
+			}
+		}
+
+		//COLA 3
+		if (cpu.colaespera3.length > 0 && cpu.procejecucion3 == null) {
+			var ejecprio2 = true;
+			for (let procesp = 0; procesp < cpu.colalistos.length; procesp++) {
+				if (cpu.colalistos[procesp].prioridad <= 10) {
+					ejecprio2 = false;
+				}
+			}
+			if (ejecutocolaanterior(cpu, 3) && ejecprio2) {
+				cpu.procejecucion3 = cpu.colaespera3[0];
+				cpu.historial3 = cargarahistorial(cpu.historial3, tiempo, cpu.procejecucion3);
+				if (controlentradasalida(cpu.procentradasalida, cpu.procejecucion3)) {
+					cpu.tiempoejecucionactual3 = cpu.procejecucion3.rafagacpu2 - 1;
+				}else{
+					cpu.tiempoejecucionactual3 = cpu.procejecucion3.rafagacpu - 1;
+				}
+				cpu.colaespera3.splice(0, 1);	
+			}
+		}
+
+		//VERIFICO PROCESO DE MAYOR PRIORIDAD
+		var maxp = 0;
+		var maxpr = 999999;
+		for (let procesp = 0; procesp < cpu.colalistos.length; procesp++) {
+			if (cpu.colalistos[procesp].prioridad < maxpr) {
+				maxpr = cpu.colalistos[procesp].prioridad;
+				maxp = procesp;
+			}
+		}
+
+		//Trato desde cola de listos
+		for (let procesp = 0; procesp < cpu.colalistos.length; procesp++) {
+
+			//COLA 1
+			if (cpu.colalistos[procesp].prioridad < 6) {
+				if (cpu.procejecucion == null && maxp == procesp){
+					cpu.procejecucion = cpu.colalistos[procesp];
+					cpu.historial = cargarahistorial(cpu.historial, tiempo, cpu.procejecucion);
+					if (controlentradasalida(cpu.procentradasalida, cpu.procejecucion)) {
+						cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu2 - 1;
+					}else{
+						cpu.tiempoejecucionactual = cpu.procejecucion.rafagacpu - 1;
+					}
+				}else{
+					cpu.colaespera.push(cpu.colalistos[procesp]);
+				}
+			}
+
+			//COLA 2
+			if (cpu.colalistos[procesp].prioridad >= 6 && cpu.colalistos[procesp].prioridad <= 10 ) {
+				if (cpu.procejecucion2 == null && ejecutocolaanterior(cpu, 2) && maxp == procesp){
+					cpu.procejecucion2 = cpu.colalistos[procesp];
+					cpu.historial2 = cargarahistorial(cpu.historial2, tiempo, cpu.procejecucion2);
+					if (controlentradasalida(cpu.procentradasalida, cpu.procejecucion2)) {
+						cpu.tiempoejecucionactual2 = cpu.procejecucion2.rafagacpu2 - 1;
+					}else{
+						cpu.tiempoejecucionactual2 = cpu.procejecucion2.rafagacpu - 1;
+					}
+				}else{
+					cpu.colaespera2.push(cpu.colalistos[procesp]);
+				}
+			}
+
+			//COLA 3
+			if (cpu.colalistos[procesp].prioridad > 10) {
+				if (cpu.procejecucion3 == null && ejecutocolaanterior(cpu, 3) && maxp == procesp){
+					cpu.procejecucion3 = cpu.colalistos[procesp];
+					cpu.historial3 = cargarahistorial(cpu.historial3, tiempo, cpu.procejecucion3);
+					if (controlentradasalida(cpu.procentradasalida, cpu.procejecucion3)) {
+						cpu.tiempoejecucionactual3 = cpu.procejecucion3.rafagacpu2 - 1;
+					}else{
+						cpu.tiempoejecucionactual3 = cpu.procejecucion3.rafagacpu - 1;
+					}
+				}else{
+					cpu.colaespera3.push(cpu.colalistos[procesp]);
+				}
+			}
+		}
+
+		//CONTROLO EJECUCION EN COLAS SUPERIORES
+		if (cpu.procejecucion2 != null && cpu.procejecucion != null) {
+			cpu.colaespera2.unshift(cpu.procejecucion2);
+			cpu.historial2[cpu.historial2.length - 1].sal = tiempo;
+			cpu.procejecucion2 = null;
+		}
+
+		if (cpu.procejecucion3 != null){
+			if (cpu.procejecucion2 != null || cpu.procejecucion != null) {
+				cpu.colaespera3.unshift(cpu.procejecucion3);
+				cpu.historial3[cpu.historial3.length - 1].sal = tiempo;
+				cpu.procejecucion3 = null;
+			}
+		} 
+
+
+
+//		if (cpu.procejecucion != null) {
+//			console.log("PROCESO EJECUTANDOSE: " + cpu.procejecucion.nombre);
+//		}
+		
+		//Elimino de cola de listos
+		cpu.colalistos = [];
+	
+//		console.log("COLA ESPERA: ");
+//		var ce = ".... ";
+//		for (let index = 0; index < cpu.colaespera.length; index++) {
+//			ce = ce + cpu.colaespera[index].nombre + " | ";
+//		}
+//		console.log(ce);
 
 		cpu.colaespera = eliminardecolaespera(cpu.colaespera, cpu.proceliminar);
 		return cpu;
@@ -1403,7 +3234,7 @@ function eliminardecolaespera(colaespera, proceliminar){
 	for (let i = 0; i < proceliminar.length; i++) {
 		var pos = null;
 		for (let j = 0; j < colaespera.length; j++) {
-			if (colaespera[j].proceso.nombre == proceliminar[i].proceso.nombre) {
+			if (colaespera[j].nombre == proceliminar[i].nombre) {
 				pos = j;
 			}
 		}
@@ -1412,4 +3243,215 @@ function eliminardecolaespera(colaespera, proceliminar){
 		}
 	}
 	return colaespera;
+}
+
+function cargarahistorial(historial, tiempo, proceso) {
+	if (historial.length == 0 && tiempo != 0) {
+		var histant = {
+			proceso: "  ",
+			ent: 0,
+			sal: tiempo,
+		};
+		historial.push(histant);
+	}
+	if (historial.length > 0) {
+		if (historial[historial.length - 1].sal != tiempo) {
+			var histmed = {
+				proceso: "  ",
+				ent: historial[historial.length - 1].sal,
+				sal: tiempo,
+			};
+			historial.push(histmed);
+		}
+	}
+	var hist = {
+		proceso: proceso.nombre,
+		ent: tiempo,
+		sal: null,
+	};
+	historial.push(hist);
+	return historial;
+}
+
+function mostrarHistorial(historialarray) {
+	for (let i = 0; i < historialarray.length; i++) {
+		if (historialarray[i].proceso != "  ") {
+			p = document.createElement("p");
+			p.innerHTML = "- El proceso " + historialarray[i].proceso + " entra en el tiempo " + historialarray[i].ent + " y sale en el tiempo " + historialarray[i].sal + "\n";
+			p.style.marginBottom = "10px";
+			historial.appendChild(p);
+		}
+	}
+}
+
+function mostrarGantt(historialarray) {
+	var totalTiempo = historialarray[historialarray.length-1].sal;
+	for (let i = 0; i < historialarray.length; i++) {
+		div1 = document.createElement("div");
+		span = document.createElement("span");
+		span.innerHTML = historialarray[i].proceso;
+		span.className = "white-text";
+		var rafaga = historialarray[i].sal - historialarray[i].ent;
+		ancho = (rafaga/totalTiempo)*100;
+		div1.style.width = ancho + "%";
+		div1.style.height = "50px !important";
+
+		div1.className = "col center-align ganttProc";
+		if (historialarray[i].proceso == "  ") {
+			div1.style.background = "#E0E0E0";
+		}else{
+			div1.style.background = "#"+colores[i];
+		}
+		
+
+		div1.appendChild(span);
+		ganttProc.appendChild(div1);
+
+		//Agrego los divs de tiempos
+		div1 = document.createElement("div");
+		span2 = document.createElement("span");
+		span2.innerHTML = historialarray[i].sal;
+		span2.className = "right !important";
+		div1.style.width = ancho + "%";
+		div1.className = "col quitar";
+
+		div1.appendChild(span2);
+		ganttTiempo.appendChild(div1);
+	}
+}
+
+function mostrarGantt2(historialarray) {
+	var totalTiempo = historialarray[historialarray.length-1].sal;
+	for (let i = 0; i < historialarray.length; i++) {
+		div1 = document.createElement("div");
+		span = document.createElement("span");
+		span.innerHTML = historialarray[i].proceso;
+		span.className = "white-text";
+		var rafaga = historialarray[i].sal - historialarray[i].ent;
+		ancho = (rafaga/totalTiempo)*100;
+		div1.style.width = ancho + "%";
+		div1.style.height = "50px !important";
+
+		div1.className = "col center-align ganttProc";
+
+		if (historialarray[i].proceso == "  ") {
+			div1.style.background = "#E0E0E0";
+		}else{
+			div1.style.background = "#"+colores[i];
+		}
+
+		div1.appendChild(span);
+		ganttProc2.appendChild(div1);
+
+		//Agrego los divs de tiempos
+		div1 = document.createElement("div");
+		span2 = document.createElement("span");
+		span2.innerHTML = historialarray[i].sal;
+		span2.className = "right !important";
+		div1.style.width = ancho + "%";
+		div1.className = "col quitar";
+
+		div1.appendChild(span2);
+		ganttTiempo2.appendChild(div1);
+	}
+}
+
+function mostrarGantt3(historialarray) {
+	var totalTiempo = historialarray[historialarray.length-1].sal;
+	for (let i = 0; i < historialarray.length; i++) {
+		div1 = document.createElement("div");
+		span = document.createElement("span");
+		span.innerHTML = historialarray[i].proceso;
+		span.className = "white-text";
+		var rafaga = historialarray[i].sal - historialarray[i].ent;
+		ancho = (rafaga/totalTiempo)*100;
+		div1.style.width = ancho + "%";
+		div1.style.height = "50px !important";
+
+		div1.className = "col center-align ganttProc";
+				if (historialarray[i].proceso == "  ") {
+			div1.style.background = "#E0E0E0";
+		}else{
+			div1.style.background = "#"+colores[i];
+		}
+
+		div1.appendChild(span);
+		ganttProc3.appendChild(div1);
+
+		//Agrego los divs de tiempos
+		div1 = document.createElement("div");
+		span2 = document.createElement("span");
+		span2.innerHTML = historialarray[i].sal;
+		span2.className = "right !important";
+		div1.style.width = ancho + "%";
+		div1.className = "col quitar";
+
+		div1.appendChild(span2);
+		ganttTiempo3.appendChild(div1);
+	}
+}
+function mostrarES(historialarray) {
+	var totalTiempo = historialarray[historialarray.length-1].fin;
+	for (let i = 0; i < historialarray.length; i++) {
+		div1 = document.createElement("div");
+		span = document.createElement("span");
+		span.innerHTML = historialarray[i].proceso;
+		span.className = "white-text";
+		var rafaga = historialarray[i].fin - historialarray[i].inicio;
+		ancho = (rafaga/totalTiempo)*100;
+		div1.style.width = ancho + "%";
+		div1.style.height = "50px !important";
+
+		div1.className = "col center-align ganttProc";
+		if (historialarray[i].proceso == "  ") {
+			div1.style.background = "#E0E0E0";
+		}else{
+			div1.style.background = "#"+colores[i];
+		}
+		
+
+		div1.appendChild(span);
+		ganttProcES.appendChild(div1);
+
+		//Agrego los divs de tiempos
+		div1 = document.createElement("div");
+		span2 = document.createElement("span");
+		span2.innerHTML = historialarray[i].fin;
+		span2.className = "right !important";
+		div1.style.width = ancho + "%";
+		div1.className = "col quitar";
+
+		div1.appendChild(span2);
+		ganttTiempoES.appendChild(div1);
+	}
+}
+
+function ejecutocolaanterior(cpu, cola) {
+	var puedeejecutar = true;
+	if (cola == 2) {
+		if (cpu.procejecucion == null) {
+			for (let i = 0; i < cpu.procentradasalida.length; i++) {
+				if (cpu.procentradasalida[i].proceso.prioridad < 6) {
+					if (!cpu.procentradasalida[i].ejec) {
+						puedeejecutar = false;
+					}
+				}
+			}
+		}else{
+			puedeejecutar = false;
+		}
+	}else{
+		if (cpu.procejecucion == null && cpu.procejecucion2 == null) {
+			for (let i = 0; i < cpu.procentradasalida.length; i++) {
+				if (cpu.procentradasalida[i].proceso.prioridad <= 10) {
+					if (!cpu.procentradasalida[i].ejec) {
+						puedeejecutar = false;
+					}
+				}
+			}
+		}else{
+			puedeejecutar = false;
+		}
+	}
+	return puedeejecutar;
 }

@@ -22,33 +22,32 @@
 						<form action="#">
 							<div class="row">
 								<div class="col m3 s6">
-									<p><label><input checked name="part" onclick="mostrarInputMem()" type="radio" class="radio"> <span>Partición Fija</span></label></p>
+									<p><label><input checked class="radio" id="radio1" name="part" onclick="mostrarInputMem()" type="radio"> <span>Partición Fija</span></label></p>
 								</div>
 								<div class="col m3 s6">
-									<p><label><input name="part" onclick="ocultarInputMem()" type="radio" class="radio"> <span>Partición Variable</span></label></p>
+									<p><label><input class="radio" id="radio2" name="part" onclick="ocultarInputMem()" type="radio"> <span>Partición Variable</span></label></p>
 								</div>
 							</div>
 							<div class="row">
 								<div class="input-field col m9 s9">
-									<input class="validate" id="tamanio_mem" type="number" onblur="cargarUltimoTam()"> <label for="tamanio_mem" id="ltamanioMem">Tamaño de Memoria en Bytes</label>
+									<input class="validate" id="tamanio_mem" onblur="cargarUltimoTam()" type="number"> <label for="tamanio_mem" id="ltamanioMem">Tamaño de Memoria en Bytes</label>
 								</div>
-								
 							</div>
 							<div class="row" id="particiones">
 								<div class="input-field col m9 s12">
-									<input class="validate" id="cant_part" placeholder="Ejemplo: 35-85-98" type="text" onblur="agregarParticiones()"> <label for="first_name">Particiones</label>
+									<input class="validate" id="cant_part" onblur="agregarParticiones()" placeholder="Ejemplo: 35-85-98" type="text"> <label for="first_name">Particiones</label>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col m9 s12">
 									<label>Algoritmo de Ajuste</label> <select class="browser-default" id="algoritmosMem">
-										<option value="1">
-											First-Fit
-										</option>
 										<option value="2">
 											Best-Fit
 										</option>
-										<option value="3">
+										<option id="firstFit" value="1">
+											First-Fit
+										</option>
+										<option id="worstFit" style="display: none;" value="3">
 											Worst-Fit
 										</option>
 									</select>
@@ -79,15 +78,7 @@
 							</div>
 							<div class="row" id="cuantum" style="display: none;">
 								<div class="input-field col m6 s9">
-									<input class="validate" id="cuant"  type="text"> <label for="cuant">Cuantum</label>
-								</div>
-							</div>
-							<div class="row" id="cuantum_multi" style="display: none;">
-								<div class="input-field col m4 s12">
-									<input class="validate" id="cuant1"  type="text"> <label for="cuant1">Cuantum 1</label>
-								</div>
-								<div class="input-field col m4 s12">
-									<input class="validate" id="cuant2"  type="text"> <label for="cuant2">Cuantum 2</label>
+									<input class="validate" id="cuant" onblur="validarCuant()" type="number"> <label for="cuant">Cuantum</label>
 								</div>
 							</div>
 						</form>
@@ -96,7 +87,7 @@
 			</div>
 		</li>
 		<li>
-			<div class="collapsible-header grey lighten-3">
+			<div class="collapsible-header grey lighten-3" onclick="validarConfMemoria()">
 				<i class="material-icons">whatshot</i>Carga de Procesos
 			</div>
 			<div class="collapsible-body">
@@ -115,187 +106,180 @@
 						<div class="input-field col m3 s12">
 							<input class="validate" id="rafagaES" type="number"> <label for="rafagaES">Rafaga E/S</label>
 						</div>
+						<div class="input-field col m3 s12">
+							<input class="validate" id="rafagaCPU2" type="number"> <label for="rafagaCPU2">Rafaga CPU</label>
+						</div>
 						<div class="input-field col m3 s12" id="div_prioridad" style="display: none;">
 							<input class="validate" id="prioridad" type="number"> <label for="prioridad">Prioridad</label>
 						</div>
-					
-						
 					</div>
 					<div class="row">
 						<div class="row">
-							<div class="col"><h6 class="info"></h6></div>
-							<div class="col"><h6 class="info"></h6></div>
-						</div>
-						
-						
-						<a class="waves-effect waves-light btn-small right blue darken-1 separar disabled" id="cargar" onclick="cargarProcesoMem()">Cargar</a>
+							<div class="col">
+								<h6 class="info"></h6>
+							</div>
+							<div class="col">
+								<h6 class="info"></h6>
+							</div>
+						</div><input hidden="hidden" id="archivo" type="file"> <a class="waves-effect waves-light btn-small right blue darken-1 separar disabled" id="cargarArchivo">Cargar Archivo</a> <!-- <a class="waves-effect waves-light btn-small right blue darken-1 separar" id="cargarArchivoqqq" onclick="BF_FCFS(true)">aaa</a> -->
+						 <a class="waves-effect waves-light btn-small right blue darken-1 separar disabled" id="cargar" onclick="cargarProcesoMem()">Cargar Proceso</a>
 					</div>
 				</form>
-
 			</div>
-
 		</li>
 	</ul>
-	
 	<div class="row mapaMemPrincipal" id="mapaMemPrincipal">
 		<div class="col s12">
 			<div class="card">
 				<div class="card-content">
-					<span class="card-title" style="text-align: center">
-						<b>Mapa de Memoria</b>
-					</span>
-					<span class="card-title" style="text-align: left">
-						<h6>Memoria Representativa</h6>
-					</span>
+					<span class="card-title" style="text-align: center"><b>Cola de Nuevos</b></span>
 					<div class="row mapa teal lighten-3" id="mapa">
 						<!-- <div class="col s6 procmem blue">
-							<div class="text center-align">
-								<span class="">0x1</span>
-							</div>
-						 -->
+                            <div class="text center-align">
+                                <span class="">0x1</span>
+                            </div>
+                         -->
 					</div>
 					<div class="row tamanios" id="tamanios">
-						<div class="primero"> <span class="left">0 B</span></div>
-						<div class="ultimo"> <span class="left" id="ultimo"></span></div>
-						<!-- <div class="col s5"> <span class="right">700 KB</span></div>
-						<div class="col s4"> <span class="right">1100 KB</span></div>
-						<div class="col s2"> <span class="right">1300 KB</span></div> -->
-					</div>
-				</div>
-
-
-
-				<div class="card-content">
-					<span class="card-title" style="text-align: left">
-						<h6>Memoria Real</h6>
-					</span>
-					<div class="row mapa teal lighten-3" id="mapa2">
-					
-						<div class="col s6 procmem" style="display: none;" id="auxSO">
-							<div class="text center-align">
-								<span class="">SO</span>
-							</div>
+						<div class="primero">
+							<span class="left">0 B</span>
 						</div>
-					</div>
-					<div class="row tamanios" id="tamanios2">
-						<div class="primero"> <span class="left">0 B</span></div>
-						<div class="ultimo"> <span class="left" id="ultimo2"></span></div>
-						<!-- <div class="col s5"> <span class="right">700 KB</span></div>
-						<div class="col s4"> <span class="right">1100 KB</span></div>
-						<div class="col s2"> <span class="right">1300 KB</span></div> -->
+						<div class="ultimo">
+							<span class="left" id="ultimo"></span>
+						</div><!-- <div class="col s5"> <span class="right">700 KB</span></div>
+                        <div class="col s4"> <span class="right">1100 KB</span></div>
+                        <div class="col s2"> <span class="right">1300 KB</span></div> -->
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
 	<div class="row">
-		<a class="waves-effect waves-light btn-small right blue darken-1 separar">Ejecutar</a>
+		<a class="waves-effect waves-light btn-small right blue darken-1 separar" id="ejecutar" onclick="adminAlgoritmosProcesos();">Ejecutar</a>
 	</div>
-	
 	<div class="row">
-			<div class="col m9 s12">
-					  <div class="card">
-						<div class="card-content">
-						  <span class="card-title" style="text-align: center">
-							<b>Planificador de Procesos</b>
-						</span>
-						  <div>
-							<table class="responsive-table" id="tabla">
-								<thead>
-								  <tr>
-									  <th>Proceso</th>
-									  <th>TA</th>
-									  <th>Tamaño</th>
-									  <th>Ráfaga CPU</th>
-									  <th>Ráfaga E/S</th>
-									  <th>Prioridad</th>
-								  </tr>
-								</thead>
-						
-								<tbody>
-								  <!-- <tr>
-									<td>0x1</td>
-									<td>Prueba</td>
-									<td>Prueba</td>
-									<td>Prueba</td>
-									<td>Prueba</td>
-									<td>Prueba</td>
-									<td>Prueba</td>
-								  </tr>
-								  <tr>
-									<td>0x2</td>
-									<td>Prueba</td>
-									<td>Prueba</td>
-									<td>Prueba</td>
-									<td>Prueba</td>
-									<td>Prueba</td>
-									<td>Prueba</td>
-								  </tr>
-								  <tr>
-									<td>0x3</td>
-									<td>Prueba</td>
-									<td>Prueba</td>
-									<td>Prueba</td>
-									<td>Prueba</td>
-									<td>Prueba</td>
-									<td>Prueba</td>
-								  </tr> -->
-								</tbody>
-							  </table>
-						<br>				
-						<b style="text-align: center">Diagrama de Gantt</b>
-						<br>
-					  <div class="row">
-						<div class="col s3 center-align" style="background-color: #e53935">0x1</div>
-						<div class="col s6 center-align" style="background-color: #1976d2">0x2</div>
-						<div class="col s3 center-align" style="background-color: #00695c">0x3</div>
-					  </div>
-					  <div class="row">
-							<div class="col s1">1</div>
-							<div class="col s1">2</div>
-							<div class="col s1">3</div>
-							<div class="col s1">4</div>
-							<div class="col s1">5</div>
-							<div class="col s1">6</div>
-							<div class="col s1">7</div>
-							<div class="col s1">8</div>
-							<div class="col s1">9</div>
-							<div class="col s1">10</div>
-							<div class="col s1">11</div>
-							<div class="col s1">12</div>
-						</div>
-					  
-						  </div>
-						</div>
-						
-					  </div>
-
-					  <!--------->
+		<div class="col s12" id="mostrarPlanif" style="display: none;">
+			<div class="card">
+				<div class="card-content">
+					<span class="card-title" style="text-align: center"><b>Planificador de Procesos</b></span>
+					<div>
+						<table class="responsive-table" id="tabla">
+							<thead>
+								<tr>
+									<th>Proceso</th>
+									<th>TA</th>
+									<th>Tamaño</th>
+									<th>Ráfaga CPU</th>
+									<th>Ráfaga E/S</th>
+									<th>Ráfaga CPU</th>
+									<th>Prioridad</th>
+								</tr>
+							</thead>
+							<tbody>
+								<!-- <tr>
+                                    <td>0x1</td>
+                                    <td>Prueba</td>
+                                    <td>Prueba</td>
+                                    <td>Prueba</td>
+                                    <td>Prueba</td>
+                                    <td>Prueba</td>
+                                    <td>Prueba</td>
+                                  </tr>
+                                  <tr>
+                                    <td>0x2</td>
+                                    <td>Prueba</td>
+                                    <td>Prueba</td>
+                                    <td>Prueba</td>
+                                    <td>Prueba</td>
+                                    <td>Prueba</td>
+                                    <td>Prueba</td>
+                                  </tr>
+                                  <tr>
+                                    <td>0x3</td>
+                                    <td>Prueba</td>
+                                    <td>Prueba</td>
+                                    <td>Prueba</td>
+                                    <td>Prueba</td>
+                                    <td>Prueba</td>
+                                    <td>Prueba</td>
+                                  </tr> -->
+							</tbody>
+						</table>
 					</div>
-					<div class="col m3 s12">
-					<div class="card blue darken-3">
-						<div class="overflow-auto">
-							<div class="card-content white-text">
-								<span class="card-title" style="text-align: center; margin-bottom: 30px;">
-									<b>Historial de Procesos</b>
-								</span>
-								<p>En tiempo X entra el proceso 0x1</p>
-								<p>En tiempo X se atiende el proceso 0x1</p>
-								<p>En tiempo X sale el proceso 0x1</p>
-								<p>En tiempo X entra el proceso 0x2</p>
-								<p>En tiempo X se atiende el proceso 0x2</p>
-								<p>En tiempo X sale el proceso 0x2</p>
-							</div>
-						</div>
-					</div>
-
+				</div>
+			</div><!--=====-->
+		</div>
+	</div>
+	<div class="col s12 mostrar" style="display: none;">
+		<div class="card blue darken-3">
+			<div class="overflow-auto">
+				<div class="card-content white-text" id="historial">
+					<span class="card-title" style="text-align: center; margin-bottom: 30px;"><b>Historial de Procesos</b></span> <!-- <p>En tiempo X entra el proceso 0x1</p>
+                                <p>En tiempo X se atiende el proceso 0x1</p>
+                                <p>En tiempo X sale el proceso 0x1</p>
+                                <p>En tiempo X entra el proceso 0x2</p>
+                                <p>En tiempo X se atiende el proceso 0x2</p>
+                                <p>En tiempo X sale el proceso 0x2</p> -->
+				</div>
 			</div>
-		  </div>
-		  
+		</div>
+	</div>
+	<div class="col mostrar" style="display: none;">
+		<div class="center-align">
+			<h5>Diagrama de Gantt</h5>
+		</div>
+		<div class="left-align">
+			<h5>CPU</h5>
+		</div>
+		<div class="row ganttProc" id="ganttProc">
+			<!-- <div class="col s3 center-align" style="background-color: #e53935">0x1</div>
+            <div class="col s6 center-align" style="background-color: #1976d2">0x2</div>
+            <div class="col s3 center-align" style="background-color: #00695c">0x3</div> -->
+		</div>
+		<div class="row" id="ganttTiempo"></div>
+
+
+
+		<div class="left-align" style="position: relative; top: 35px; display: none;" id="colaMulti1">
+			<div class="col mostrar" >
+				<div class="row ganttProc" id="ganttProc2">
+					<!-- <div class="col s3 center-align" style="background-color: #e53935">0x1</div>
+			        <div class="col s6 center-align" style="background-color: #1976d2">0x2</div>
+			        <div class="col s3 center-align" style="background-color: #00695c">0x3</div> -->
+				</div>
+				<div class="row" id="ganttTiempo2"></div>
+			</div>
+		</div>
+
+		<div class="left-align" style="position: relative; top: 35px; display: none;" id="colaMulti2">
+			<div class="col mostrar" >
+				<div class="row ganttProc" id="ganttProc3">
+					<!-- <div class="col s3 center-align" style="background-color: #e53935">0x1</div>
+			        <div class="col s6 center-align" style="background-color: #1976d2">0x2</div>
+			        <div class="col s3 center-align" style="background-color: #00695c">0x3</div> -->
+				</div>
+				<div class="row" id="ganttTiempo3"></div>
+			</div>
+		</div>
+
+		<h5 style="position: relative; top: 35px;">E/S</h5>
+		<div class="row ganttProc" id="ganttProcES" style="position: relative; top: 35px;">
+			<!-- <div class="col s3 center-align" style="background-color: #e53935">0x1</div>
+            <div class="col s6 center-align" style="background-color: #1976d2">0x2</div>
+            <div class="col s3 center-align" style="background-color: #00695c">0x3</div> -->
+		</div>
+
+		<div class="row" id="ganttTiempoES" style="position: relative; top: 35px;"></div>
+		
+	</div>
 </div>
-<script src="js/jquery.js"></script> 
-<script src="js/materialize.min.js"></script> 
-<script src="js/simulador.js"></script>
+
+
+	<script src="js/jquery.js">
+	</script> 
+	<script src="js/materialize.min.js">
+	</script> 
+	<script src="js/simulador.js">
+	</script>
 </body>
 </html>

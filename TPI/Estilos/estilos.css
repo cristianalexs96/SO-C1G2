@@ -11,6 +11,27 @@
 	margin-left: 20px;
 }
 
+/*.cargarArchivo{
+	position: relative;
+	height: 35px;
+	width: 150px !important;
+	margin: 0 !important;
+	background-color: #1e88e5;
+	border-radius: 2px;
+	left: 0 !important;
+}
+
+.archivo{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+}*/
+
 .mapa{
 	height: 100px;
 	border:1px solid #d9d9d9;
@@ -24,7 +45,6 @@
 .mapaMemPrincipal{
 	overflow: auto;
 	overflow-x:hidden;
-	height: 400px;
 }
 
 .mapa{
@@ -57,4 +77,13 @@
 .tamanioProc{
 	position: relative;
 	top: 35px !important;
+}
+
+.ganttProc{
+	height: 50px !important;
+	margin: 0px !important;
+}
+
+.quitar{
+	padding: 0px !important;
 }
