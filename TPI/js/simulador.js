@@ -507,6 +507,9 @@ function devolverProcesos(){
 		c += 1;
 	}
 
+		
+	procesosObjetos = validarProcesos();
+
 	controlArchivo = true;
 	return procesosObjetos;
 }
@@ -514,6 +517,24 @@ function devolverProcesos(){
 
 document.getElementById("archivo").addEventListener('change', lecturaArchivo, false);
 // document.getElementById("archivo").addEventListener('change', mostrarColaNuevos, false);
+
+function validarProcesos(){
+	validar = procesosObjetos;
+	for (var i = 0; i < procesosObjetos.length; i++) {
+
+		//Controlo las rafagas
+		if (validar[i].rafagacpu <= 0 || validar[i].rafagaES < 0 || validar[i].rafagacpu2 < 0) { //Todas las rafagas tienen que ser positivas. La primera no puede ser 0
+			validar.splice(i,1);
+		}else if(validar[i].rafagaES > 0 && validar[i].rafagacpu2 <= 0){ // Si tiene rafaga de E/S pero no tiene de cpu2 o es negativa, error
+			validar.splice(i,1);
+		}else if(validar[i].rafagaES == 0 && validar[i].rafagacpu2 > 0){ // Si tiene E/S 0 y tiene rafagacpu2, error
+			validar.splice(i,1);
+		}else if (validar[i].ta < 0 || validar[i].prioridad < 0 || validar[i].tamanio < 1) { //Si el TA o la prioridad son negativas o el tamanio del proceso es menor a 1, error
+			validar.splice(i,1);
+		}
+	}
+	return validar;	
+}
 
 function mostrarColaNuevos(procesosObjetos){
 	for (var i = 0; i < procesosObjetos.length; i++) {
@@ -852,6 +873,8 @@ function FCFS(archivo, alg){
 		}
 	}
 
+	procesosOrd = validarProcesos(); //Verifica rafagas, TA, prioridades, etc
+
 	//Ordeno el arreglo por ta
 	procesosOrd.sort(function(a, b){
 			return a.ta - b.ta;
@@ -1034,6 +1057,7 @@ function Prioridades(archivo, alg){
 
 	}
 
+	procesosOrd = validarProcesos(); //Verifica rafagas, TA, prioridades, etc
 
 	controlTamanioProc();
 	acum = 0;
@@ -1219,6 +1243,7 @@ function RoundRobin(archivo, alg){
 
 	}
 
+	procesosOrd = validarProcesos(); //Verifica rafagas, TA, prioridades, etc
 
 	//Ordeno el arreglo por ta
 	procesosOrd.sort(function(a, b){
@@ -1413,6 +1438,7 @@ function multiNivel(archivo, alg){
 
 	}
 
+	procesosOrd = validarProcesos(); //Verifica rafagas, TA, prioridades, etc
 	controlTamanioProc();
 
 	//Acumulo todos los tiempos, esto me dara el tiempo total de ejecucion
@@ -1800,11 +1826,45 @@ function diagramaGantArchivo(auxiliar, marca){
 				span.innerHTML = auxiliar[i].nombre;
 				
 				span2.innerHTML = auxiliar[i].tiempoSalida;
+
+				//Otro parche
+				if(i < auxiliar.length-1 && i > 0 && marca == 3){
+					if (auxiliar[i-1].marca != 3 && auxiliar[i].marca == 3 && auxiliar[i+1].marca != 3) {
+						span3 = document.createElement("span");
+						span3.innerHTML = auxiliar[i].tiempoEntrada;
+						span3.className = "left !important";
+						
+						span3.style.position = "relative";
+						span3.style.right = "15px";
+
+						span2.style.display = "inline";
+						// span2.style.left = "15px";
+						span3.style.display = "inline";
+
+						ancho = ((auxiliar[i].auxSalida-auxiliar[i].auxEntrada)/totalTiempo)*100;
+						// alert(ancho);
+						if (ancho < 2.7) {
+
+							span2.style.position = "relative";
+							span2.style.bottom = "22px";
+						}
+						div2.appendChild(span3);
+						// alert(((auxiliar[i].auxSalida-auxiliar[i].auxEntrada)/totalTiempo)*100);
+					}else{
+						div1.style.background = "#E0E0E0";
+						span.innerHTML = "";
+						span2.innerHTML = "";
+					}
+
+				}
 			}else{
-				div1.style.background = "#E0E0E0";
-				span.innerHTML = "";
+			
+					div1.style.background = "#E0E0E0";
+					span.innerHTML = "";
+					
+					span2.innerHTML = "";
 				
-				span2.innerHTML = "";
+				
 			}
 			ancho = ((auxiliar[i].auxSalida-auxiliar[i].auxEntrada)/totalTiempo)*100;
 			div1.style.width = ancho + "%";
