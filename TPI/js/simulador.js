@@ -617,6 +617,7 @@ function adminAlgoritmosProcesos(){
 			historialProcesosArchivo(auxiliar);
 			diagramaGantArchivo(auxiliar, 0);
 			diagramaGantArchivo(auxiliar, 3);
+			historialMemoria(auxiliarMemoria, porcentajeMem);
 		}else if ((alg_planific.value == 2) && (algoritmosMem.value == 2)) {
 			if (controlArchivo) {
 				Prioridades(true, 1);
@@ -627,6 +628,7 @@ function adminAlgoritmosProcesos(){
 			historialProcesosArchivo(auxiliar);
 			diagramaGantArchivo(auxiliar, 0);
 			diagramaGantArchivo(auxiliar, 3);
+			historialMemoria(auxiliarMemoria, porcentajeMem);
 		}else if ((alg_planific.value == 3) && (algoritmosMem.value == 2)){
 			if (controlArchivo) {
 				RoundRobin(true, 1);
@@ -637,6 +639,7 @@ function adminAlgoritmosProcesos(){
 			historialProcesosArchivo(auxiliar);
 			diagramaGantArchivo(auxiliar, 0);
 			diagramaGantArchivo(auxiliar, 3);
+			historialMemoria(auxiliarMemoria, porcentajeMem);
 		}else if ((alg_planific.value == 4) && (algoritmosMem.value == 2)){
 			if (controlArchivo) {
 				multiNivel(true, 1);
@@ -649,7 +652,7 @@ function adminAlgoritmosProcesos(){
 			diagramaGantArchivo(auxiliar, 1);
 			diagramaGantArchivo(auxiliar, 2);
 			diagramaGantArchivo(auxiliar, 3);
-			// diagramaGantArchivoES(auxiliarES);
+			historialMemoria(auxiliarMemoria, porcentajeMem);
 		}else if (alg_planific.value == 1 && algoritmosMem.value == 3) {
 			if (controlArchivo) {
 				FCFS(true, 3);
@@ -661,6 +664,7 @@ function adminAlgoritmosProcesos(){
 			historialProcesosArchivo(auxiliar);
 			diagramaGantArchivo(auxiliar, 0);
 			diagramaGantArchivo(auxiliar, 3);
+			historialMemoria(auxiliarMemoria, porcentajeMem);
 		}else if (alg_planific.value == 2 && algoritmosMem.value == 3) {
 			if (controlArchivo) {
 				Prioridades(true, 3);
@@ -672,6 +676,7 @@ function adminAlgoritmosProcesos(){
 			historialProcesosArchivo(auxiliar);
 			diagramaGantArchivo(auxiliar, 0);
 			diagramaGantArchivo(auxiliar, 3);
+			historialMemoria(auxiliarMemoria, porcentajeMem);
 		}else if (alg_planific.value == 3 && algoritmosMem.value == 3) {
 			if (controlArchivo) {
 				RoundRobin(true, 3);
@@ -683,6 +688,7 @@ function adminAlgoritmosProcesos(){
 			historialProcesosArchivo(auxiliar);
 			diagramaGantArchivo(auxiliar, 0);
 			diagramaGantArchivo(auxiliar, 3);
+			historialMemoria(auxiliarMemoria, porcentajeMem);
 		}else if (alg_planific.value == 4 && algoritmosMem.value == 3) {
 			if (controlArchivo) {
 				multiNivel(true, 3);
@@ -696,6 +702,7 @@ function adminAlgoritmosProcesos(){
 			diagramaGantArchivo(auxiliar, 1);
 			diagramaGantArchivo(auxiliar, 2);
 			diagramaGantArchivo(auxiliar, 3);
+			historialMemoria(auxiliarMemoria, porcentajeMem);
 		}
 	}
 
@@ -832,7 +839,37 @@ function controlTamanioProc(){
 	}
 	procesosOrd = aux;
 }
+auxiliarElemento = [];
+auxiliarMemoria = [];
+porcentajeMem = [];
 
+function estadisticasMemoria(){
+	elemento = memoriaP[0];
+	auxiliarElemento.push(elemento);
+	contProc = 0;
+	//Voy guardando los procesos en este instante de tiempo
+	for (var i = 0; i < memoriaP.length; i++) {
+		if (elemento != memoriaP[i]) {
+			auxiliarElemento.push(elemento);
+			elemento = memoriaP[i];
+		}
+
+		//Calculo cuantos espacios de memoria estan siendo utilizados
+		if (memoriaP[i] != 0) {
+			contProc++;
+		}
+	}
+
+	//Elimina los elementos duplicados
+	auxiliarElemento.filter(function(value, index, self) { 
+	  return self.indexOf(value) === index;
+	});
+
+	porcentajeMem.push((contProc/memoriaP.length)*100); //Porcentaje de memoria utilizada en ese momento
+	auxiliarMemoria.push(auxiliarElemento); //Arreglo de arreglo. Una matriz
+	auxiliarElemento = [];
+
+}
 function FCFS(archivo, alg){
 	// console.log(devolverProcesos());
 	memoriaP = new Array(parseInt(tamanioMem.value));
@@ -1014,6 +1051,8 @@ function FCFS(archivo, alg){
 				iES++;
 			}
 		}
+
+		estadisticasMemoria();
 		
 	}
 
@@ -1200,6 +1239,7 @@ function Prioridades(archivo, alg){
 			}
 		}
 		
+		estadisticasMemoria();
 	}
 
 }
@@ -1395,6 +1435,7 @@ function RoundRobin(archivo, alg){
 			}
 		}
 
+		estadisticasMemoria();
 	} 
 }
 
@@ -1714,6 +1755,7 @@ function multiNivel(archivo, alg){
 			}
 		}
 
+		estadisticasMemoria();
 	}
 }
 
@@ -1735,18 +1777,49 @@ function historialProcesosArchivo(auxiliar){
 	}
 }
 
-function historialProcesosArchivoaux(auxiliar){
+historialMem = document.getElementById("historialMemoria");
+function historialMemoria(auxiliar, porcentaje){
+
+	cadena = "";
 	for (var i = 0; i < auxiliar.length; i++) {
-		
-		p = document.createElement("p");
-		p.style.marginBottom = "10px";
-		
-		p.innerHTML = "- El proceso " + auxiliar[i].nombre + " entra en el tiempo " + auxiliar[i].tiempoEntrada + " y sale en el tiempo " + auxiliar[i].tiempoSalida + "\n";
-		
-		historial.appendChild(p);	
+		for (var j = 0; j < auxiliar[i].length; j++) {
+			if (j == 0) {
+
+				if (auxiliar[i][j] != 0) {
+					cadena += auxiliar[i][j] + " ";
+				}
+			}else{ //No imprime los duplicados
+				if (auxiliar[i][j] != 0 && auxiliar[i][j-1] != auxiliar[i][j]) {
+					cadena += auxiliar[i][j] + " ";
+				}
+			}
+		}
+		if (cadena != "") {
+			
+			p = document.createElement("p");
+			p.style.marginBottom = "10px";
+			
+			p.innerHTML = "- En el tiempo " + i + " se encuentran los procesos " + cadena + " ... Memoria Utilizada  " + porcentaje[i].toFixed(4) + "%\n";
+			cadena = "";
+			historialMem.appendChild(p);	
+		}
 		
 	}
+
 }
+
+// function historialProcesosArchivoaux(auxiliar){
+// 	for (var i = 0; i < auxiliar.length; i++) {
+		
+// 		p = document.createElement("p");
+// 		p.style.marginBottom = "10px";
+		
+// 		p.innerHTML = "- El proceso " + auxiliar[i].nombre + " entra en el tiempo " + auxiliar[i].tiempoEntrada + " y sale en el tiempo " + auxiliar[i].tiempoSalida + "\n";
+		
+// 		historial.appendChild(p);	
+		
+// 	}
+// }
 
 ganttProc = document.getElementById("ganttProc");
 ganttTiempo = document.getElementById("ganttTiempo");
