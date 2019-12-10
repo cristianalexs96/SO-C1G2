@@ -50,7 +50,7 @@ function mostrarInputCuantum(){
 	// }
 
 	//Si se selecciona Prioridad, habilita el campo Prioridad en la seccion de carga de procesos
-	if (alg_planific.value == 2) {
+	if (alg_planific.value == 2 || alg_planific.value == 4) {
 		div_prioridad.style.display = "";
 	}else{
 		div_prioridad.style.display = "none";
@@ -508,7 +508,7 @@ function devolverProcesos(){
 	}
 
 		
-	procesosObjetos = validarProcesos();
+	procesosObjetos = validarProcesos(procesosObjetos);
 
 	controlArchivo = true;
 	return procesosObjetos;
@@ -518,9 +518,9 @@ function devolverProcesos(){
 document.getElementById("archivo").addEventListener('change', lecturaArchivo, false);
 // document.getElementById("archivo").addEventListener('change', mostrarColaNuevos, false);
 
-function validarProcesos(){
-	validar = procesosObjetos;
-	for (var i = 0; i < procesosObjetos.length; i++) {
+function validarProcesos(procesos){
+	validar = procesos;
+	for (var i = 0; i < procesos.length; i++) {
 
 		//Controlo las rafagas
 		if (validar[i].rafagacpu <= 0 || validar[i].rafagaES < 0 || validar[i].rafagacpu2 < 0) { //Todas las rafagas tienen que ser positivas. La primera no puede ser 0
@@ -908,9 +908,11 @@ function FCFS(archivo, alg){
 							controlRafaga2: 0	//Controla que la rafaga 2 haya terminado
 						};
 		}
+		procesosOrd = validarProcesos(procesosOrd); //Verifica rafagas, TA, prioridades, etc
 	}
 
-	procesosOrd = validarProcesos(); //Verifica rafagas, TA, prioridades, etc
+	// alert(procesosOrd[0].ta);
+
 
 	//Ordeno el arreglo por ta
 	procesosOrd.sort(function(a, b){
@@ -923,6 +925,7 @@ function FCFS(archivo, alg){
 		//Acumulo todos los tiempos, esto me dara el tiempo total de ejecucion
 		acum = acum + procesosOrd[i].rafagacpu + procesosOrd[i].rafagaES + procesosOrd[i].rafagacpu2 + procesosOrd[i].ta;
 	}
+	// console.log(procesosOrd);
 
 	controlProc = 0;
 	controlES = 0;
@@ -930,7 +933,7 @@ function FCFS(archivo, alg){
 	iES = 0;
 	bandRes = true;
 	for (var i = 0; i <= (acum + 1); i++) { // Es acum + 1 porque la primera vez no entra al procesador
-		
+	
 		if ((colaEjec == 0) && (listos.length > 0)) {
 			colaEjec = listos[0];
 			listos.splice(0,1);
@@ -939,48 +942,29 @@ function FCFS(archivo, alg){
 		if (colaEjec != 0) { 
 		 
 		 	if (colaEjec.controlRafaga1 == 0){
-		 		if (auxiliar.length > 0) {
-		 			
-		 			if((colaEjec.rafagacpu + rafagas) == i){
-		 				
-	 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
-
-						if (colaEjec.rafagaES == 0) {
-							removerDeMemoria(colaEjec.nombre);
-						}else{
-							colaEjec.controlRafaga1 = 1;
-							if (colaES.length == 0) { //Si la cola de E/S esta ocupada, i no seria el tiempo de entrada
-								colaEjec.tiempoEntradaES = i;
-							}
-							colaES.push(colaEjec);
-						}
-						colaEjec = 0;
-						bandRes = true;
-						rafagas = i;
-		 			}
-
-		 		}else{
-		 			if(colaEjec.rafagacpu == i){
-		 				if (colaEjec.ta > 0) {
+		 		if((colaEjec.rafagacpu + rafagas) == i){
+		 			if (colaEjec.ta > 0) {
+		 				if (auxiliar.length == 0) { //Si no pregunto esto, siempre que todos los TA de todos los procesos sean > 0, pondra como tiempo de entrada, el TA de ese proceso. Error
 			 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: colaEjec.ta, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
 		 				}else{
-		 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: 0, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+		 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
 		 				}
-
-		 				// rafagas = i; 
-						if (colaEjec.rafagaES == 0) {
-							removerDeMemoria(colaEjec.nombre);
-						}else{
-							colaEjec.controlRafaga1 = 1;
-							if (colaES.length == 0) { //Si la cola de E/S esta ocupada, i no seria el tiempo de entrada
-								colaEjec.tiempoEntradaES = i;
-							}
-							colaES.push(colaEjec);
-						}
-						colaEjec = 0;
-						rafagas = i;
-						
+		 			}else{
+		 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
 		 			}
+
+		 			if (colaEjec.rafagaES == 0) {
+						removerDeMemoria(colaEjec.nombre);
+					}else{
+						colaEjec.controlRafaga1 = 1;
+						if (colaES.length == 0) { //Si la cola de E/S esta ocupada, i no seria el tiempo de entrada
+							colaEjec.tiempoEntradaES = i;
+						}
+						colaES.push(colaEjec);
+					}
+					colaEjec = 0;
+					rafagas = i;
+					
 		 		}
 		 		
 		 	}else if(colaEjec.controlRafaga2 == 0){
@@ -994,7 +978,6 @@ function FCFS(archivo, alg){
 
 					colaEjec.controlRafaga2 = 1;
 					colaEjec = 0;
-					bandRes = true;
 					rafagas = i;
 	 			}
 		 		
@@ -1045,16 +1028,23 @@ function FCFS(archivo, alg){
 
 					iES = 0;
 				}
-				colaES.splice(0,1);
+				colaES.splice(0,1); 
 			}else{
 
 				iES++;
 			}
 		}
 
+		//Cuando algun proceso tenga un TA mucho mayor a los otros, es necesario actualizar las
+		//rafagas para que puedan entrar, sino se rompe todo
+		if (listos.length == 0 && colaEjec == 0 && colaES.length == 0) {
+			rafagas = i+1;
+		}
+
 		estadisticasMemoria();
 		
 	}
+	// console.log(auxiliar);
 
 }
 
@@ -1761,7 +1751,7 @@ function multiNivel(archivo, alg){
 
 
 
-
+historial = document.getElementById("historial");
 function historialProcesosArchivo(auxiliar){
 	for (var i = 0; i < auxiliar.length; i++) {
 		
