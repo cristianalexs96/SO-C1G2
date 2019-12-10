@@ -43,12 +43,6 @@ function mostrarInputCuantum(){
 		cuantum.style.display = "none";
 	}
 
-	// if (alg_planific.value == 4){
-	// 	cuantum_multi.style.display = "";
-	// }else{
-	// 	cuantum_multi.style.display = "none";
-	// }
-
 	//Si se selecciona Prioridad, habilita el campo Prioridad en la seccion de carga de procesos
 	if (alg_planific.value == 2 || alg_planific.value == 4) {
 		div_prioridad.style.display = "";
@@ -78,9 +72,9 @@ function cargarUltimoTam(){
 		tamanioMem.style.borderBottom = "1px solid #4caf50";
 	}
 	ultimo.innerHTML = tamanioMem.value + " B";
-	// ultimo2.innerHTML = tamanioMem.value + " B"; //En la memoria real
+
 	mapa.className = "mapa blue-grey lighten-5";
-	// mapa2.className = "mapa blue-grey lighten-5";//En la memoria real
+
 
 	//Deshabilito los radiobutton para que no me traiga problemas si el usuario cambia en plena ejecucion
 	radio[0].disabled = true;
@@ -89,32 +83,6 @@ function cargarUltimoTam(){
 	info[0].innerHTML = "Tamaño Memoria: " + tamanioMem.value + " B";
 	restante = Math.round(parseInt(tamanioMem.value)-parseInt(tamanioMem.value)*0.1); //Le resto el 10% para el SO
 	info[1].innerHTML = "Tamaño Restante: " + restante + " B";
-	
-
-	// //Cargo el sistema operativo en la memoria
-	// div1 = document.createElement("div");
-	// div2 = document.createElement("div");
-	// span = document.createElement("span");
-	// span.innerHTML = "SO";
-	// div2.appendChild(span);
-	// div2.className = "text center-align";
-	// div1.appendChild(div2);
-	// div1.className = "procmem col";
-
-	// div1.style.width = "10%"; //El 10% es para el SO
-	// div1.style.background = "#ff8f00";
-	// div1.setAttribute("id", "memSO");
-	// mapa.appendChild(div1);
-
-	//Agrego el SO en la memoria real
-	//Aca lo hago medio rebuscado porque no me deja poner dos AppendChild seguidos, no se por que
-	// auxSO.style.width = "10%"; 
-	// auxSO.style.background = "#ff8f00";
-	// auxSO.style.display = ""; //En la memoria real
-
-	//Habilito el boton cargar
-	// cargar.className = "waves-effect waves-light btn-small right blue darken-1 separar";
-
 
 	//Deshabilito el campo de tamanio memoria
 	tamanioMem.disabled = true;
@@ -213,13 +181,8 @@ function cargarProcesoMem(){
 	div1.setAttribute("title", tamanio.value + " B"); //Para que al pasar el mouse, diga el tamanio
 	div1.appendChild(div2);
 	div1.className = "procmem col";
-
-	// tamanioDiv = (((parseInt(tamanio.value)/parseInt(tamanioMem.value))*100)/ancho);
 	tamanioDiv = (parseInt(tamanio.value)/parseInt(tamanioMem.value))*100;
 	div1.style.width = String(Math.round(tamanioDiv)) + "%";
-
-	
-
 	div1.style.background = "#" + colores[contadorProc];
 	mapa.appendChild(div1);
 
@@ -275,7 +238,6 @@ function cargarProcesosPlanificador(){
 	}else{
 		td6.innerHTML = prioridad.value;
 	}
-	
 
 	tr.appendChild(td0);
 	tr.appendChild(td1);
@@ -284,10 +246,7 @@ function cargarProcesosPlanificador(){
 	tr.appendChild(td4);
 	tr.appendChild(td5);
 	tr.appendChild(td6);
-
 	tabla.appendChild(tr);
-
-
 }
 
 function validarInputsCargar(){
@@ -342,16 +301,11 @@ function agregarParticiones(){
 	}else{
 		cant_part.style.borderBottom = "1px solid #4caf50";
 	}
-
-// 	//Cargo las particiones a la memoria real
-// 	for (var i = 0; i < particiones.length ; i++) {
-// 		mostrarParticiones(particiones[i],i);
-// 	}
 	
 	bandCargarProc2 = true;
 
-// 	//Deshabilito el campo de agregar particiones, para que el usuario no quiera
-// 	//modificar en tiempo de ejecucion
+	//Deshabilito el campo de agregar particiones, para que el usuario no quiera
+	//modificar en tiempo de ejecucion
 
 	cant_part.disabled = true;
 
@@ -409,7 +363,6 @@ function validarParticiones(){
 	}
 
 	return true;
-
 }
 
 function validarTamParticiones(){
@@ -438,7 +391,7 @@ cargarArchivo.addEventListener("click", function(){
 });
 
 
-//Cmienzo del tratamiento del archivo de entrada
+//Comienzo del tratamiento del archivo de entrada
 
 var reader = new FileReader();
 
@@ -492,7 +445,6 @@ function devolverProcesos(){
 
 
 document.getElementById("archivo").addEventListener('change', lecturaArchivo, false);
-// document.getElementById("archivo").addEventListener('change', mostrarColaNuevos, false);
 
 function validarProcesos(procesos){
 	validar = procesos;
@@ -525,7 +477,6 @@ function mostrarColaNuevos(procesosObjetos){
 		div1.appendChild(div2);
 		div1.className = "procmem col";
 
-		// tamanioDiv = (((parseInt(tamanio.value)/parseInt(tamanioMem.value))*100)/ancho);
 		tamanioDiv = (parseInt(procesosObjetos[i].tamanio)/parseInt(tamanioMem.value))*100;
 		div1.style.width = String(Math.round(tamanioDiv)) + "%";
 
@@ -707,7 +658,6 @@ function montarEnMemoria(nombreP, tamP, alg){
 	for (var i = 0; i < contLibre; i++) {
 		posiciones[i] = {inicio:0, final:0};
 	}
-	// console.log(posiciones);
 
 	//Verifico las posiciones libres y sus respectivos inicio y fin de cada espacio en memoria
 	contEsp = 0;
@@ -768,6 +718,8 @@ function montarEnMemoria(nombreP, tamP, alg){
 				}
 			}
 			pos = desperdicio.indexOf(min, 0);
+
+			//Escribe el proceso sobre la memoria
 			for (var i = 0; i < tamP; i++) {
 				memoriaP[posiciones[pos].inicio + i] = nombreP;
 			}
@@ -780,6 +732,8 @@ function montarEnMemoria(nombreP, tamP, alg){
 			}
 
 			pos = desperdicio.indexOf(max, 0);
+
+			//Escribe el proceso sobre la memoria
 			for (var i = 0; i < tamP; i++) {
 				memoriaP[posiciones[pos].inicio + i] = nombreP;
 			}
@@ -847,7 +801,6 @@ function estadisticasMemoria(){
 
 }
 function FCFS(archivo, alg){
-	// console.log(devolverProcesos());
 	memoriaP = new Array(parseInt(tamanioMem.value));
 	listos = [];
 	auxiliar = [];
@@ -860,14 +813,12 @@ function FCFS(archivo, alg){
 	for (var i = 0; i < memoriaP.length; i++) {
 		memoriaP[i] = 0;
 	}
-	
 
 	//Con esto funciona para archivos y manual
 	if (archivo) {
 		procesosOrd = devolverProcesos();
 	}else{
 		for (var i = 0; i < nombreProc.length; i++) {
-			
 			procesosOrd[i] = {	nombre: nombreProc[i], 
 							tamanio: tamanioProc[i], 
 							ta: taProc[i],
@@ -887,12 +838,9 @@ function FCFS(archivo, alg){
 		procesosOrd = validarProcesos(procesosOrd); //Verifica rafagas, TA, prioridades, etc
 	}
 
-	// alert(procesosOrd[0].ta);
-
-
 	//Ordeno el arreglo por ta
 	procesosOrd.sort(function(a, b){
-			return a.ta - b.ta;
+		return a.ta - b.ta;
 	});
 
 	controlTamanioProc();
@@ -901,7 +849,6 @@ function FCFS(archivo, alg){
 		//Acumulo todos los tiempos, esto me dara el tiempo total de ejecucion
 		acum = acum + procesosOrd[i].rafagacpu + procesosOrd[i].rafagaES + procesosOrd[i].rafagacpu2 + procesosOrd[i].ta;
 	}
-	// console.log(procesosOrd);
 
 	controlProc = 0;
 	controlES = 0;
@@ -973,6 +920,7 @@ function FCFS(archivo, alg){
 			}
 			
 		}
+
 		for (var j = 0; j < procesosOrd.length; j++) {
 			if(procesosOrd[j].ta == i){
 				montarEnMemoria(procesosOrd[j].nombre, procesosOrd[j].tamanio, alg);
@@ -1020,8 +968,6 @@ function FCFS(archivo, alg){
 		estadisticasMemoria();
 		
 	}
-	// console.log(auxiliar);
-
 }
 
 function Prioridades(archivo, alg){
@@ -1135,7 +1081,6 @@ function Prioridades(archivo, alg){
 		 	}
 		}
 
-
 		//Este for intenta meter en la memoria aquellos procesos que anteriormente no pudieron entrar
 		//claramente esos procesos deberian tenerse encuenta antes que los otros que aun no intentaron entrar
 		for (var j = 0; j < auxControlMem.length; j++) {
@@ -1145,7 +1090,6 @@ function Prioridades(archivo, alg){
 				listos.push(auxControlMem[j]);
 				auxControlMem.splice(j,1);
 			}
-			
 		}
 		for (var j = 0; j < procesosOrd.length; j++) {
 			if(procesosOrd[j].ta == i){
@@ -1158,7 +1102,6 @@ function Prioridades(archivo, alg){
 				}
 			}
 		}
-
 
 		//Maneja la cola de entrada salida
 		if (colaES.length > 0) {
@@ -1192,10 +1135,9 @@ function Prioridades(archivo, alg){
 		}
 
 		estadisticasMemoria();
-		
 	}
-
 }
+
 quantumInput = document.getElementById("cuant");
 function RoundRobin(archivo, alg){
 	memoriaP = new Array(parseInt(tamanioMem.value));
@@ -1237,14 +1179,12 @@ function RoundRobin(archivo, alg){
 		procesosOrd = validarProcesos(procesosOrd); //Verifica rafagas, TA, prioridades, etc
 	}
 
-
 	//Ordeno el arreglo por ta
 	procesosOrd.sort(function(a, b){
 			return a.ta - b.ta;
 	});
 
 	controlTamanioProc();
-
 
 	//Acumulo todos los tiempos, esto me dara el tiempo total de ejecucion
 	acum = 0;
@@ -1266,10 +1206,7 @@ function RoundRobin(archivo, alg){
 		}
 
 		if (colaEjec != 0) { 
-		
-
 		 	if (colaEjec.controlRafaga1 == 0){
-		 	
 		 		if((colaEjec.rafagacpu - 1 == 0) || (contQ + 1 == quantum)){ //CONTROLAR ESTA LINEA, PUEDE QUE DEBA SER (contQ + 1 == quantum)
 		 			if (colaEjec.ta > 0) {
 		 				if (auxiliar.length == 0) { //Si no pregunto esto, siempre que todos los TA de todos los procesos sean > 0, pondra como tiempo de entrada, el TA de ese proceso. Error
@@ -1313,29 +1250,23 @@ function RoundRobin(archivo, alg){
 					
 					if (colaEjec.rafagacpu2 - 1 == 0) {
 						colaEjec.rafagacpu2 -= 1;
-						
 						colaEjec.controlRafaga2 = 1;
 						removerDeMemoria(colaEjec.nombre);
 					}else{
-						
 						colaEjec.rafagacpu2 -= 1;
 						listos.push(colaEjec);
-						
+					
 					}
 					rafagas = i; 
-					
-
 					colaEjec = 0;
-					
 					contQ = 0;
-					
+
 				}else if (contQ < quantum){
 					contQ += 1;
 					colaEjec.rafagacpu2 -= 1;
 				}
 		 	}
 		}
-
 
 		//Este for intenta meter en la memoria aquellos procesos que anteriormente no pudieron entrar
 		//claramente esos procesos deberian tenerse encuenta antes que los otros que aun no intentaron entrar
@@ -1356,7 +1287,6 @@ function RoundRobin(archivo, alg){
 				
 				}else{
 					auxControlMem.push(procesosOrd[j]);
-
 				}
 			}
 		}
@@ -1435,7 +1365,6 @@ function multiNivel(archivo, alg){
 
 		procesosOrd = validarProcesos(procesosOrd); //Verifica rafagas, TA, prioridades, etc
 	}
-
 	controlTamanioProc();
 
 	//Acumulo todos los tiempos, esto me dara el tiempo total de ejecucion
@@ -1517,13 +1446,9 @@ function multiNivel(archivo, alg){
 							
 							colaEjec.rafagacpu2 -= 1;
 							listos.push(colaEjec);
-							
 						}
 						rafagas = i; 
-						
-
 						colaEjec = 0;
-						
 						contQ = 0;
 						
 					}else if (contQ < quantum1){
@@ -1563,7 +1488,6 @@ function multiNivel(archivo, alg){
 						}
 						rafagas = i; 
 						colaEjec = 0;
-						
 						contQ = 0;
 
 					}else if (contQ < quantum2){
@@ -1590,10 +1514,7 @@ function multiNivel(archivo, alg){
 							
 						}
 						rafagas = i; 
-						
-
 						colaEjec = 0;
-						
 						contQ = 0;
 						
 					}else if (contQ < quantum2){
@@ -1632,11 +1553,7 @@ function multiNivel(archivo, alg){
 			 		if (colaEjec.rafagacpu2 + rafagas == i) {
 						
 						auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:2, auxEntrada:0, auxSalida:0});
-						
 						rafagas = i; // suma la rafaga en este momento
-					
-						
-
 						colaEjec.controlRafaga2 = 1;
 						removerDeMemoria(colaEjec.nombre);
 						colaEjec = 0;
@@ -1647,7 +1564,6 @@ function multiNivel(archivo, alg){
 			}
 
 		}
-
 
 		//Este for intenta meter en la memoria aquellos procesos que anteriormente no pudieron entrar
 		//claramente esos procesos deberian tenerse encuenta antes que los otros que aun no intentaron entrar
@@ -1817,7 +1733,6 @@ function diagramaGantArchivo(auxiliar, marca){
 				auxiliar[i].auxSalida = auxiliar[i].tiempoSalida;
 			}
 			
-			//EL PAPAAAA DE LOS PARCHES ES ESTE
 			//Hace que el diagrama de gantt siempre tenga el 100% del ancho, a la fuerza
 			totalTiempo = auxiliar[auxiliar.length-1].auxSalida;
 			while(bandControl){
@@ -1839,7 +1754,6 @@ function diagramaGantArchivo(auxiliar, marca){
 				auxiliar[i].auxSalida = auxiliar[i].tiempoSalida;
 			}
 			
-			//EL PAPAAAA DE LOS PARCHES ES ESTE
 			//Hace que el diagrama de gantt siempre tenga el 100% del ancho, a la fuerza
 			totalTiempo = auxiliar[auxiliar.length-1].auxSalida;
 			while(bandControl){
@@ -1887,18 +1801,15 @@ function diagramaGantArchivo(auxiliar, marca){
 						span3.style.right = "15px";
 
 						span2.style.display = "inline";
-						// span2.style.left = "15px";
 						span3.style.display = "inline";
 
 						ancho = ((auxiliar[i].auxSalida-auxiliar[i].auxEntrada)/totalTiempo)*100;
-						// alert(ancho);
 						if (ancho < 2.7) {
 
 							span2.style.position = "relative";
 							span2.style.bottom = "22px";
 						}
 						div2.appendChild(span3);
-						// alert(((auxiliar[i].auxSalida-auxiliar[i].auxEntrada)/totalTiempo)*100);
 					}else{
 						div1.style.background = "#E0E0E0";
 						span.innerHTML = "";
@@ -1939,7 +1850,6 @@ function diagramaGantArchivo(auxiliar, marca){
 				ganttProcES.appendChild(div1);
 				ganttTiempoES.appendChild(div2);
 			}
-			// console.log(auxiliar[i]);
 		}
 	}
 	
