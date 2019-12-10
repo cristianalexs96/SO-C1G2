@@ -2270,17 +2270,17 @@ function memoriaPF(memoria){
 	}
 
 	if (cpu.historial.length > 0) {
-		mostrarHistorial(cpu.historial);
+		mostrarHistorial(cpu.historial, cpu.historiales);
 		mostrarGantt(cpu.historial);
 	}
 
 	if (cpu.historial2.length > 0) {
-		mostrarHistorial(cpu.historial2);
+		mostrarHistorial(cpu.historial2, cpu.historiales);
 		mostrarGantt2(cpu.historial2);
 	}
 
 	if (cpu.historial3.length > 0) {
-		mostrarHistorial(cpu.historial3);
+		mostrarHistorial(cpu.historial3, cpu.historiales);
 		mostrarGantt3(cpu.historial3);
 	}
 	if (cpu.historiales.length > 0) {
@@ -3392,13 +3392,21 @@ function cargarahistorial(historial, tiempo, proceso) {
 	return historial;
 }
 
-function mostrarHistorial(historialarray) {
+function mostrarHistorial(historialarray, historiales) {
 	for (let i = 0; i < historialarray.length; i++) {
 		if (historialarray[i].proceso != "  ") {
 			p = document.createElement("p");
 			p.innerHTML = "- El proceso " + historialarray[i].proceso + " entra en el tiempo " + historialarray[i].ent + " y sale en el tiempo " + historialarray[i].sal + "\n";
 			p.style.marginBottom = "10px";
 			historial.appendChild(p);
+			for (let j = 0; j < historiales.length; j++) {
+				if (historiales[j].proceso == historialarray[i].proceso && historiales[j].inicio == historialarray[i].sal) {
+					p = document.createElement("p");
+					p.innerHTML = "- El proceso " + historiales[j].proceso + " entra a E/S en el tiempo " + historiales[j].inicio + " y sale en el tiempo " + historiales[j].fin + "\n";
+					p.style.marginBottom = "10px";
+					historial.appendChild(p);
+				}
+			}
 		}
 	}
 }
