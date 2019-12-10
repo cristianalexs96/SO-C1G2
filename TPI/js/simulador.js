@@ -1367,6 +1367,10 @@ function multiNivel(archivo, alg){
 	}
 	controlTamanioProc();
 
+	// //Ordeno el arreglo por ta
+	// procesosOrd.sort(function(a, b){
+	// 		return a.ta - b.ta;
+	// });
 	//Acumulo todos los tiempos, esto me dara el tiempo total de ejecucion
 	acum = 0;
 	for (var i = 0; i < procesosOrd.length; i++) {
@@ -1381,15 +1385,16 @@ function multiNivel(archivo, alg){
 
 	for (var i = 0; i <= (acum + 1); i++) { // Es acum + 1 porque la primera vez no entra al procesador
 		
+		//Ordeno por prioridad
+		listos.sort(function(a, b){
+			return a.prioridad - b.prioridad;
+		});
+
 		if ((colaEjec == 0) && (listos.length > 0)) {
 			colaEjec = listos[0];
 			listos.splice(0,1);
 		}
 
-		//Ordeno por prioridad
-		listos.sort(function(a, b){
-			return a.prioridad - b.prioridad;
-		});
 
 		if (colaEjec != 0) { 
 
@@ -1416,7 +1421,7 @@ function multiNivel(archivo, alg){
 								if (colaES.length == 0) { //Si la cola de E/S esta ocupada, i no seria el tiempo de entrada
 									colaEjec.tiempoEntradaES = i;
 								}
-								colaES.push(colaEjec);
+								colaES.push(colaEjec);3
 							}
 						}else{
 							colaEjec.rafagacpu -= 1;
@@ -1463,12 +1468,12 @@ function multiNivel(archivo, alg){
 			 		if((colaEjec.rafagacpu - 1 == 0) || (contQ + 1 == quantum2)){ //CONTROLAR ESTA LINEA, PUEDE QUE DEBA SER (contQ + 1 == quantum)
 			 			if (colaEjec.ta > 0) {
 			 				if (auxiliar.length == 0) { //Si no pregunto esto, siempre que todos los TA de todos los procesos sean > 0, pondra como tiempo de entrada, el TA de ese proceso. Error
-				 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: colaEjec.ta, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+				 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: colaEjec.ta, tiempoSalida: i, marca:1, auxEntrada:0, auxSalida:0});
 			 				}else{
-			 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+			 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:1, auxEntrada:0, auxSalida:0});
 			 				}
 			 			}else{
-			 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+			 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:1, auxEntrada:0, auxSalida:0});
 			 			}
 
 						if (colaEjec.rafagacpu - 1 == 0) {
@@ -1529,12 +1534,12 @@ function multiNivel(archivo, alg){
 			 		if(colaEjec.rafagacpu + rafagas == i){
 						if (colaEjec.ta > 0) {
 			 				if (auxiliar.length == 0) { //Si no pregunto esto, siempre que todos los TA de todos los procesos sean > 0, pondra como tiempo de entrada, el TA de ese proceso. Error
-				 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: colaEjec.ta, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+				 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: colaEjec.ta, tiempoSalida: i, marca:2, auxEntrada:0, auxSalida:0});
 			 				}else{
-			 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+			 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:2, auxEntrada:0, auxSalida:0});
 			 				}
 			 			}else{
-			 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+			 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:2, auxEntrada:0, auxSalida:0});
 			 			}
 						rafagas = i;
 						if (colaEjec.rafagaES == 0) {
@@ -1726,7 +1731,7 @@ function diagramaGantArchivo(auxiliar, marca){
 			acum += ((auxiliar[i].tiempoSalida-auxiliar[i].tiempoEntrada)/totalTiempo)*100;
 		}
 
-		if (acum > 100) {
+		if (acum > 98) {
 			controlacum = true;
 			for (var i = 0; i < auxiliar.length; i++){
 				auxiliar[i].auxEntrada = auxiliar[i].tiempoEntrada;
@@ -1740,14 +1745,14 @@ function diagramaGantArchivo(auxiliar, marca){
 				for (var i = 0; i < auxiliar.length; i++){
 					acum += ((auxiliar[i].auxSalida-auxiliar[i].auxEntrada)/totalTiempo)*100;
 				}
-				if (acum > 100) {
+				if (acum > 98) {
 					totalTiempo += 0.1; //Le aumenta 0.1 al divisor para que cada vez sea mas chico la suma de los anchos (acum = ancho total del gantt)
 				}else{
 					bandControl = false;
 				}
 			}
 			
-		}if (acum < 100) {
+		}else if (acum < 98) {
 			controlacum = true;
 			for (var i = 0; i < auxiliar.length; i++){
 				auxiliar[i].auxEntrada = auxiliar[i].tiempoEntrada;
@@ -1761,7 +1766,7 @@ function diagramaGantArchivo(auxiliar, marca){
 				for (var i = 0; i < auxiliar.length; i++){
 					acum += ((auxiliar[i].auxSalida-auxiliar[i].auxEntrada)/totalTiempo)*100;
 				}
-				if (acum < 100) {
+				if (acum < 98) {
 					totalTiempo -= 0.1; //Le resta 0.1 al divisor para que cada vez sea mas grande la suma de los anchos (acum = ancho total del gantt)
 				}else{
 					bandControl = false;
