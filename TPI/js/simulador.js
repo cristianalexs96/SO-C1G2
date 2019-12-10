@@ -1084,9 +1084,9 @@ function Prioridades(archivo, alg){
 						};
 		}
 
+		procesosOrd = validarProcesos(procesosOrd); //Verifica rafagas, TA, prioridades, etc
 	}
 
-	procesosOrd = validarProcesos(); //Verifica rafagas, TA, prioridades, etc
 
 	controlTamanioProc();
 	acum = 0;
@@ -1102,62 +1102,43 @@ function Prioridades(archivo, alg){
 	iES = 0;
 
 	for (var i = 0; i <= (acum + 1); i++) { // Es acum + 1 porque la primera vez no entra al procesador
-		
+	
 		if ((colaEjec == 0) && (listos.length > 0)) {
 			colaEjec = listos[0];
 			listos.splice(0,1);
 		}
 
-		//Ordeno por prioridad
-		listos.sort(function(a, b){
+		//Ordeno el arreglo por Prioridad
+		procesosOrd.sort(function(a, b){
 			return a.prioridad - b.prioridad;
 		});
 
 		if (colaEjec != 0) { 
 		 
 		 	if (colaEjec.controlRafaga1 == 0){
-		 		if (auxiliar.length > 0) {
-		 			
-		 			if((colaEjec.rafagacpu + rafagas) == i){
-		 				
-	 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
-
-						if (colaEjec.rafagaES == 0) {
-							removerDeMemoria(colaEjec.nombre);
-						}else{
-							colaEjec.controlRafaga1 = 1;
-							if (colaES.length == 0) { //Si la cola de E/S esta ocupada, i no seria el tiempo de entrada
-								colaEjec.tiempoEntradaES = i;
-							}
-							colaES.push(colaEjec);
-						}
-						colaEjec = 0;
-						bandRes = true;
-						rafagas = i;
-		 			}
-
-		 		}else{
-		 			if(colaEjec.rafagacpu == i){
-		 				if (colaEjec.ta > 0) {
+		 		if((colaEjec.rafagacpu + rafagas) == i){
+		 			if (colaEjec.ta > 0) {
+		 				if (auxiliar.length == 0) { //Si no pregunto esto, siempre que todos los TA de todos los procesos sean > 0, pondra como tiempo de entrada, el TA de ese proceso. Error
 			 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: colaEjec.ta, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
 		 				}else{
-		 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: 0, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+		 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
 		 				}
-
-		 				// rafagas = i; 
-						if (colaEjec.rafagaES == 0) {
-							removerDeMemoria(colaEjec.nombre);
-						}else{
-							colaEjec.controlRafaga1 = 1;
-							if (colaES.length == 0) { //Si la cola de E/S esta ocupada, i no seria el tiempo de entrada
-								colaEjec.tiempoEntradaES = i;
-							}
-							colaES.push(colaEjec);
-						}
-						colaEjec = 0;
-						rafagas = i;
-						
+		 			}else{
+		 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
 		 			}
+
+		 			if (colaEjec.rafagaES == 0) {
+						removerDeMemoria(colaEjec.nombre);
+					}else{
+						colaEjec.controlRafaga1 = 1;
+						if (colaES.length == 0) { //Si la cola de E/S esta ocupada, i no seria el tiempo de entrada
+							colaEjec.tiempoEntradaES = i;
+						}
+						colaES.push(colaEjec);
+					}
+					colaEjec = 0;
+					rafagas = i;
+					
 		 		}
 		 		
 		 	}else if(colaEjec.controlRafaga2 == 0){
@@ -1171,7 +1152,6 @@ function Prioridades(archivo, alg){
 
 					colaEjec.controlRafaga2 = 1;
 					colaEjec = 0;
-					bandRes = true;
 					rafagas = i;
 	 			}
 		 		
@@ -1222,14 +1202,21 @@ function Prioridades(archivo, alg){
 
 					iES = 0;
 				}
-				colaES.splice(0,1);
+				colaES.splice(0,1); 
 			}else{
 
 				iES++;
 			}
 		}
-		
+
+		//Cuando algun proceso tenga un TA mucho mayor a los otros, es necesario actualizar las
+		//rafagas para que puedan entrar, sino se rompe todo
+		if (listos.length == 0 && colaEjec == 0 && colaES.length == 0) {
+			rafagas = i+1;
+		}
+
 		estadisticasMemoria();
+		
 	}
 
 }
@@ -1271,9 +1258,9 @@ function RoundRobin(archivo, alg){
 						};
 		}
 
+		procesosOrd = validarProcesos(procesosOrd); //Verifica rafagas, TA, prioridades, etc
 	}
 
-	procesosOrd = validarProcesos(); //Verifica rafagas, TA, prioridades, etc
 
 	//Ordeno el arreglo por ta
 	procesosOrd.sort(function(a, b){
@@ -1308,16 +1295,14 @@ function RoundRobin(archivo, alg){
 		 	if (colaEjec.controlRafaga1 == 0){
 		 	
 		 		if((colaEjec.rafagacpu - 1 == 0) || (contQ + 1 == quantum)){ //CONTROLAR ESTA LINEA, PUEDE QUE DEBA SER (contQ + 1 == quantum)
-		 			if (auxiliar.length > 0) {
-
-						auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca: 0});
-		 			}else{
-		 				if (colaEjec.ta > 0) {
-
-			 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: colaEjec.ta, tiempoSalida: i, marca: 0});
+		 			if (colaEjec.ta > 0) {
+		 				if (auxiliar.length == 0) { //Si no pregunto esto, siempre que todos los TA de todos los procesos sean > 0, pondra como tiempo de entrada, el TA de ese proceso. Error
+			 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: colaEjec.ta, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
 		 				}else{
-		 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: 0, tiempoSalida: i, marca: 0});
+		 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
 		 				}
+		 			}else{
+		 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
 		 			}
 
 					if (colaEjec.rafagacpu - 1 == 0) {
@@ -1425,6 +1410,11 @@ function RoundRobin(archivo, alg){
 			}
 		}
 
+		//Cuando algun proceso tenga un TA mucho mayor a los otros, es necesario actualizar las
+		//rafagas para que puedan entrar, sino se rompe todo
+		if (listos.length == 0 && colaEjec == 0 && colaES.length == 0) {
+			rafagas = i+1;
+		}
 		estadisticasMemoria();
 	} 
 }
@@ -1467,9 +1457,9 @@ function multiNivel(archivo, alg){
 						};
 		}
 
+		procesosOrd = validarProcesos(procesosOrd); //Verifica rafagas, TA, prioridades, etc
 	}
 
-	procesosOrd = validarProcesos(); //Verifica rafagas, TA, prioridades, etc
 	controlTamanioProc();
 
 	//Acumulo todos los tiempos, esto me dara el tiempo total de ejecucion
@@ -1502,16 +1492,14 @@ function multiNivel(archivo, alg){
 				if (colaEjec.controlRafaga1 == 0){
 		 	
 			 		if((colaEjec.rafagacpu - 1 == 0) || (contQ + 1 == quantum1)){ 
-			 			if (auxiliar.length > 0) {
-			 				//Los dos ultimos atributos son para cooregir el gantt
-							auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
-							
-			 			}else{
-			 				if (colaEjec.ta > 0) {
+			 			if (colaEjec.ta > 0) {
+			 				if (auxiliar.length == 0) { //Si no pregunto esto, siempre que todos los TA de todos los procesos sean > 0, pondra como tiempo de entrada, el TA de ese proceso. Error
 				 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: colaEjec.ta, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
 			 				}else{
-			 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: 0, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
+			 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
 			 				}
+			 			}else{
+			 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
 			 			}
 
 						if (colaEjec.rafagacpu - 1 == 0) {
@@ -1572,19 +1560,14 @@ function multiNivel(archivo, alg){
 				if (colaEjec.controlRafaga1 == 0){
 		 	
 			 		if((colaEjec.rafagacpu - 1 == 0) || (contQ + 1 == quantum2)){ //CONTROLAR ESTA LINEA, PUEDE QUE DEBA SER (contQ + 1 == quantum)
-			 			if (auxiliar.length > 0) {
-
-							auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:1, auxEntrada:0, auxSalida:0});
-							
-			 			}else{
-			 				if (colaEjec.ta > 0) {
-				 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: colaEjec.ta, tiempoSalida: i, marca:1, auxEntrada:0, auxSalida:0});
-				 				
+			 			if (colaEjec.ta > 0) {
+			 				if (auxiliar.length == 0) { //Si no pregunto esto, siempre que todos los TA de todos los procesos sean > 0, pondra como tiempo de entrada, el TA de ese proceso. Error
+				 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: colaEjec.ta, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
 			 				}else{
-			 					
-			 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: 0, tiempoSalida: i, marca:1, auxEntrada:0, auxSalida:0});
-			 					
+			 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
 			 				}
+			 			}else{
+			 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
 			 			}
 
 						if (colaEjec.rafagacpu - 1 == 0) {
@@ -1647,20 +1630,14 @@ function multiNivel(archivo, alg){
 
 				if (colaEjec.controlRafaga1 == 0){
 			 		if(colaEjec.rafagacpu + rafagas == i){
-						if (auxiliar.length > 0) {
-
-							
-							auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:2, auxEntrada:0, auxSalida:0});
-							
-			 			}else{
-			 				if (colaEjec.ta > 0) {
-				 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: colaEjec.ta, tiempoSalida: i, marca:2, auxEntrada:0, auxSalida:0});
-				 				
+						if (colaEjec.ta > 0) {
+			 				if (auxiliar.length == 0) { //Si no pregunto esto, siempre que todos los TA de todos los procesos sean > 0, pondra como tiempo de entrada, el TA de ese proceso. Error
+				 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: colaEjec.ta, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
 			 				}else{
-			 					
-			 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: 0, tiempoSalida: i, marca:2, auxEntrada:0, auxSalida:0});
-			 					
+			 					auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
 			 				}
+			 			}else{
+			 				auxiliar.push({nombre: colaEjec.nombre, tiempoEntrada: rafagas, tiempoSalida: i, marca:0, auxEntrada:0, auxSalida:0});
 			 			}
 						rafagas = i;
 						if (colaEjec.rafagaES == 0) {
@@ -1745,6 +1722,11 @@ function multiNivel(archivo, alg){
 			}
 		}
 
+		//Cuando algun proceso tenga un TA mucho mayor a los otros, es necesario actualizar las
+		//rafagas para que puedan entrar, sino se rompe todo
+		if (listos.length == 0 && colaEjec == 0 && colaES.length == 0) {
+			rafagas = i+1;
+		}
 		estadisticasMemoria();
 	}
 }
@@ -1798,19 +1780,6 @@ function historialMemoria(auxiliar, porcentaje){
 
 }
 
-// function historialProcesosArchivoaux(auxiliar){
-// 	for (var i = 0; i < auxiliar.length; i++) {
-		
-// 		p = document.createElement("p");
-// 		p.style.marginBottom = "10px";
-		
-// 		p.innerHTML = "- El proceso " + auxiliar[i].nombre + " entra en el tiempo " + auxiliar[i].tiempoEntrada + " y sale en el tiempo " + auxiliar[i].tiempoSalida + "\n";
-		
-// 		historial.appendChild(p);	
-		
-// 	}
-// }
-
 ganttProc = document.getElementById("ganttProc");
 ganttTiempo = document.getElementById("ganttTiempo");
 ganttProc2 = document.getElementById("ganttProc2");
@@ -1840,10 +1809,9 @@ function diagramaGantArchivo(auxiliar, marca){
 
 		if (acum > 100) {
 			controlacum = true;
-			excedente = (acum - 100)/100;
 			for (var i = 0; i < auxiliar.length; i++){
-				auxiliar[i].auxEntrada = auxiliar[i].tiempoEntrada - auxiliar[i].tiempoEntrada*excedente; //Le resto el procentaje de exceso
-				auxiliar[i].auxSalida = auxiliar[i].tiempoSalida - auxiliar[i].tiempoSalida*excedente; //Le resto el procentaje de exceso
+				auxiliar[i].auxEntrada = auxiliar[i].tiempoEntrada;
+				auxiliar[i].auxSalida = auxiliar[i].tiempoSalida;
 			}
 			
 			//EL PAPAAAA DE LOS PARCHES ES ESTE
@@ -1861,11 +1829,26 @@ function diagramaGantArchivo(auxiliar, marca){
 				}
 			}
 			
-			
-		}else{
+		}if (acum < 100) {
+			controlacum = true;
 			for (var i = 0; i < auxiliar.length; i++){
 				auxiliar[i].auxEntrada = auxiliar[i].tiempoEntrada;
 				auxiliar[i].auxSalida = auxiliar[i].tiempoSalida;
+			}
+			
+			//EL PAPAAAA DE LOS PARCHES ES ESTE
+			//Hace que el diagrama de gantt siempre tenga el 100% del ancho, a la fuerza
+			totalTiempo = auxiliar[auxiliar.length-1].auxSalida;
+			while(bandControl){
+				acum = 0;
+				for (var i = 0; i < auxiliar.length; i++){
+					acum += ((auxiliar[i].auxSalida-auxiliar[i].auxEntrada)/totalTiempo)*100;
+				}
+				if (acum < 100) {
+					totalTiempo -= 0.1; //Le resta 0.1 al divisor para que cada vez sea mas grande la suma de los anchos (acum = ancho total del gantt)
+				}else{
+					bandControl = false;
+				}
 			}
 		}
 		
