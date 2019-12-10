@@ -2041,30 +2041,7 @@ function memoriaPF(memoria){
 	var fin = false;
 	var tiempo = 0;
 	while (!fin) {
-
-		console.log("___________________");
-		console.log("TIEMPO : " + tiempo);
-		console.log("PROCESOS CARGADOS: ")
-		for (let i = 0; i < memoria.procesos.length; i++) {
-			console.log(".... nombre: " + memoria.procesos[i].nombre);
-			console.log(".... tamanio: " + memoria.procesos[i].tamanio);
-			console.log(".... ta: " + memoria.procesos[i].ta);
-			console.log(".... rafagacpu: " + memoria.procesos[i].rafagacpu);
-			console.log("-----------------")
-		}
-		console.log("PARTICIONES: ");
-		for (let i = 0; i < memoria.particiones.length; i++) {
-			console.log(".... nombre: " + memoria.particiones[i].nombre);
-			console.log(".... tamanio: " + memoria.particiones[i].tamanio);
-			console.log(".... Procesos en memoria: ")
-			for (let j = 0; j < memoria.particiones[i].procesos.length; j++) {
-				console.log("........ " + memoria.particiones[i].procesos[j].nombre);
-			}
-			console.log(".................");
-		}
-		console.log(".................");
-		console.log("CPU: ");
-
+		var mostrarhist = false;
 		var eliminar = [];
 		var parts = memoria.particiones;
 		for (let proc = 0; proc < memoria.procesos.length; proc++) {
@@ -2081,6 +2058,7 @@ function memoriaPF(memoria){
 									parts[part].procesos.push(proceso);
 									memoria.particiones[part].tamanio = memoria.particiones[part].tamanio - proceso.tamanio;
 									assign = true;
+									mostrarhist = true;
 								}	
 							}
 						}
@@ -2105,6 +2083,7 @@ function memoriaPF(memoria){
 							parts[partelegida].procesos.push(proceso);
 							memoria.particiones[partelegida].tamanio = memoria.particiones[partelegida].tamanio - proceso.tamanio;
 							assign = true;
+							mostrarhist = true;
 						}
 					}
 				}
@@ -2168,6 +2147,7 @@ function memoriaPF(memoria){
 			for (let p = 0; p < posfinprocs.length; p++) {
 				//restauro tamaño de memoria
 				memoria.particiones[part].tamanio += memoria.particiones[part].procesos[posfinprocs[p]].tamanio;
+				mostrarhist = true;
 				//elimino proceso
 				memoria.particiones[part].procesos.splice(posfinprocs[p], 1);
 			}
@@ -2192,6 +2172,7 @@ function memoriaPF(memoria){
 							parts[part].procesos.push(colamemoria[0]);
 							memoria.particiones[part].tamanio = memoria.particiones[part].tamanio - colamemoria[0].tamanio;
 							asignado = true;
+							mostrarhist = true;
 						}	
 					}
 				}
@@ -2215,6 +2196,7 @@ function memoriaPF(memoria){
 					parts[partelegida].procesos.push(colamemoria[0]);
 					memoria.particiones[partelegida].tamanio = memoria.particiones[partelegida].tamanio - colamemoria[0].tamanio;
 					asignado = true;
+					mostrarhist = true;
 				}
 
 			}
@@ -2223,6 +2205,10 @@ function memoriaPF(memoria){
 				cpu.colalistos.push(colamemoria[0]);
 				colamemoria.splice(0, 1);
 			}
+		}
+
+		if (mostrarhist) {
+			mostrarMemoria(memoria, tiempo);
 		}
 
 		tiempo++;
@@ -3454,6 +3440,7 @@ function mostrarGantt(historialarray) {
 }
 
 function mostrarGantt2(historialarray) {
+	colaMulti1.style.display = "";
 	var totalTiempo = historialarray[historialarray.length-1].sal;
 	for (let i = 0; i < historialarray.length; i++) {
 		div1 = document.createElement("div");
@@ -3490,6 +3477,7 @@ function mostrarGantt2(historialarray) {
 }
 
 function mostrarGantt3(historialarray) {
+	colaMulti2.style.display = "";
 	var totalTiempo = historialarray[historialarray.length-1].sal;
 	for (let i = 0; i < historialarray.length; i++) {
 		div1 = document.createElement("div");
@@ -3587,4 +3575,35 @@ function ejecutocolaanterior(cpu, cola) {
 		}
 	}
 	return puedeejecutar;
+}
+
+function mostrarMemoria(memoria, tiempo) {
+	p_time = document.createElement("p");
+	timeicon = '<i class="tiny material-icons">access_time</i>';
+	p_time.innerHTML = timeicon + " TIEMPO: " + tiempo;
+	historialMem.appendChild(p_time);
+	var hayprocesos = false;
+	for (let i = 0; i < memoria.particiones.length; i++) {
+		if (memoria.particiones[i].procesos.length > 0) {
+			var procesos = "";
+			var tamanioparticion = memoria.particiones[i].tamanio;
+			for (let j = 0; j < memoria.particiones[i].procesos.length; j++) {
+				procesos = procesos + memoria.particiones[i].procesos[j].nombre + ", ";
+				tamanioparticion += memoria.particiones[i].procesos[j].tamanio;
+			}
+			p = document.createElement("p");
+			porcentaje = 100 - Math.round(memoria.particiones[i].tamanio * 100 / tamanioparticion);
+			p.innerHTML = "- En la Particion " + i + " se encuentran los procesos: " + procesos + " ocupando el %" + porcentaje + " de la partición"; 
+			historialMem.appendChild(p);
+			hayprocesos = true;
+		}
+	}
+	if (tiempo > 0 && !hayprocesos) {
+		p = document.createElement("p");
+			p.innerHTML = "- Se libero la memoria"; 
+			historialMem.appendChild(p);
+	}
+	pfinal = document.createElement("p");
+	pfinal.innerHTML = "___________________________________________";
+	historialMem.appendChild(pfinal);
 }
