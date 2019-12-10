@@ -428,30 +428,6 @@ function validarTamParticiones(){
 	return true;
 }
 
-// function mostrarParticiones(tamPart,i){
-// 	coloresPart = ["bdbdbd", "9e9e9e", "b0bec5", "90a4ae", "78909c", "607d8b"];
-// 	div1 = document.createElement("div");
-// 	div1.className = "procmem col";
-// 	//Con esta linea obtengo el ancho del div que corresponde al uso del sistema operativo dentro de la memoria
-// 	//Tambien representaria el tamanio del proceo
-// 	ancho = parseInt(document.getElementById("memSO").offsetWidth);
-// 	//Con esta linea calculo el procentaje de memoria que ocupa el SO dentro de la memoria
-// 	procentajeSO = (ancho/parseInt(tamanioMem.value))*100;
-// 	//Con esta linea calculo el procentaje que le corrresponde a la particion en base a la
-// 	//memoria disponible que le queda, despues de la que usa el SO
-// 	tamanioDiv = (tamPart/(parseInt(tamanioMem.value)-procentajeSO))*100;
-
-// 	div1.style.width = tamanioDiv + "%";
-// 	div1.style.background = "#"+coloresPart[i];
-// 	div1.style.overflow = "auto";
-// 	div1.style.overflowY = "hidden";
-// 	span = document.createElement("span");
-// 	span.innerHTML = "Part: " + (i+1);
-// 	span.className = "center-align";
-// 	div1.appendChild(span);
-// 	mapa2.appendChild(div1);
-
-// }
 
 //Me permite hacer click en el boton para cargar el archivo, es todo un descajete jaja
 archivo = document.getElementById("archivo");
@@ -1753,6 +1729,7 @@ historialMem = document.getElementById("historialMemoria");
 function historialMemoria(auxiliar, porcentaje){
 
 	cadena = "";
+	band = true;
 	for (var i = 0; i < auxiliar.length; i++) {
 		for (var j = 0; j < auxiliar[i].length; j++) {
 			if (j == 0) {
@@ -1767,16 +1744,42 @@ function historialMemoria(auxiliar, porcentaje){
 			}
 		}
 		if (cadena != "") {
-			
+			p_time = document.createElement("p");
+			timeicon = '<i class="tiny material-icons" style="position: relative; top:2px;">access_time</i>';
+			p_time.innerHTML = timeicon + " TIEMPO: " + i + "\n";
 			p = document.createElement("p");
 			p.style.marginBottom = "10px";
+			pporcentaje = document.createElement("p");
+			pporcentaje.innerHTML = "- Memoria Utilizada " + porcentaje[i].toFixed(2)+ "%\n";
 			
-			p.innerHTML = "- En el tiempo " + i + " se encuentran los procesos " + cadena + " ... Memoria Utilizada  " + porcentaje[i].toFixed(4) + "%\n";
+			p.innerHTML = "- En el tiempo " + i + " se encuentran los procesos " + cadena;
 			cadena = "";
-			historialMem.appendChild(p);	
+			pfinal = document.createElement("p");
+			pfinal.innerHTML = "___________________________________________ \n";
+
+			historialMem.appendChild(p_time);
+			historialMem.appendChild(p);
+			historialMem.appendChild(pporcentaje);	
+			historialMem.appendChild(pfinal);
+			tiempo = i;
 		}
 		
 	}
+
+	p_time = document.createElement("p");
+	timeicon = '<i class="tiny material-icons" style="position: relative; top:2px;">access_time</i>';
+	p_time.innerHTML = timeicon + " TIEMPO: " + (tiempo + 1) + "\n";
+	p = document.createElement("p");
+	p.style.marginBottom = "10px";
+	
+	p.innerHTML = "- En el tiempo " + (tiempo + 1) + " se libera la memoria";
+	cadena = "";
+	pfinal = document.createElement("p");
+	pfinal.innerHTML = "___________________________________________ \n";
+
+	historialMem.appendChild(p_time);
+	historialMem.appendChild(p);	
+	historialMem.appendChild(pfinal);
 
 }
 
